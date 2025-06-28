@@ -27,11 +27,29 @@ const files = [
         input: 'animation-config.js',
         output: 'animation-config.min.js',
         banner: '/*! HOLY LABEL Animation Config v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'animation-manager.js',
+        output: 'animation-manager.min.js',
+        banner: '/*! HOLY LABEL Animation Manager v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'navigation-manager.js',
+        output: 'navigation-manager.min.js',
+        banner: '/*! HOLY LABEL Navigation Manager v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'modal-utils.js',
+        output: 'modal-utils.min.js',
+        banner: '/*! HOLY LABEL Modal Utils v1.0.0 | (c) 2024 | MIT License */'
     }
 ];
 
-// コアライブラリ統合版
+// コアライブラリ統合版（基盤）
 const coreFiles = ['dom-utils.js', 'page-state.js', 'animation-config.js'];
+
+// 拡張ライブラリ統合版（機能モジュール）
+const extendedFiles = ['animation-manager.js', 'navigation-manager.js', 'modal-utils.js'];
 
 async function buildSingle(file) {
     try {
@@ -113,6 +131,44 @@ async function buildCore() {
     }
 }
 
+async function buildExtended() {
+    try {
+        console.log('Building extended bundle...');
+        
+        let combinedCode = '';
+        extendedFiles.forEach(filename => {
+            const filePath = path.join(srcDir, filename);
+            combinedCode += fs.readFileSync(filePath, 'utf8') + '\n\n';
+        });
+        
+        const result = await minify(combinedCode, {
+            compress: {
+                drop_console: false,
+                drop_debugger: true,
+                pure_funcs: ['console.log']
+            },
+            mangle: {
+                reserved: ['HolyLabelAnimationManager', 'HolyLabelNavigationManager', 'HolyLabelModalUtils', 'AnimationManager', 'NavigationManager', 'initRestockNotificationModal']
+            }
+        });
+        
+        const banner = '/*! HOLY LABEL Extended Bundle v1.0.0 | (c) 2024 | MIT License */';
+        const minified = banner + '\n' + result.code;
+        
+        const outputPath = path.join(distDir, 'extended.min.js');
+        fs.writeFileSync(outputPath, minified);
+        
+        const originalSize = Buffer.byteLength(combinedCode, 'utf8');
+        const minifiedSize = Buffer.byteLength(minified, 'utf8');
+        const savings = ((originalSize - minifiedSize) / originalSize * 100).toFixed(1);
+        
+        console.log(`✓ extended.min.js created (${minifiedSize} bytes, ${savings}% savings)`);
+        
+    } catch (error) {
+        console.error('✗ Error building extended bundle:', error);
+    }
+}
+
 async function build() {
     console.log('🚀 Starting HOLY LABEL JS build process...\n');
     
@@ -126,15 +182,26 @@ async function build() {
     // コアバンドルビルド
     await buildCore();
     
+    console.log('');
+    
+    // 拡張バンドルビルド
+    await buildExtended();
+    
     console.log('\n✨ Build completed!');
     console.log('\nGenerated files:');
+    console.log('【基盤ライブラリ】');
     console.log('- js/dist/dom-utils.min.js');
     console.log('- js/dist/page-state.min.js');
     console.log('- js/dist/animation-config.min.js');
-    console.log('- js/dist/core.min.js (combined)');
-    console.log('\nCDN URLs:');
-    console.log('https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js');
-    console.log('https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/dom-utils.min.js');
+    console.log('- js/dist/core.min.js (基盤統合版)');
+    console.log('\n【機能ライブラリ】');
+    console.log('- js/dist/animation-manager.min.js');
+    console.log('- js/dist/navigation-manager.min.js');
+    console.log('- js/dist/modal-utils.min.js');
+    console.log('- js/dist/extended.min.js (機能統合版)');
+    console.log('\n🔗 主要CDN URLs:');
+    console.log('📦 基盤: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js');
+    console.log('⚡ 拡張: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js');
 }
 
 build(); 
