@@ -3438,6 +3438,9 @@
     <!-- HOLY LABEL 外部ライブラリ（拡張機能） -->
     <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js"></script>
     
+    <!-- HOLY LABEL 外部ライブラリ（高度機能） -->
+    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
+    
     <script>
         // HOLY LABEL 最小限初期化（外部ライブラリ連携）
         window.HL={
@@ -3449,11 +3452,17 @@
                 this.animMgr=window.HolyLabelAnimationManager||window.AnimationManager;
                 this.navMgr=window.HolyLabelNavigationManager||window.NavigationManager;
                 this.modal=window.HolyLabelModalUtils;
+                this.gallery=window.HolyLabelProductGallery||window.ProductImageGallery;
+                this.loadMore=window.HolyLabelLoadMoreManager||window.LoadMoreManager;
+                this.logo=window.HolyLabelLogoManager||window.LogoManager;
                 
                 if(this.anim)this.anim.init();
                 if(this.animMgr)this.animMgr.init();
                 if(this.navMgr)this.navMgr.init();
                 if(this.modal)this.modal.init();
+                if(this.gallery)this.gallery.init();
+                if(this.loadMore)this.loadMore.init();
+                if(this.logo)this.logo.initAll();
                 
                 // 後方互換性のため
                 window.DOMUtils=this.dom;
@@ -3461,7 +3470,12 @@
                 window.AnimationConfig=this.anim;
                 window.AnimationManager=this.animMgr;
                 window.NavigationManager=this.navMgr;
+                window.ProductImageGallery=this.gallery;
+                window.LoadMoreManager=this.loadMore;
+                window.LogoManager=this.logo;
                 window.initRestockNotificationModal=this.modal?this.modal.initRestockNotificationModal:function(){};
+                window.initCategoryDisplay=this.logo?this.logo.initCategoryDisplay:function(){};
+                window.controlInstagramButton=this.logo?this.logo.controlInstagramButton:function(){};
             },
             ready:function(fn){
                 if(document.readyState!=='loading')fn();
@@ -3475,208 +3489,19 @@
         /*
            JavaScript - ロゴ制御
  */
-        const LogoManager = {
-            updatePosition() {
-                const logo = DOMUtils.logo();
-            if (!logo) return;
-                const isMenuOpen = NavigationManager.isActive();
-                const isTop = PageState.isHomePage();
-            // 既存のクラスを削除
-            logo.classList.remove('center-position', 'header-position', 'menu-open-position');
-                // 適切なクラスを追加
-            if (isMenuOpen) {
-                logo.classList.add('menu-open-position');
-                } else if (isTop) {
-                logo.classList.add('center-position');
-            } else {
-                logo.classList.add('header-position');
-            }
-            }
-        };
+        // LogoManager - 外部ライブラリに移行済み（ロゴ制御外部化完了）
         /*
            JavaScript - カテゴリ表示制御
  */
-         function initCategoryDisplay() {
-            const itemExpandLink = DOMUtils.get('a.expand[href="#"]');
-            if (itemExpandLink?.textContent.trim() === 'ITEM') {
-                 const exList = itemExpandLink.nextElementSibling;
-                 if (exList) {
-                     const categoryItems = exList.querySelectorAll('li:not(.no-category-message)');
-                     const noMessage = exList.querySelector('.no-category-message');
-                     if (categoryItems.length === 0 && noMessage) {
-                         noMessage.style.display = 'block';
-                     }
-                 }
-             }
-         }
+        // initCategoryDisplay - LogoManagerに統合済み
         /*
            JavaScript - Instagram固定ボタン制御
  */
-        function controlInstagramButton() {
-            const instagramBtn = DOMUtils.get('.instagram-fixed-btn');
-            if (!instagramBtn) return;
-            DOMUtils.body().classList.toggle('home-page', PageState.isHomePage());
-        }
+        // controlInstagramButton - LogoManagerに統合済み
 
-        /* === ▼▼▼ ここからJavaScriptが変更されています ▼▼▼ === */
-        const ProductImageGallery = {
-            // プロパティ
-            currentIndex: 0,
-            images: [],
-            elements: {
-                mainContainer: null,
-                thumbnailContainer: null,
-                counter: null,
-            },
+        // ProductImageGallery - 外部ライブラリに移行済み（超大幅削減完了）
 
-            // 初期化
-            init() {
-                this.elements.mainContainer = document.getElementById('mainImageContainer');
-                this.elements.thumbnailContainer = document.getElementById('thumbnailContainer');
-                this.elements.counter = document.getElementById('imageCounter');
-
-                if (!this.elements.mainContainer || !this.elements.thumbnailContainer) return;
-
-                this.collectImages();
-                if (this.images.length === 0) return;
-
-                this.renderImages();
-                this.addEventListeners();
-                this.updateUI();
-            },
-
-            // 画像データの収集
-            collectImages() {
-                const imageDataElement = document.getElementById('imageData');
-                if (!imageDataElement) return;
-                
-                const imageSpans = imageDataElement.querySelectorAll('span[data-main]');
-                this.images = Array.from(imageSpans).map(span => ({
-                    main: span.getAttribute('data-main'),
-                    thumb: span.getAttribute('data-thumb')
-                })).filter(img => img.main && img.thumb); // 有効な画像のみ
-            },
-
-            // 画像とサムネイルの描画
-            renderImages() {
-                let mainHTML = '';
-                let thumbHTML = '';
-                const itemTitle = document.querySelector('.product-detail-title')?.textContent || '商品画像';
-
-                this.images.forEach((img, index) => {
-                    mainHTML += `<div class="main-image-item"><img src="${img.main}" alt="${itemTitle} ${index + 1}"></div>`;
-                    thumbHTML += `<div class="thumbnail-item" data-index="${index}"><img src="${img.thumb}" alt="${itemTitle} サムネイル ${index + 1}"></div>`;
-                });
-                
-                this.elements.mainContainer.innerHTML = mainHTML;
-                this.elements.thumbnailContainer.innerHTML = thumbHTML;
-            },
-
-            // イベントリスナーの設定
-            addEventListeners() {
-                // メイン画像のスワイプ（スクロール）を検知
-                this.elements.mainContainer.addEventListener('scroll', () => {
-                    const newIndex = Math.round(this.elements.mainContainer.scrollLeft / this.elements.mainContainer.offsetWidth);
-                    if (newIndex !== this.currentIndex) {
-                        this.currentIndex = newIndex;
-                        this.updateUI();
-                    }
-                });
-
-                // サムネイルのクリックを検知
-                this.elements.thumbnailContainer.addEventListener('click', (e) => {
-                    const thumbnail = e.target.closest('.thumbnail-item');
-                    if (thumbnail) {
-                        const index = parseInt(thumbnail.dataset.index, 10);
-                        this.scrollToImage(index);
-                    }
-                });
-
-                // 矢印クリック検知（新規追加）
-                const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.getElementById('nextBtn');
-                
-                if (prevBtn && nextBtn) {
-                    prevBtn.addEventListener('click', () => this.scrollToImage(this.currentIndex - 1));
-                    nextBtn.addEventListener('click', () => this.scrollToImage(this.currentIndex + 1));
-                }
-            },
-
-            // 特定の画像へスクロール
-            scrollToImage(index) {
-                if (this.images.length === 0) return;
-                
-                // ループ機能追加
-                let newIndex = index;
-                if (newIndex < 0) {
-                    newIndex = this.images.length - 1;
-                } else if (newIndex >= this.images.length) {
-                    newIndex = 0;
-                }
-                
-                this.currentIndex = newIndex;
-                const scrollPosition = newIndex * this.elements.mainContainer.offsetWidth;
-                this.elements.mainContainer.scrollTo({
-                    left: scrollPosition,
-                    behavior: 'smooth'
-                });
-                this.updateUI();
-            },
-
-            // UIの更新
-            updateUI() {
-                // カウンターの更新
-                if (this.elements.counter) {
-                    if(this.images.length > 1){
-                        this.elements.counter.textContent = `${this.currentIndex + 1}/${this.images.length}`;
-                        this.elements.counter.style.display = 'block';
-                    } else {
-                        this.elements.counter.style.display = 'none';
-                    }
-                }
-                
-                // 矢印ボタンの表示制御（新規追加）
-                const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.getElementById('nextBtn');
-                
-                if (prevBtn && nextBtn) {
-                    if (this.images.length > 1) {
-                        prevBtn.style.display = 'flex';
-                        nextBtn.style.display = 'flex';
-                    } else {
-                        prevBtn.style.display = 'none';
-                        nextBtn.style.display = 'none';
-                    }
-                }
-                
-                // サムネイルのアクティブ状態を更新
-                const thumbnails = this.elements.thumbnailContainer.querySelectorAll('.thumbnail-item');
-                thumbnails.forEach((thumb, index) => {
-                    thumb.classList.toggle('active', index === this.currentIndex);
-                });
-
-                // アクティブなサムネイルが中央に来るようにスクロール
-                const activeThumbnail = thumbnails[this.currentIndex];
-                if (activeThumbnail) {
-                    const container = this.elements.thumbnailContainer;
-                    const scrollLeft = activeThumbnail.offsetLeft - (container.offsetWidth / 2) + (activeThumbnail.offsetWidth / 2);
-                    container.scrollTo({
-                        left: scrollLeft,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        };
-        /* === ▲▲▲ ここまでJavaScriptの変更箇所 ▲▲▲ === */
-
-        /*
-           JavaScript - Ajax読み込み機能
- */
-        const LoadMoreManager = {
-            elements: {
-                get btn() { return DOMUtils.getId('load-more-btn'); },
-                get maxPage() { return DOMUtils.getId('max_page'); },
-                get nextPage() { return DOMUtils.getId('next_page'); },
+        // LoadMoreManager - 外部ライブラリに移行済み（Ajax機能外部化完了）
                 get productGrid() { return DOMUtils.getId('product-grid'); }
             },
             currentPage: 1,

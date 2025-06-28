@@ -42,6 +42,21 @@ const files = [
         input: 'modal-utils.js',
         output: 'modal-utils.min.js',
         banner: '/*! HOLY LABEL Modal Utils v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'product-gallery.js',
+        output: 'product-gallery.min.js',
+        banner: '/*! HOLY LABEL Product Gallery v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'loadmore-manager.js',
+        output: 'loadmore-manager.min.js',
+        banner: '/*! HOLY LABEL LoadMore Manager v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'logo-manager.js',
+        output: 'logo-manager.min.js',
+        banner: '/*! HOLY LABEL Logo Manager v1.0.0 | (c) 2024 | MIT License */'
     }
 ];
 
@@ -50,6 +65,9 @@ const coreFiles = ['dom-utils.js', 'page-state.js', 'animation-config.js'];
 
 // 拡張ライブラリ統合版（機能モジュール）
 const extendedFiles = ['animation-manager.js', 'navigation-manager.js', 'modal-utils.js'];
+
+// 高度機能ライブラリ統合版（プレミアム機能）
+const advancedFiles = ['product-gallery.js', 'loadmore-manager.js', 'logo-manager.js'];
 
 async function buildSingle(file) {
     try {
@@ -169,6 +187,44 @@ async function buildExtended() {
     }
 }
 
+async function buildAdvanced() {
+    try {
+        console.log('Building advanced bundle...');
+        
+        let combinedCode = '';
+        advancedFiles.forEach(filename => {
+            const filePath = path.join(srcDir, filename);
+            combinedCode += fs.readFileSync(filePath, 'utf8') + '\n\n';
+        });
+        
+        const result = await minify(combinedCode, {
+            compress: {
+                drop_console: false,
+                drop_debugger: true,
+                pure_funcs: ['console.log']
+            },
+            mangle: {
+                reserved: ['HolyLabelProductGallery', 'HolyLabelLoadMoreManager', 'HolyLabelLogoManager', 'ProductImageGallery', 'LoadMoreManager', 'LogoManager', 'initCategoryDisplay', 'controlInstagramButton']
+            }
+        });
+        
+        const banner = '/*! HOLY LABEL Advanced Bundle v1.0.0 | (c) 2024 | MIT License */';
+        const minified = banner + '\n' + result.code;
+        
+        const outputPath = path.join(distDir, 'advanced.min.js');
+        fs.writeFileSync(outputPath, minified);
+        
+        const originalSize = Buffer.byteLength(combinedCode, 'utf8');
+        const minifiedSize = Buffer.byteLength(minified, 'utf8');
+        const savings = ((originalSize - minifiedSize) / originalSize * 100).toFixed(1);
+        
+        console.log(`✓ advanced.min.js created (${minifiedSize} bytes, ${savings}% savings)`);
+        
+    } catch (error) {
+        console.error('✗ Error building advanced bundle:', error);
+    }
+}
+
 async function build() {
     console.log('🚀 Starting HOLY LABEL JS build process...\n');
     
@@ -187,6 +243,11 @@ async function build() {
     // 拡張バンドルビルド
     await buildExtended();
     
+    console.log('');
+    
+    // 高度機能バンドルビルド
+    await buildAdvanced();
+    
     console.log('\n✨ Build completed!');
     console.log('\nGenerated files:');
     console.log('【基盤ライブラリ】');
@@ -199,9 +260,15 @@ async function build() {
     console.log('- js/dist/navigation-manager.min.js');
     console.log('- js/dist/modal-utils.min.js');
     console.log('- js/dist/extended.min.js (機能統合版)');
+    console.log('\n【高度機能ライブラリ】');
+    console.log('- js/dist/product-gallery.min.js');
+    console.log('- js/dist/loadmore-manager.min.js');
+    console.log('- js/dist/logo-manager.min.js');
+    console.log('- js/dist/advanced.min.js (高度機能統合版)');
     console.log('\n🔗 主要CDN URLs:');
     console.log('📦 基盤: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js');
     console.log('⚡ 拡張: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js');
+    console.log('🚀 高度: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js');
 }
 
 build(); 
