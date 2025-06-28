@@ -1,0 +1,161 @@
+/* HOLY LABEL Layout CSS Library */
+
+/* ハンバーガーメニュー */
+button.humberger {
+    position: fixed;
+    top: calc(var(--information-banner-height, 0px) + 20px);
+    left: 20px;
+    width: 3rem;
+    height: 2rem;
+    z-index: var(--z-hamburger) !important;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    pointer-events: auto !important;
+}
+
+.humberger__line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: all var(--transition-fast);
+}
+
+.humberger__line:before, .humberger__line:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: all var(--transition-fast);
+}
+
+.humberger__line:before { top: -8px; }
+.humberger__line:after { top: 8px; }
+.humberger.-active .humberger__line { background-color: transparent; }
+.humberger.-active .humberger__line::before { transform: rotate(45deg); top: 0; }
+.humberger.-active .humberger__line::after { transform: rotate(-45deg); top: 0; }
+
+/* ロゴ・BASEメニュー */
+.logo {
+    position: fixed;
+    top: calc(var(--information-banner-height, 0px) + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    letter-spacing: 2px;
+    font-weight: normal;
+    z-index: 1000;
+    max-width: 150px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.logo a { color: #fff !important; display: block; }
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 30px;
+    object-fit: contain;
+}
+
+.logo a:not(:has(img)) {
+    font-size: 16px;
+    letter-spacing: 2px;
+    font-weight: normal;
+}
+
+/* ロゴ位置制御クラス */
+.logo.center-position {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 1001;
+    text-align: center;
+    transition: none !important;
+}
+
+/* デスクトップでの中央ロゴサイズ拡大 */
+@media (min-width: 769px) {
+    .logo.center-position {
+        max-width: 300px;
+        font-size: 32px;
+        letter-spacing: 4px;
+    }
+    .logo.center-position img {
+        max-height: 80px;
+    }
+    .logo.center-position a:not(:has(img)) {
+        font-size: 32px;
+        letter-spacing: 4px;
+    }
+}
+
+.logo.header-position {
+    position: absolute !important;
+    top: calc(var(--information-banner-height, 0px) + 20px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000;
+    text-align: center;
+}
+
+.logo.menu-open-position {
+    position: fixed !important;
+    top: calc(var(--information-banner-height, 0px) + 20px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1002;
+    text-align: center;
+    transition: none !important;
+}
+
+.base-menu-container {
+    position: fixed;
+    top: calc(var(--information-banner-height, 0px) + 20px);
+    right: 20px;
+    z-index: 1000;
+    transform: scale(0.6);
+}
+
+/* BASEメニューコンテナのレスポンシブ対応 */
+@media (max-width: 768px) {
+    .base-menu-container {
+        top: calc(var(--information-banner-height, 0px) + 15px);
+        right: 15px;
+        transform: scale(0.5);
+    }
+}
+
+/*
+   ナビゲーションエリア
+ */
+.header__nav-area {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 30rem;
+    height: 100vh;
+    background-color: var(--overlay-bg);
+    transition: all var(--transition-fast);
+    z-index: var(--z-navigation);
+    padding: var(--space-xl) var(--space-lg);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.header__nav-area.-active {
+    left: 0;
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.body-fixed { overflow: hidden; } 

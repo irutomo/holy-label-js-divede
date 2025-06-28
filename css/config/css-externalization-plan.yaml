@@ -1,0 +1,109 @@
+# HOLY LABEL CSS外部化戦略プラン
+# 目標: 102,439バイトのCSS → 大幅削減によるBASE制限内達成
+
+project:
+  name: "HOLY LABEL CSS Externalization"
+  target_reduction: "95%以上（約97,000バイト削減）"
+  final_target: "HTMLファイル15,000バイト以内"
+
+current_analysis:
+  total_html_size: 139602  # bytes
+  css_section_size: 102439  # bytes (73.3%)
+  css_lines: "37-2999"
+  js_externalized: 20399  # bytes already reduced
+
+css_externalization_phases:
+  
+  phase1_foundation:
+    name: "基盤CSS外部化"
+    target_components:
+      - "CSS変数・リセットスタイル"
+      - "フォント設定・基本レイアウト"
+      - "カラーテーマ・タイポグラフィ"
+    estimated_size: "8000-12000 bytes"
+    priority: "highest"
+    
+  phase2_layout:
+    name: "レイアウトCSS外部化"
+    target_components:
+      - "ヘッダー・ナビゲーション"
+      - "ハンバーガーメニュー・ロゴ配置"
+      - "BASEメニュー・レスポンシブ"
+    estimated_size: "15000-20000 bytes"
+    priority: "high"
+    
+  phase3_components:
+    name: "コンポーネントCSS外部化"
+    target_components:
+      - "商品グリッド・カード"
+      - "商品画像・価格表示"
+      - "モーダル・フォーム"
+    estimated_size: "25000-30000 bytes"
+    priority: "high"
+    
+  phase4_advanced:
+    name: "高度機能CSS外部化"
+    target_components:
+      - "アニメーション・トランジション"
+      - "スクロール効果・インタラクション"
+      - "カルーセル・ギャラリー"
+    estimated_size: "20000-25000 bytes"
+    priority: "medium"
+    
+  phase5_responsive:
+    name: "レスポンシブCSS外部化"
+    target_components:
+      - "モバイル専用スタイル"
+      - "メディアクエリ・ブレークポイント"
+      - "デバイス別最適化"
+    estimated_size: "15000-20000 bytes"
+    priority: "medium"
+
+build_system:
+  tools:
+    - "Node.js + PostCSS"
+    - "cssnano (minification)"
+    - "autoprefixer"
+  output_format:
+    individual_files: "個別CSSライブラリ"
+    bundled_files: "統合CSSバンドル"
+    naming_convention: "holy-label-[component].min.css"
+
+cdn_distribution:
+  platform: "jsDelivr"
+  base_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/"
+  versioning: "GitHub releases"
+  cache_strategy: "automatic CDN cache"
+
+base_template_integration:
+  approach: "段階的外部リンク追加"
+  fallback_strategy: "CDN利用のみ（BASEテーマ仕様準拠）"
+  loading_optimization: "preload hints"
+  critical_css: "最小限インライン維持"
+
+compatibility:
+  base_requirements:
+    - "単一HTMLファイル制約対応"
+    - "外部ファイル参照不可"
+    - "CDNのみ利用可能"
+  browser_support:
+    - "Modern browsers (ES6+)"
+    - "Mobile responsive"
+    - "Progressive enhancement"
+
+performance_targets:
+  css_size_reduction: "95%+"
+  loading_performance: "LCP改善"
+  rendering_optimization: "CLS最小化"
+  
+implementation_phases:
+  week1: "Foundation CSS外部化"
+  week2: "Layout CSS外部化"
+  week3: "Components CSS外部化"
+  week4: "Advanced + Responsive CSS外部化"
+  week5: "最適化・統合テスト"
+
+success_metrics:
+  primary: "HTMLファイル15,000バイト以内達成"
+  secondary: "CSS読み込み速度向上"
+  tertiary: "保守性・拡張性向上" 
