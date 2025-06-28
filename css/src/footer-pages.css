@@ -1,0 +1,296 @@
+/* HOLY LABEL Footer & Pages CSS Library */
+
+/* フッター */
+.footer {
+    border-top: 1px solid var(--border-color);
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.footer-links a {
+    font-size: var(--font-xs);
+    letter-spacing: 1px;
+    color: var(--muted-text);
+    text-transform: uppercase;
+    font-weight: var(--weight-light);
+    transition: color var(--transition-fast);
+    white-space: nowrap;
+}
+
+.footer-links a:hover {
+    color: var(--primary-text);
+}
+
+/* LEGAL INFORMATIONを中央基準に */
+.footer-links a:nth-child(2) {
+    position: relative;
+    font-weight: var(--weight-normal);
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: var(--muted-text);
+    letter-spacing: 1px;
+    font-weight: var(--weight-light);
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* ページコンテンツ */
+.page-content {
+    padding: var(--space-xl) var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.page-content h1,
+.page-content h2,
+.page-content h3 {
+    color: var(--primary-text) !important;
+    margin-bottom: var(--space-md);
+}
+
+.page-content p {
+    color: var(--secondary-text) !important;
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+}
+
+/* BASE固有スタイル調整 */
+#privacy,
+#law {
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-text) !important;
+    padding: var(--space-lg) !important;
+}
+
+#privacy h2,
+#law h2 {
+    color: var(--primary-text) !important;
+}
+
+/* BASE英語・外貨対応App CSS */
+/* 全てのBASE言語切り替えUIを非表示 */
+.x_i18nSelectBox,
+div[id*="i18n"],
+div[class*="i18n"],
+select[name*="i18n"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    z-index: -1 !important;
+}
+
+/* ヘッダー内の言語切り替えは例外的に表示を許可 */
+.header__nav-area .x_i18nSelectBox {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    left: auto !important;
+    z-index: auto !important;
+    margin-bottom: var(--space-md);
+}
+
+.header__nav-area .x_i18nSelectBox select {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.header__nav-area .x_i18nSelectBox select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Instagram固定ボタン */
+.instagram-fixed-btn {
+    display: none;
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: var(--z-header);
+    transition: all var(--transition-fast);
+    align-items: center;
+    justify-content: center;
+}
+
+.instagram-fixed-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.7;
+}
+
+.instagram-fixed-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: #666666;
+}
+
+/* ホーム画面でのみ表示 */
+.home-page .instagram-fixed-btn {
+    display: flex;
+}
+
+/* BASEが自動生成するI18N要素への対処 */
+#i18 {
+    position: relative !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+#i18 .x_i18nSelectBox {
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* ハンバーガーボタンの優先度を確保 */
+button.humberger {
+    z-index: var(--z-hamburger) !important;
+    pointer-events: auto !important;
+}
+
+/* ローディング・状態管理 */
+.loading {
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.loaded {
+    opacity: 1;
+}
+
+/* 外貨価格表示の調整（グローバル対応） */
+.price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.currency-selector {
+    font-size: 0.8rem;
+    color: var(--muted-text);
+    margin-bottom: 8px;
+}
+
+/* 多言語対応のための基本設定 */
+[lang="ja"] {
+    font-family: 'Noto Sans', 'Hiragino Sans', 'Yu Gothic UI', Arial, sans-serif;
+}
+
+[lang="en"] {
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 0.5px;
+}
+
+[lang="ko"] {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif;
+}
+
+[lang="zh"] {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+}
+
+/* アクセシビリティ改善 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* フォーカス表示の改善 */
+.product-item:focus,
+.back-to-list-btn:focus,
+.footer-links a:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* スキップリンク */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--accent-color);
+    color: var(--primary-text);
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: var(--weight-bold);
+    z-index: 999999;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* BASE APIとの統合対応 */
+.base-apps-container {
+    margin: var(--space-lg) 0;
+}
+
+.base-apps-item {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+/* 検索結果ページ特殊対応 */
+.search-results {
+    margin-top: var(--space-xl);
+}
+
+.search-results-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-results-count {
+    font-size: var(--font-sm);
+    color: var(--secondary-text);
+    font-weight: var(--weight-light);
+}
+
+.no-results {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--muted-text);
+    font-size: var(--font-md);
+} 

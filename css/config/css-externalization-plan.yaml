@@ -1,6 +1,125 @@
 # HOLY LABEL CSS外部化戦略プラン
 # 目標: 102,439バイトのCSS → 大幅削減によるBASE制限内達成
 
+name: "HOLY LABEL CSS Externalization Project"
+version: "2.0.0"
+description: "BASE テーマ最適化プロジェクト - CSS外部ライブラリシステム"
+
+# Phase 1: 基盤CSS (実装済み)
+phase_1:
+  foundation:
+    target_file: "foundation.css"
+    description: "CSS変数・リセット・フォント設定"
+    estimated_size: "~5.8KB"
+    
+  layout:
+    target_file: "layout.css"  
+    description: "ハンバーガーメニュー・ロゴ・ナビゲーション"
+    estimated_size: "~8.2KB"
+
+# Phase 2: コンポーネントCSS (実装済み)
+phase_2:
+  base_menu:
+    target_file: "base-menu.css"
+    description: "BASEメニュー・ナビゲーション・検索"
+    estimated_size: "~6.5KB"
+    
+  product_components:
+    target_file: "product-components.css"
+    description: "商品グリッド・商品コンポーネント"
+    estimated_size: "~7.2KB"
+    
+  animations:
+    target_file: "animations.css"
+    description: "アニメーション・ヒーローイメージ"
+    estimated_size: "~3.8KB"
+
+# Phase 3: 商品詳細・フォーム・レスポンシブ (新規)
+phase_3:
+  product_detail:
+    target_file: "product-detail.css"
+    description: "商品詳細ページ・購入フォーム・画像ギャラリー"
+    estimated_size: "~12KB"
+    css_sections:
+      - "商品詳細レイアウト"
+      - "商品購入フォーム"
+      - "画像ギャラリー・サムネイル"
+      - "一覧に戻るボタン"
+      
+  forms:
+    target_file: "forms.css"
+    description: "フォーム要素・入力・ボタン・検索"
+    estimated_size: "~8KB"
+    css_sections:
+      - "入力フィールド共通"
+      - "検索フォーム"
+      - "ニュースレターフォーム"
+      - "エラー・成功メッセージ"
+      
+  responsive:
+    target_file: "responsive.css"
+    description: "レスポンシブ・メディアクエリ"
+    estimated_size: "~9KB"
+    css_sections:
+      - "モバイル対応"
+      - "タブレット対応"
+      - "デスクトップ対応"
+      
+  footer_pages:
+    target_file: "footer-pages.css"
+    description: "フッター・ページコンテンツ・BASE要素"
+    estimated_size: "~5KB"
+    css_sections:
+      - "フッター"
+      - "ページコンテンツ"
+      - "BASE固有要素"
+
+# バンドル設定
+bundles:
+  foundation_bundle:
+    files: ["foundation.min.css", "layout.min.css"]
+    output: "foundation-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/foundation-bundle.min.css"
+    
+  components_bundle:
+    files: ["base-menu.min.css", "product-components.min.css", "animations.min.css"]
+    output: "components-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/components-bundle.min.css"
+    
+  # Phase 3 新規バンドル
+  product_detail_bundle:
+    files: ["product-detail.min.css"]
+    output: "product-detail-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/product-detail-bundle.min.css"
+    
+  forms_bundle:
+    files: ["forms.min.css"]
+    output: "forms-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/forms-bundle.min.css"
+    
+  responsive_bundle:
+    files: ["responsive.min.css"]
+    output: "responsive-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/responsive-bundle.min.css"
+    
+  footer_pages_bundle:
+    files: ["footer-pages.min.css"]
+    output: "footer-pages-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/footer-pages-bundle.min.css"
+
+# CDN設定
+cdn:
+  provider: "jsDelivr"
+  base_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/"
+  cache_time: "24h"
+  version: "1.2.0"
+
+# 削減目標
+targets:
+  phase_3_reduction: "34000 bytes"
+  cumulative_target: "67000 bytes"
+  final_goal: "15000 bytes or less"
+
 project:
   name: "HOLY LABEL CSS Externalization"
   target_reduction: "95%以上（約97,000バイト削減）"

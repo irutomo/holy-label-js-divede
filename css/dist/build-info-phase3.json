@@ -1,0 +1,95 @@
+{
+  "timestamp": "2025-06-28T17:40:11.277Z",
+  "phase": "Phase 3",
+  "libraries": [
+    {
+      "name": "foundation",
+      "originalSize": 1635,
+      "optimizedSize": 1380,
+      "reduction": 15.6
+    },
+    {
+      "name": "layout",
+      "originalSize": 3676,
+      "optimizedSize": 2661,
+      "reduction": 27.6
+    },
+    {
+      "name": "base-menu",
+      "originalSize": 4339,
+      "optimizedSize": 3328,
+      "reduction": 23.3
+    },
+    {
+      "name": "product-components",
+      "originalSize": 4146,
+      "optimizedSize": 3190,
+      "reduction": 23.1
+    },
+    {
+      "name": "animations",
+      "originalSize": 2586,
+      "optimizedSize": 1792,
+      "reduction": 30.7
+    },
+    {
+      "name": "product-detail",
+      "originalSize": 8935,
+      "optimizedSize": 6541,
+      "reduction": 26.8
+    },
+    {
+      "name": "forms",
+      "originalSize": 4321,
+      "optimizedSize": 3405,
+      "reduction": 21.2
+    },
+    {
+      "name": "responsive",
+      "originalSize": 5866,
+      "optimizedSize": 3531,
+      "reduction": 39.8
+    },
+    {
+      "name": "footer-pages",
+      "originalSize": 5961,
+      "optimizedSize": 4414,
+      "reduction": 26
+    }
+  ],
+  "bundles": [
+    {
+      "name": "foundation-bundle",
+      "size": 3959,
+      "description": "CSS変数・リセット・ハンバーガーメニュー・ロゴ・ナビゲーション"
+    },
+    {
+      "name": "components-bundle",
+      "size": 8123,
+      "description": "BASEメニュー・商品グリッド・アニメーション"
+    },
+    {
+      "name": "product-detail-bundle",
+      "size": 6530,
+      "description": "商品詳細ページ・購入フォーム・画像ギャラリー"
+    },
+    {
+      "name": "forms-bundle",
+      "size": 3394,
+      "description": "フォーム要素・入力・ボタン・エラーメッセージ"
+    },
+    {
+      "name": "responsive-bundle",
+      "size": 3519,
+      "description": "レスポンシブ・メディアクエリ・モバイル対応"
+    },
+    {
+      "name": "footer-pages-bundle",
+      "size": 4403,
+      "description": "フッター・ページコンテンツ・BASE固有要素"
+    }
+  ],
+  "totalOriginalSize": 41465,
+  "totalOptimizedSize": 30242,
+  "totalReduction": "27.1"
+}
