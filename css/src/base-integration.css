@@ -1,0 +1,431 @@
+/* HOLY LABEL BASE Integration CSS Library */
+
+/* BASE英語・外貨対応App CSS */
+/* 全てのBASE言語切り替えUIを非表示 */
+.x_i18nSelectBox,
+div[id*="i18n"],
+div[class*="i18n"],
+div[id*="I18n"],
+div[class*="I18n"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* カスタム言語切り替えUIのみ表示 */
+.header__nav-area .custom-language-switcher {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.custom-language-switcher a {
+    display: inline-block !important;
+    padding: 0.1rem 1rem !important;
+    border: 1px solid #fff !important;
+    color: var(--primary-text) !important;
+    text-decoration: none !important;
+    font-size: var(--font-sm) !important;
+    font-weight: var(--weight-light) !important;
+    font-family: 'Noto Sans', Arial, sans-serif !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    background-color: transparent !important;
+    margin: 0 !important;
+}
+
+.custom-language-switcher a:first-child {
+    margin-right: 1rem !important;
+}
+
+.custom-language-switcher a:hover {
+    opacity: 0.7 !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.custom-language-switcher a.active {
+    font-weight: var(--weight-normal) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* BASEが生成するすべてのセレクトボックスを強制的にカスタマイズ - より強力なセレクタ */
+.header__nav-area .x_i18nSelectBox select,
+.header__nav-area select[name*="currency"],
+.header__nav-area select[name*="language"],
+.header__nav-area select[name*="i18n"],
+.header__nav-area .gtranslate_wrapper select,
+.header__nav-area div[id*="gt-wrapper"] select,
+.js-nav-area .x_i18nSelectBox select,
+.js-nav-area select[name*="currency"],
+.js-nav-area select[name*="language"],
+.js-nav-area select[name*="i18n"],
+.js-nav-area .gtranslate_wrapper select,
+#sp-gmenu-area .x_i18nSelectBox select,
+#sp-gmenu-area select[name*="currency"],
+#sp-gmenu-area select[name*="language"],
+#sp-gmenu-area select[name*="i18n"],
+#sp-gmenu-area .gtranslate_wrapper select {
+    all: unset !important;
+    display: inline-block !important;
+    background: transparent !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 1.0rem !important;
+    font-weight: 300 !important;
+    font-family: 'Noto Sans', Arial, sans-serif !important;
+    margin-right: 16px !important;
+    margin-bottom: 0 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    text-decoration: underline !important;
+    transition: opacity 0.3s ease !important;
+    width: auto !important;
+    min-width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    line-height: normal !important;
+    vertical-align: baseline !important;
+    box-sizing: border-box !important;
+}
+
+/* ホバー状態 */
+.header__nav-area .x_i18nSelectBox select:hover,
+.header__nav-area select[name*="currency"]:hover,
+.header__nav-area select[name*="language"]:hover,
+.header__nav-area select[name*="i18n"]:hover,
+.header__nav-area .gtranslate_wrapper select:hover,
+.js-nav-area .x_i18nSelectBox select:hover,
+.js-nav-area select[name*="currency"]:hover,
+.js-nav-area select[name*="language"]:hover,
+.js-nav-area select[name*="i18n"]:hover,
+.js-nav-area .gtranslate_wrapper select:hover {
+    opacity: 0.7 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* フォーカス状態 */
+.header__nav-area .x_i18nSelectBox select:focus,
+.header__nav-area select[name*="currency"]:focus,
+.header__nav-area select[name*="language"]:focus,
+.header__nav-area select[name*="i18n"]:focus,
+.header__nav-area .gtranslate_wrapper select:focus,
+.js-nav-area .x_i18nSelectBox select:focus,
+.js-nav-area select[name*="currency"]:focus,
+.js-nav-area select[name*="language"]:focus,
+.js-nav-area select[name*="i18n"]:focus,
+.js-nav-area .gtranslate_wrapper select:focus {
+    outline: none !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* セレクトボックスのドロップダウン矢印を完全に削除 */
+.header__nav-area select::-ms-expand,
+.js-nav-area select::-ms-expand {
+    display: none !important;
+}
+
+/* webkit系ブラウザの矢印を削除 */
+.header__nav-area select,
+.js-nav-area select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: none !important;
+}
+
+/* セレクトボックスのoption要素 */
+.header__nav-area select option,
+.js-nav-area select option {
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-text) !important;
+}
+
+/* BASEのI18N要素がメニュー外に表示されるのを防止 */
+body > .x_i18nSelectBox,
+body > div[id*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+body > div[class*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+body > div[id*="I18n"]:not(.header__nav-area *):not(.js-nav-area *),
+body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* 情報バナー対応 */
+#i18 {
+    position: relative !important;
+    z-index: 1 !important;
+    left: auto !important;
+    top: auto !important;
+    pointer-events: none !important;
+}
+
+#i18 .x_i18nSelectBox {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Instagram固定ボタン（ホーム画面のみ右下表示） */
+.instagram-fixed-btn {
+    display: none;
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: var(--z-header);
+    transition: all var(--transition-fast);
+    align-items: center;
+    justify-content: center;
+}
+
+.instagram-fixed-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.7;
+}
+
+.instagram-fixed-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: #666666;
+}
+
+/* ホーム画面でのみ表示 */
+.home-page .instagram-fixed-btn {
+    display: flex;
+}
+
+/* Instagram固定ボタンのレスポンシブ対応 */
+@media (max-width: 768px) {
+    .instagram-fixed-btn {
+        bottom: var(--space-lg);
+        right: 15px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* === 商品詳細ページ 新UI用CSS START === */
+/* メイン画像のラッパー */
+.main-image-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+/* メイン画像コンテナ */
+.main-image-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* スムーズなスクロール */
+    scrollbar-width: none; /* Firefoxのスクロールバー非表示 */
+}
+
+.main-image-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safariのスクロールバー非表示 */
+}
+
+.main-image-container .main-image-item {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: start;
+}
+
+.main-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 画像カウンター */
+.image-counter {
+    position: absolute;
+    bottom: 15px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 1.2rem !important;
+    padding: 3px 12px !important;
+    border-radius: 15px !important;
+    font-weight: 400;
+    z-index: 10;
+}
+
+/* 左右ナビゲーション矢印 */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-nav:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-nav.prev {
+    left: 10px;
+}
+
+.carousel-nav.next {
+    right: 10px;
+}
+
+.carousel-nav svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ズームアイコン */
+.zoom-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoom-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* サムネイル横スクロールコンテナ */
+.thumbnail-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.thumbnail-scroll-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.thumbnail-scroll-container::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 2px;
+}
+
+/* サムネイルアイテム */
+.thumbnail-item {
+    flex: 0 0 80px; /* サムネイルの基本幅 */
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    opacity: 0.7;
+}
+
+.thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.thumbnail-item.active {
+    border-color: var(--accent-color, #D43883);
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .thumbnail-item {
+        flex: 0 0 70px;
+        width: 70px;
+        height: 90px;
+    }
+}
+/* === 商品詳細ページ 新UI用CSS END === */
+
+/* 外貨表示対応 - 価格表示エリアの拡張 */
+.product-price,
+.product-detail-price,
+.related-product-price {
+    min-width: 120px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.price-sale {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+/* 長い価格テキストへの対応 */
+.current-price,
+.sale-price,
+.original-price {
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-all;
+    line-height: 1.3;
+}
+
+/* モバイルでの外貨表示調整 */
+@media (max-width: 768px) {
+    .header__nav-area .x_i18nSelectBox select {
+        font-size: 0.9rem !important;
+        margin-right: 12px !important;
+    }
+    
+    .product-price,
+    .product-detail-price,
+    .related-product-price {
+        min-width: 100px;
+    }
+    
+    .current-price,
+    .sale-price,
+    .original-price {
+        font-size: 0.8rem;
+    }
+}
+
+/* BASEが自動生成するI18N要素への対処 */
+[id*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+[class*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+[id*="I18n"]:not(.header__nav-area *):not(.js-nav-area *),
+[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* ハンバーガーボタンの優先度を確保 */
+.header__hamburger {
+    z-index: calc(var(--z-navigation) + 1) !important;
+} 

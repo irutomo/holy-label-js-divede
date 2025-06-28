@@ -23,11 +23,16 @@ const cssLibraries = [
     { name: 'product-components', input: 'product-components.css' },
     { name: 'animations', input: 'animations.css' },
     
-    // Phase 3: 商品詳細・フォーム・レスポンシブ (新規)
+    // Phase 3: 商品詳細・フォーム・レスポンシブ (実装済み)
     { name: 'product-detail', input: 'product-detail.css' },
     { name: 'forms', input: 'forms.css' },
     { name: 'responsive', input: 'responsive.css' },
-    { name: 'footer-pages', input: 'footer-pages.css' }
+    { name: 'footer-pages', input: 'footer-pages.css' },
+    
+    // Phase 4: 特殊ページ・UI・統合機能CSS (新規)
+    { name: 'special-pages', input: 'special-pages.css' },
+    { name: 'ui-components', input: 'ui-components.css' },
+    { name: 'base-integration', input: 'base-integration.css' }
 ];
 
 // バンドル設定
@@ -69,6 +74,25 @@ const bundles = [
         name: 'footer-pages-bundle',
         files: ['footer-pages.min.css'],
         description: 'フッター・ページコンテンツ・BASE固有要素'
+    },
+    
+    // Phase 4 バンドル (新規)
+    {
+        name: 'special-pages-bundle',
+        files: ['special-pages.min.css'],
+        description: 'LOOKBOOK・About・Contact・特定商取引法ページ専用スタイル'
+    },
+    
+    {
+        name: 'ui-components-bundle',
+        files: ['ui-components.min.css'],
+        description: 'モーダル・PayID・関連商品・Ajax読み込み・アニメーション'
+    },
+    
+    {
+        name: 'base-integration-bundle',
+        files: ['base-integration.min.css'],
+        description: 'BASE多言語・Instagram連携・外貨表示・アプリ統合'
     }
 ];
 
@@ -200,7 +224,7 @@ async function createBundle(bundle) {
 
 // メインビルド関数
 async function buildAll() {
-    console.log('🚀 HOLY LABEL CSS外部化Phase 3 ビルド開始\n');
+    console.log('🚀 HOLY LABEL CSS外部化Phase 4 ビルド開始\n');
     
     const results = [];
     let totalOriginalSize = 0;
@@ -225,7 +249,7 @@ async function buildAll() {
     }
     
     // 統計情報を表示
-    console.log('\n📊 CSS外部化Phase 3 ビルド統計:');
+    console.log('\n📊 CSS外部化Phase 4 ビルド統計:');
     console.log('=' .repeat(60));
     console.log(`個別ライブラリ数: ${results.length}`);
     console.log(`バンドル数: ${bundleResults.length}`);
@@ -238,12 +262,12 @@ async function buildAll() {
         console.log(`${bundle.name}: ${cdnUrl}`);
     });
     
-    console.log('\n✨ Phase 3 ビルド完了！');
+    console.log('\n✨ Phase 4 ビルド完了！');
     
     // ビルド結果をJSONファイルに保存
     const buildInfo = {
         timestamp: new Date().toISOString(),
-        phase: 'Phase 3',
+        phase: 'Phase 4',
         libraries: results,
         bundles: bundleResults,
         totalOriginalSize,
@@ -251,7 +275,7 @@ async function buildAll() {
         totalReduction: ((totalOriginalSize - totalOptimizedSize) / totalOriginalSize * 100).toFixed(1)
     };
     
-    fs.writeFileSync(path.join(distDir, 'build-info-phase3.json'), JSON.stringify(buildInfo, null, 2));
+    fs.writeFileSync(path.join(distDir, 'build-info-phase4.json'), JSON.stringify(buildInfo, null, 2));
 }
 
 // エラーハンドリング

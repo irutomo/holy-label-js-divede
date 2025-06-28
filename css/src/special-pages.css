@@ -1,0 +1,478 @@
+/* HOLY LABEL Special Pages CSS Library */
+
+/* LOOKBOOKページ（ブログ）専用スタイル */
+/* ブログページのタイトル */
+.page-content h1 {
+    font-size: 2.5rem;
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 4px;
+    margin-bottom: 60px;
+    color: var(--primary-text);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* LOOKBOOKページ全体のフォント統一 */
+.page-content,
+.page-content * {
+    font-family: 'Noto Sans', Arial, sans-serif !important;
+}
+
+/* ブログ記事一覧のスタイル */
+.page-content .blog-posts {
+    display: grid;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.page-content .blog-post {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+}
+
+.page-content .blog-post:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.page-content .blog-post-title {
+    font-size: var(--font-lg);
+    font-weight: var(--weight-normal);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--primary-text);
+}
+
+.page-content .blog-post-date {
+    font-size: var(--font-xs);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    color: var(--muted-text);
+    margin-bottom: 20px;
+    font-weight: var(--weight-light);
+}
+
+.page-content .blog-post-excerpt {
+    font-size: var(--font-xs);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    color: var(--secondary-text);
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.page-content .blog-post-image {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.page-content .blog-post-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform var(--transition-normal);
+}
+
+.page-content .blog-post-image:hover img {
+    transform: scale(1.02);
+}
+
+.page-content .blog-read-more {
+    display: inline-block;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.page-content .blog-read-more:hover {
+    border-bottom-color: var(--accent-color);
+}
+
+/* ソーシャルメディア共有ボタンを非表示 */
+.page-content .social-share,
+.page-content .share-buttons,
+.page-content .sns-share,
+.page-content .blog-share,
+.page-content .social-buttons,
+.page-content [class*="share"],
+.page-content [class*="social"],
+.page-content .tiktok-share-button,
+.page-content .facebook-share-button,
+.page-content .line-share-button,
+.page-content a[href*="tiktok.com"],
+.page-content a[href*="facebook.com/sharer"],
+.page-content a[href*="line.me/R/msg"],
+.page-content iframe[src*="tiktok.com"],
+.page-content iframe[src*="facebook.com"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* BASEデフォルトの共有ボタンクラスも対象 */
+.page-content .base-share-buttons,
+.page-content .base-social-share,
+.page-content .blog-post-share,
+.page-content .entry-share {
+    display: none !important;
+}
+
+/* LOOKBOOKページ（ブログ）モバイル対応 */
+@media (max-width: 768px) {
+    .page-content h1 {
+        font-size: 2rem;
+        font-weight: var(--weight-light);
+        letter-spacing: 2px;
+        margin-bottom: 40px;
+    }
+    
+    .page-content .blog-posts {
+        gap: 30px;
+        margin-top: 30px;
+    }
+    
+    .page-content .blog-post {
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .page-content .blog-post-title {
+        font-size: var(--font-md);
+        margin-bottom: 12px;
+    }
+    
+    .page-content .blog-post-date {
+        font-size: 0.7rem;
+        margin-bottom: 16px;
+    }
+    
+    .page-content .blog-post-excerpt {
+        font-size: 0.7rem;
+        margin-bottom: 16px;
+    }
+}
+
+/* Aboutページ - 画像とSNSリンクのみのシンプルデザイン */
+.about-page {
+    padding: 120px 40px 80px;
+    text-align: center;
+    background-color: var(--primary-bg);
+}
+
+.about-image {
+    margin-bottom: 40px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.about-image img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    transition: transform var(--transition-normal);
+}
+
+.about-image img:hover {
+    transform: scale(1.02);
+}
+
+.about-social {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.about-social .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--primary-text);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.about-social .social-link:hover {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: var(--primary-bg);
+    transform: translateY(-2px);
+}
+
+.about-social .social-link svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Aboutページモバイル対応 */
+@media (max-width: 768px) {
+    .about-page {
+        padding: 80px 20px;
+    }
+    
+    .about-image {
+        margin-bottom: 30px;
+    }
+    
+    .about-image img {
+        max-width: 300px;
+    }
+    
+    .about-social {
+        gap: 16px;
+    }
+    
+    .about-social .social-link {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .about-social .social-link svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* CONTACTページ専用スタイル */
+.contact-form h1,
+.contact-form .page-title {
+    font-size: 2.5rem;
+    font-weight: var(--weight-light);
+    color: var(--primary-text);
+    text-align: center;
+    margin-bottom: 60px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.contact-form h1::after,
+.contact-form .page-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 1px;
+    background-color: var(--accent-color);
+    margin: 24px auto 0;
+}
+
+.contact-form .intro-text,
+.contact-form .description {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.contact-form p,
+.contact-form .description p {
+    font-size: var(--font-sm);
+    color: var(--secondary-text);
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+}
+
+/* CONTACTページ - モバイル対応 */
+@media (max-width: 768px) {
+    .contact-form,
+    .contact-form .page-content {
+        padding: 60px 20px;
+    }
+    
+    .contact-form h1,
+    .contact-form .page-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+        letter-spacing: 2px;
+    }
+    
+    .contact-form h1::after,
+    .contact-form .page-title::after {
+        width: 40px;
+        margin: 16px auto 0;
+    }
+    
+    .contact-form .intro-text,
+    .contact-form .description {
+        margin-bottom: 40px;
+    }
+    
+    .contact-form p,
+    .contact-form .description p {
+        font-size: 0.8rem;
+    }
+}
+
+/* 特定商取引法・プライバシーポリシーページ - モバイル対応 */
+@media (max-width: 768px) {
+    .page-content {
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+    
+    .page-content h1 {
+        font-size: var(--font-lg);
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+    }
+    
+    .page-content h2 {
+        font-size: var(--font-md);
+        margin: 30px 0 16px 0;
+    }
+    
+    .page-content h3 {
+        font-size: var(--font-sm);
+        margin: 24px 0 12px 0;
+    }
+    
+    .page-content p {
+        font-size: 0.7rem;
+        margin-bottom: 16px;
+        line-height: 1.7;
+    }
+    
+    .page-content ul,
+    .page-content ol {
+        font-size: 0.7rem;
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+    
+    .page-content li {
+        margin-bottom: 6px;
+        font-size: 0.7rem;
+    }
+    
+    .page-content table {
+        font-size: 0.65rem;
+        margin: 16px 0;
+    }
+    
+    .page-content table th,
+    .page-content table td {
+        padding: 8px 12px;
+        line-height: 1.5;
+    }
+    
+    .page-content .contact-info {
+        padding: 16px;
+        margin: 16px 0;
+    }
+    
+    /* テーブルの横スクロール対応 */
+    .page-content table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .page-content table thead,
+    .page-content table tbody,
+    .page-content table tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    
+    .page-content table th,
+    .page-content table td {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+}
+
+/* 法的文書の重要事項 */
+.page-content .important-notice {
+    background-color: rgba(212, 56, 131, 0.05);
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.page-content .important-notice p {
+    color: var(--primary-text);
+    margin-bottom: 8px;
+}
+
+.page-content .important-notice:last-child {
+    margin-bottom: 0;
+}
+
+/* 連絡先情報のスタイル */
+.page-content .contact-info {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    margin: 30px 0;
+    border-radius: 8px;
+}
+
+.page-content .contact-info p {
+    margin-bottom: 8px;
+}
+
+.page-content .contact-info strong {
+    color: var(--primary-text);
+}
+
+/* 日本語法的文書の特殊スタイル */
+.page-content .legal-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.page-content .legal-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.page-content .legal-section h2 {
+    color: var(--accent-color);
+    font-weight: var(--weight-normal);
+    margin-bottom: 20px;
+}
+
+.page-content .legal-section h3 {
+    color: var(--primary-text);
+    font-weight: var(--weight-light);
+    margin: 20px 0 12px 0;
+}
+
+/* 更新日時等の情報 */
+.page-content .update-info {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--muted-text);
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 重要事項のハイライト */
+.page-content .highlight {
+    background-color: rgba(212, 56, 131, 0.1);
+    padding: 16px;
+    border-radius: 4px;
+    margin: 16px 0;
+    border-left: 3px solid var(--accent-color);
+}
+
+.page-content .highlight p {
+    color: var(--primary-text);
+    font-weight: var(--weight-normal);
+} 

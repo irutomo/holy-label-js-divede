@@ -74,6 +74,41 @@ phase_3:
       - "ページコンテンツ"
       - "BASE固有要素"
 
+# Phase 4: 特殊ページ・UI・統合機能 (新規)
+phase_4:
+  special_pages:
+    target_file: "special-pages.css"
+    description: "LOOKBOOK・About・Contact・特定商取引法ページ専用スタイル"
+    estimated_size: "~8KB"
+    css_sections:
+      - "LOOKBOOKページ（ブログ）スタイル"
+      - "Aboutページスタイル"
+      - "Contactページスタイル" 
+      - "特定商取引法・プライバシーポリシーページ"
+      - "ページ別モバイル対応"
+      
+  ui_components:
+    target_file: "ui-components.css"
+    description: "モーダル・PayID・関連商品・Ajax読み込み・アニメーション"
+    estimated_size: "~7KB"
+    css_sections:
+      - "モーダル表示機能"
+      - "PayIDウィジェット"
+      - "関連商品表示"
+      - "Ajax読み込みボタン"
+      - "キーフレームアニメーション"
+      
+  base_integration:
+    target_file: "base-integration.css"
+    description: "BASE多言語・Instagram連携・外貨表示・アプリ統合"
+    estimated_size: "~8KB"
+    css_sections:
+      - "BASE多言語切り替えUI（I18n）"
+      - "Instagram固定ボタン"
+      - "外貨表示対応"
+      - "BASEアプリ統合機能"
+      - "情報バナー対応"
+
 # バンドル設定
 bundles:
   foundation_bundle:
@@ -106,6 +141,22 @@ bundles:
     files: ["footer-pages.min.css"]
     output: "footer-pages-bundle.min.css"
     cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/footer-pages-bundle.min.css"
+    
+  # Phase 4 新規バンドル
+  special_pages_bundle:
+    files: ["special-pages.min.css"]
+    output: "special-pages-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/special-pages-bundle.min.css"
+    
+  ui_components_bundle:
+    files: ["ui-components.min.css"]
+    output: "ui-components-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/ui-components-bundle.min.css"
+    
+  base_integration_bundle:
+    files: ["base-integration.min.css"]
+    output: "base-integration-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/base-integration-bundle.min.css"
 
 # CDN設定
 cdn:
