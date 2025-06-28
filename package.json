@@ -1,0 +1,37 @@
+{
+  "name": "holy-label-js-libs",
+  "version": "1.0.0",
+  "description": "HOLY LABEL JavaScript libraries for BASE theme optimization",
+  "main": "js/dist/core.min.js",
+  "scripts": {
+    "build": "node js/build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irutomo/holy-label-js-divede.git"
+  },
+  "keywords": [
+    "javascript",
+    "base-theme",
+    "cdn",
+    "optimization",
+    "holy-label"
+  ],
+  "author": "HOLY LABEL",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/irutomo/holy-label-js-divede/issues"
+  },
+  "homepage": "https://github.com/irutomo/holy-label-js-divede#readme",
+  "devDependencies": {
+    "terser": "^5.19.2"
+  },
+  "files": [
+    "js/dist/",
+    "js/src/",
+    "README.md"
+  ],
+  "jsdelivr": "js/dist/core.min.js",
+  "unpkg": "js/dist/core.min.js"
+}
