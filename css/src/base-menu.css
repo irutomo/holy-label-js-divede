@@ -1,0 +1,203 @@
+/* HOLY LABEL Base Menu CSS Library */
+
+/* BASEメニュー内のカートアイコンスタイル調整 */
+.base-menu-container .bc-cart {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.base-menu-container .bc-cart svg,
+.base-menu-container .bc-cart path {
+    fill: #666666 !important;
+    stroke: #666666 !important;
+}
+
+.base-menu-container .bc-cart:hover svg,
+.base-menu-container .bc-cart:hover path {
+    fill: var(--primary-text) !important;
+    stroke: var(--primary-text) !important;
+}
+
+/* BASEロゴの非表示（カートのみ表示） */
+.base-menu-container .bc-logo {
+    display: none !important;
+}
+
+/* カート数量バッジのスタイル調整 */
+.base-menu-container .bc-cart-count {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+    font-size: 10px !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+    border-radius: 8px !important;
+    padding: 0 4px !important;
+}
+
+/* BASEメニュー全体のスタイル調整 */
+.base-menu-container > div {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* その他のBASE要素の非表示・調整 */
+.base-menu-container .bc-powered-by {
+    display: none !important;
+}
+
+.base-menu-container .bc-menu {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* カートアイコンのサイズ調整 */
+.base-menu-container .bc-cart svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+@media (max-width: 768px) {
+    .base-menu-container .bc-cart svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+.body-fixed:after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-backdrop);
+    z-index: var(--z-menu-open);
+}
+
+/* ナビゲーションメニューリスト */
+.global-navigation__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.global-navigation__list > li {
+    margin-bottom: var(--space-md);
+}
+
+.global-navigation__list > li > a {
+    display: block;
+    color: var(--primary-text);
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    position: relative;
+    padding: var(--space-sm) 0;
+}
+
+.global-navigation__list > li > a:hover {
+    color: var(--accent-color);
+}
+
+/* 展開ボタン */
+a.expand {
+    position: relative;
+    padding-right: var(--space-lg);
+}
+
+a.expand:after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-color);
+    font-size: var(--font-lg);
+    font-weight: var(--weight-light);
+    line-height: 1;
+    transition: all var(--transition-fast);
+}
+
+a.expand.open:after {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+ul.ex-list {
+    padding-left: 2rem;
+    margin-top: 1rem;
+    list-style: none;
+}
+
+ul.ex-list > li {
+    margin-bottom: 1rem;
+}
+
+ul.ex-list > li > a {
+    color: var(--secondary-text);
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+    letter-spacing: 0;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+ul.ex-list > li > a:hover {
+    opacity: 0.7;
+}
+
+/* 中カテゴリのスタイル */
+ul.ex-list > li.sub-category {
+    padding-left: var(--space-sm);
+}
+
+ul.ex-list > li.sub-category > a {
+    color: var(--muted-text);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+}
+
+ul.ex-list > li.sub-category > a:hover {
+    color: var(--secondary-text);
+}
+
+/* 検索フォーム */
+.search-form {
+    display: flex;
+    align-items: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #333;
+}
+
+.search-form input[type="search"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--primary-text);
+    padding: var(--space-sm) 0;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+}
+
+.search-form input[type="search"]:focus {
+    outline: none;
+    border-bottom-color: var(--primary-text);
+}
+
+.search-form input[type="submit"] {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    font-size: var(--font-sm);
+    cursor: pointer;
+    padding: var(--space-sm);
+    margin-left: var(--space-sm);
+    font-weight: var(--weight-light);
+} 

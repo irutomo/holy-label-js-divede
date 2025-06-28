@@ -22,6 +22,7 @@ async function initializePostCSS() {
 
 // CSSライブラリ定義
 const cssLibraries = {
+    // Phase 1: 基盤CSS
     foundation: {
         name: 'foundation',
         description: 'CSS変数・リセット・フォント設定',
@@ -33,6 +34,26 @@ const cssLibraries = {
         description: 'ハンバーガーメニュー・ロゴ・ナビゲーション',
         files: ['src/layout.css'],
         phase: 1
+    },
+    
+    // Phase 2: 機能CSS
+    baseMenu: {
+        name: 'base-menu',
+        description: 'BASEメニュー・ナビゲーション・検索',
+        files: ['src/base-menu.css'],
+        phase: 2
+    },
+    productComponents: {
+        name: 'product-components',
+        description: '商品グリッド・商品コンポーネント',
+        files: ['src/product-components.css'],
+        phase: 2
+    },
+    animations: {
+        name: 'animations',
+        description: 'アニメーション・ヒーローイメージ',
+        files: ['src/animations.css'],
+        phase: 2
     }
 };
 
@@ -43,6 +64,12 @@ const bundles = {
         description: 'Phase 1: 基盤CSS統合バンドル',
         libraries: ['foundation', 'layout'],
         phase: 1
+    },
+    'components-bundle': {
+        name: 'components-bundle', 
+        description: 'Phase 2: コンポーネントCSS統合バンドル',
+        libraries: ['baseMenu', 'productComponents', 'animations'],
+        phase: 2
     }
 };
 

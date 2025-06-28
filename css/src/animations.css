@@ -1,0 +1,144 @@
+/* HOLY LABEL Animations CSS Library */
+
+/* キーフレームアニメーション */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* メインビジュアル・ヒーロー画像 */
+.main-visual {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-bg);
+}
+
+.visual-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* 写真 */
+.hero-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+}
+
+.hero-image.fade-in {
+    opacity: 1;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* レスポンシブ画像制御 */
+.hero-image-desktop {
+    display: block;
+}
+
+.hero-image-mobile {
+    display: none;
+}
+
+/* プレースホルダー */
+.placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-text);
+    font-size: var(--font-xs);
+    letter-spacing: 2px;
+}
+
+/* テキストオーバーレイ */
+.overlay-text {
+    position: absolute;
+    bottom: 60px;
+    left: 60px;
+    font-size: 56px;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    font-style: italic;
+    opacity: 0.8;
+    letter-spacing: 2px;
+    font-weight: 100;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Ajax読み込みボタン・その他UI要素 */
+.load-more-btn {
+    display: block;
+    margin: var(--space-lg) auto;
+    padding: 15px var(--space-lg);
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: var(--weight-light);
+}
+
+.load-more-btn:hover {
+    border-color: var(--primary-text);
+    background-color: var(--primary-text);
+    color: var(--primary-bg);
+}
+
+.category-nav {
+    display: none; /* サイドメニューに統合するため非表示 */
+}
+
+.appsItemLabelTag {
+    z-index: var(--z-banner);
+} 
