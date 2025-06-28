@@ -3441,6 +3441,9 @@
     <!-- HOLY LABEL 外部ライブラリ（高度機能） -->
     <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
     
+    <!-- HOLY LABEL 外部ライブラリ（最終システム） -->
+    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
+    
     <script>
         // HOLY LABEL 最小限初期化（外部ライブラリ連携）
         window.HL={
@@ -3455,6 +3458,9 @@
                 this.gallery=window.HolyLabelProductGallery||window.ProductImageGallery;
                 this.loadMore=window.HolyLabelLoadMoreManager||window.LoadMoreManager;
                 this.logo=window.HolyLabelLogoManager||window.LogoManager;
+                this.init=window.HolyLabelInitializationManager||window.InitializationManager;
+                this.lang=window.HolyLabelLanguageManager||window.LanguageManager;
+                this.scroll=window.HolyLabelScrollManager||window.ScrollManager;
                 
                 if(this.anim)this.anim.init();
                 if(this.animMgr)this.animMgr.init();
@@ -3463,6 +3469,8 @@
                 if(this.gallery)this.gallery.init();
                 if(this.loadMore)this.loadMore.init();
                 if(this.logo)this.logo.initAll();
+                if(this.lang)this.lang.init();
+                if(this.scroll)this.scroll.init();
                 
                 // 後方互換性のため
                 window.DOMUtils=this.dom;
@@ -3473,9 +3481,13 @@
                 window.ProductImageGallery=this.gallery;
                 window.LoadMoreManager=this.loadMore;
                 window.LogoManager=this.logo;
+                window.InitializationManager=this.init;
+                window.LanguageManager=this.lang;
+                window.ScrollManager=this.scroll;
                 window.initRestockNotificationModal=this.modal?this.modal.initRestockNotificationModal:function(){};
                 window.initCategoryDisplay=this.logo?this.logo.initCategoryDisplay:function(){};
                 window.controlInstagramButton=this.logo?this.logo.controlInstagramButton:function(){};
+                window.switchLanguage=this.lang?this.lang.switchLanguage:function(){};
             },
             ready:function(fn){
                 if(document.readyState!=='loading')fn();
@@ -3554,149 +3566,10 @@
                 setTimeout(() => AnimationManager.animateOnScroll(), 100);
             }
         };
-        /*
-           JavaScript - 初期化処理
- */
-        document.addEventListener('DOMContentLoaded', function() {
-            // メイン初期化
-            DOMUtils.body().classList.add('loaded');
-            // 基本機能初期化
-            NavigationManager.close();
-            LogoManager.updatePosition();
-            NavigationManager.init();
-            initCategoryDisplay();
-            initRestockNotificationModal();
-            // アニメーション初期化
-            AnimationManager.initRelatedProducts();
-            AnimationManager.initHomepageAnimation();
-            // 機能初期化
-            LoadMoreManager.init();
-            ProductImageGallery.init(); // <- ここも変更されています
-            controlInstagramButton();
-            // DOM変更監視
-            if (window.MutationObserver) {
-                const observer = new MutationObserver(function(mutations) {
-                    let shouldRecheck = false;
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'childList') shouldRecheck = true;
-                    });
-                    if (shouldRecheck) setTimeout(() => LogoManager.updatePosition(), 100);
-                });
-                observer.observe(document.body, { childList: true, subtree: true });
-            }
-            // スクロールアニメーション初期化
-            setTimeout(() => AnimationManager.animateOnScroll(), 500);
-            
-            // カスタム言語切り替えUIの初期化
-            initCustomLanguageSwitcher();
-        });
+        // 初期化処理 - 最終統合ライブラリに移行済み（自動初期化）
         
-        /*
-           カスタム言語切り替えUI関数
- */
-        function initCustomLanguageSwitcher() {
-            // BASEが生成するI18N要素を検索して非表示にする
-            setTimeout(() => {
-                hideAllBaseI18nElements();
-                setupLanguageDetection();
-            }, 1000);
-        }
-        
-        function switchLanguage(lang) {
-            // BASEの隠れた言語切り替え要素を探して操作
-            const baseSelects = document.querySelectorAll('select[name*="language"], select[name*="i18n"]');
-            let switched = false;
-            
-            baseSelects.forEach(select => {
-                if (select.style.display === 'none' || !select.offsetParent) {
-                    const options = select.querySelectorAll('option');
-                    options.forEach(option => {
-                        if ((lang === 'ja' && (option.value.includes('ja') || option.value.includes('JP'))) ||
-                            (lang === 'en' && (option.value.includes('en') || option.value.includes('EN')))) {
-                            select.value = option.value;
-                            const event = new Event('change', { bubbles: true });
-                            select.dispatchEvent(event);
-                            switched = true;
-                        }
-                    });
-                }
-            });
-            
-            // URLベースの言語切り替えも試行
-            if (!switched) {
-                const currentUrl = window.location.href;
-                if (lang === 'en' && !currentUrl.includes('lang=en')) {
-                    const separator = currentUrl.includes('?') ? '&' : '?';
-                    window.location.href = currentUrl + separator + 'lang=en';
-                } else if (lang === 'ja' && currentUrl.includes('lang=en')) {
-                    window.location.href = currentUrl.replace(/[?&]lang=en/, '');
-                }
-            }
-            
-            // UI状態を更新
-            updateLanguageUIState(lang);
-        }
-        
-        function updateLanguageUIState(activeLang) {
-            const jaLink = document.getElementById('lang-ja');
-            const enLink = document.getElementById('lang-en');
-            
-            if (jaLink && enLink) {
-                jaLink.classList.toggle('active', activeLang === 'ja');
-                enLink.classList.toggle('active', activeLang === 'en');
-            }
-        }
-        
-        function setupLanguageDetection() {
-            // 現在の言語を検出
-            const currentLang = detectCurrentLanguage();
-            updateLanguageUIState(currentLang);
-        }
-        
-        function detectCurrentLanguage() {
-            // URLから言語を検出
-            if (window.location.href.includes('lang=en')) {
-                return 'en';
-            }
-            
-            // ページコンテンツから検出
-            const privacyLink = document.querySelector('a[href*="privacy"]');
-            if (privacyLink && privacyLink.textContent.includes('Privacy')) {
-                return 'en';
-            }
-            
-            return 'ja'; // デフォルトは日本語
-        }
-        
-        function hideAllBaseI18nElements() {
-            // BASEが生成するI18N要素を非表示
-            const i18nSelectors = [
-                '.x_i18nSelectBox',
-                '[id*="i18n"]',
-                '[class*="i18n"]',
-                '[id*="I18n"]',
-                '[class*="I18n"]'
-            ];
-            
-            i18nSelectors.forEach(selector => {
-                const elements = document.querySelectorAll(selector);
-                elements.forEach(element => {
-                    if (!element.closest('.custom-language-switcher')) {
-                        element.style.display = 'none';
-                        element.style.visibility = 'hidden';
-                    }
-                });
-            });
-        }
-        // スクロールイベント（デバウンス処理付き）
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            if (scrollTimeout) return;
-            scrollTimeout = setTimeout(() => {
-                AnimationManager.animateOnScroll();
-                scrollTimeout = null;
-            }, 16); // 60fps制限
-        });
+        // 言語切り替えシステム - LanguageManagerライブラリに移行済み
+        // スクロール処理 - ScrollManagerライブラリに移行済み（最適化済み）
     </script>
 </body>
 </html>

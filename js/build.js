@@ -57,6 +57,21 @@ const files = [
         input: 'logo-manager.js',
         output: 'logo-manager.min.js',
         banner: '/*! HOLY LABEL Logo Manager v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'initialization-manager.js',
+        output: 'initialization-manager.min.js',
+        banner: '/*! HOLY LABEL Initialization Manager v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'language-manager.js',
+        output: 'language-manager.min.js',
+        banner: '/*! HOLY LABEL Language Manager v1.0.0 | (c) 2024 | MIT License */'
+    },
+    {
+        input: 'scroll-manager.js',
+        output: 'scroll-manager.min.js',
+        banner: '/*! HOLY LABEL Scroll Manager v1.0.0 | (c) 2024 | MIT License */'
     }
 ];
 
@@ -68,6 +83,9 @@ const extendedFiles = ['animation-manager.js', 'navigation-manager.js', 'modal-u
 
 // 高度機能ライブラリ統合版（プレミアム機能）
 const advancedFiles = ['product-gallery.js', 'loadmore-manager.js', 'logo-manager.js'];
+
+// 最終統合ライブラリ（システム機能）
+const finalFiles = ['initialization-manager.js', 'language-manager.js', 'scroll-manager.js'];
 
 async function buildSingle(file) {
     try {
@@ -225,6 +243,44 @@ async function buildAdvanced() {
     }
 }
 
+async function buildFinal() {
+    try {
+        console.log('Building final system bundle...');
+        
+        let combinedCode = '';
+        finalFiles.forEach(filename => {
+            const filePath = path.join(srcDir, filename);
+            combinedCode += fs.readFileSync(filePath, 'utf8') + '\n\n';
+        });
+        
+        const result = await minify(combinedCode, {
+            compress: {
+                drop_console: false,
+                drop_debugger: true,
+                pure_funcs: ['console.log']
+            },
+            mangle: {
+                reserved: ['HolyLabelInitializationManager', 'HolyLabelLanguageManager', 'HolyLabelScrollManager', 'InitializationManager', 'LanguageManager', 'ScrollManager', 'switchLanguage', 'initCustomLanguageSwitcher']
+            }
+        });
+        
+        const banner = '/*! HOLY LABEL Final System Bundle v1.0.0 | (c) 2024 | MIT License */';
+        const minified = banner + '\n' + result.code;
+        
+        const outputPath = path.join(distDir, 'final.min.js');
+        fs.writeFileSync(outputPath, minified);
+        
+        const originalSize = Buffer.byteLength(combinedCode, 'utf8');
+        const minifiedSize = Buffer.byteLength(minified, 'utf8');
+        const savings = ((originalSize - minifiedSize) / originalSize * 100).toFixed(1);
+        
+        console.log(`✓ final.min.js created (${minifiedSize} bytes, ${savings}% savings)`);
+        
+    } catch (error) {
+        console.error('✗ Error building final bundle:', error);
+    }
+}
+
 async function build() {
     console.log('🚀 Starting HOLY LABEL JS build process...\n');
     
@@ -248,6 +304,11 @@ async function build() {
     // 高度機能バンドルビルド
     await buildAdvanced();
     
+    console.log('');
+    
+    // 最終統合バンドルビルド
+    await buildFinal();
+    
     console.log('\n✨ Build completed!');
     console.log('\nGenerated files:');
     console.log('【基盤ライブラリ】');
@@ -265,10 +326,16 @@ async function build() {
     console.log('- js/dist/loadmore-manager.min.js');
     console.log('- js/dist/logo-manager.min.js');
     console.log('- js/dist/advanced.min.js (高度機能統合版)');
+    console.log('\n【最終統合ライブラリ】');
+    console.log('- js/dist/initialization-manager.min.js');
+    console.log('- js/dist/language-manager.min.js');
+    console.log('- js/dist/scroll-manager.min.js');
+    console.log('- js/dist/final.min.js (最終統合版)');
     console.log('\n🔗 主要CDN URLs:');
     console.log('📦 基盤: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js');
     console.log('⚡ 拡張: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js');
     console.log('🚀 高度: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js');
+    console.log('🏁 最終: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js');
 }
 
 build(); 
