@@ -1,7 +1,7 @@
 /* HOLY LABEL Product Detail CSS Library */
 
-/* 商品詳細ページ - デスクトップ用左右分割レイアウト */
-.product-detail {
+/* 商品詳細ページ - デスクトップ用左右分割レイアウト（強化版） */
+body .product-detail.desktop-layout {
     display: flex !important;
     flex-direction: row !important;
     width: 100% !important;
@@ -11,12 +11,35 @@
     max-width: none !important;
 }
 
-.product-detail-image {
-    flex: 1;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-    background-color: #000;
+/* デスクトップレイアウト時のデフォルト設定（1024px以上で自動適用） */
+@media (min-width: 1024px) {
+    .product-detail {
+        display: flex !important;
+        flex-direction: row !important;
+        width: 100% !important;
+        min-height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+    }
+}
+
+body .product-detail.desktop-layout .product-detail-image {
+    flex: 1 !important;
+    height: 100vh !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background-color: #000 !important;
+}
+
+@media (min-width: 1024px) {
+    .product-detail-image {
+        flex: 1 !important;
+        height: 100vh !important;
+        position: relative !important;
+        overflow: hidden !important;
+        background-color: #000 !important;
+    }
 }
 
 .main-image-container img {
@@ -29,14 +52,26 @@
     transform: scale(1.02);
 }
 
-.product-detail-info {
-    flex: 1;
-    max-width: 550px;
-    height: 100vh;
-    overflow-y: auto;
-    padding: 50px 40px;
-    border-left: 1px solid var(--border-color);
-    box-sizing: border-box;
+body .product-detail.desktop-layout .product-detail-info {
+    flex: 1 !important;
+    max-width: 550px !important;
+    height: 100vh !important;
+    overflow-y: auto !important;
+    padding: 50px 40px !important;
+    border-left: 1px solid var(--border-color) !important;
+    box-sizing: border-box !important;
+}
+
+@media (min-width: 1024px) {
+    .product-detail-info {
+        flex: 1 !important;
+        max-width: 550px !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
+        padding: 50px 40px !important;
+        border-left: 1px solid var(--border-color) !important;
+        box-sizing: border-box !important;
+    }
 }
 
 .product-detail-title {
@@ -219,21 +254,41 @@
 }
 
 /* 新UI用CSS - メイン画像のラッパー */
-.main-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    margin-bottom: 0;
+body .product-detail.desktop-layout .main-image-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin-bottom: 0 !important;
+}
+
+@media (min-width: 1024px) {
+    .main-image-wrapper {
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin-bottom: 0 !important;
+    }
 }
 
 /* メイン画像コンテナ */
-.main-image-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    height: 100%;
+body .product-detail.desktop-layout .main-image-container {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    height: 100% !important;
+}
+
+@media (min-width: 1024px) {
+    .main-image-container {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        height: 100% !important;
+    }
 }
 
 .main-image-container::-webkit-scrollbar {
@@ -247,11 +302,20 @@
     height: 100%;
 }
 
-.main-image-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
+body .product-detail.desktop-layout .main-image-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+}
+
+@media (min-width: 1024px) {
+    .main-image-item img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        display: block !important;
+    }
 }
 
 /* カルーセルナビゲーション */

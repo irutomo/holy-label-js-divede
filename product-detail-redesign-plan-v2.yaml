@@ -1,0 +1,261 @@
+# HOLY LABEL 商品詳細ページ デスクトップレイアウト改修計画 v2.0
+# ========================================================
+
+project_name: "HOLY LABEL 商品詳細ページ デスクトップレイアウト改修 v2.0"
+version: "2.0.0"
+target_file: "holy-label-js-divede.html"
+reference_file: "商品詳細ページdesktop版.html"
+
+## 問題分析
+root_cause_analysis:
+  identified_issue: "CSS優先度競合問題"
+  detailed_problems:
+    - "HTMLファイル内<style>タグに古い商品詳細CSSが残存"
+    - "外部CSSライブラリより内部CSSの優先度が高い"
+    - "商品詳細ページ(.product-detail)の競合スタイルが複数存在"
+    - "メディアクエリの条件が競合している"
+  
+  evidence:
+    - "holy-label-js-divede.html内に古い.product-detailスタイルが残存"
+    - "外部product-detail-bundle.min.cssが適用されていない"
+    - "デスクトップで左右分割レイアウトが表示されない"
+
+## 改修戦略 v2.0
+strategy:
+  approach: "CSS競合解決 + 強制適用アプローチ"
+  priority: "HTMLファイル内CSS削除 > 外部CSS強化 > 優先度確保"
+  
+core_solutions:
+  solution_1:
+    name: "HTMLファイル内商品詳細CSS完全削除"
+    action: "holy-label-js-divede.html内の古い.product-detail関連CSSを削除"
+    target_selectors:
+      - ".product-detail { display: flex !important; flex-direction: column !important; }"
+      - ".product-detail-image { position: relative; }"
+      - ".product-detail-info { padding: 40px 0; }"
+      - "@media (max-width: 768px) の商品詳細関連CSS"
+    
+  solution_2:
+    name: "外部CSS優先度強化"
+    action: "product-detail.cssに強力な!important指定追加"
+    modifications:
+      - "すべてのデスクトップレイアウトCSS: !important追加"
+      - "セレクタ特異性向上: body .product-detail等"
+      - "CSS読み込み順序の最適化"
+  
+  solution_3:
+    name: "デスクトップ専用クラス作成"
+    action: "確実にデスクトップレイアウトが適用される仕組み"
+    implementation:
+      - "JavaScript: 画面サイズ検出でクラス追加"
+      - "CSS: デスクトップ専用セレクタ作成"
+      - "モバイル/デスクトップ完全分離"
+
+## 技術仕様 v2.0
+technical_specifications:
+  css_priority_strategy:
+    level_1: "body .product-detail.desktop-layout"
+    level_2: "すべてのプロパティに!important追加"
+    level_3: "外部CSSライブラリの読み込み順序最適化"
+    
+  desktop_layout_css:
+    container: "body .product-detail.desktop-layout"
+    properties:
+      - "display: flex !important"
+      - "flex-direction: row !important"
+      - "min-height: 100vh !important"
+      - "width: 100% !important"
+      - "margin: 0 !important"
+      - "padding: 0 !important"
+      - "max-width: none !important"
+      
+  image_section_css:
+    selector: "body .product-detail.desktop-layout .product-detail-image"
+    properties:
+      - "flex: 1 !important"
+      - "height: 100vh !important"
+      - "background-color: #000 !important"
+      - "overflow: hidden !important"
+      
+  info_section_css:
+    selector: "body .product-detail.desktop-layout .product-detail-info"
+    properties:
+      - "flex: 1 !important"
+      - "max-width: 550px !important"
+      - "height: 100vh !important"
+      - "overflow-y: auto !important"
+      - "padding: 50px 40px !important"
+      - "border-left: 1px solid var(--border-color) !important"
+
+  mobile_preservation:
+    media_query: "@media (max-width: 1023px)"
+    action: "desktop-layoutクラスを無効化"
+    css: ".desktop-layout { display: block !important; flex-direction: column !important; }"
+
+## 実装手順 v2.0
+implementation_steps:
+  step_1:
+    name: "HTMLファイル内CSS削除"
+    action: "競合するCSS定義を完全削除"
+    target_areas:
+      - "商品詳細ページ関連の全CSS"
+      - "古い.product-detailスタイル"
+      - "競合するメディアクエリ"
+    estimated_reduction: "約2000バイト削減"
+    
+  step_2:
+    name: "外部CSS強化"
+    action: "product-detail.cssの優先度大幅強化"
+    modifications:
+      - "セレクタ特異性向上"
+      - "!important指定追加"
+      - "デスクトップ専用セレクタ作成"
+      
+  step_3:
+    name: "JavaScript画面判定実装"
+    action: "デスクトップ判定でクラス付与"
+    code_implementation: |
+      window.addEventListener('resize', function() {
+        const productDetail = document.querySelector('.product-detail');
+        if (productDetail) {
+          if (window.innerWidth >= 1024) {
+            productDetail.classList.add('desktop-layout');
+          } else {
+            productDetail.classList.remove('desktop-layout');
+          }
+        }
+      });
+      
+  step_4:
+    name: "CSS外部ライブラリ再ビルド"
+    action: "強化されたCSSでライブラリ再生成"
+    build_targets:
+      - "product-detail.min.css"
+      - "product-detail-bundle.min.css"
+      
+  step_5:
+    name: "CDN配信更新"
+    action: "GitHubプッシュでCDN更新"
+
+## 削除対象CSS（HTMLファイル内）
+html_css_removal_targets:
+  primary_selectors:
+    - ".product-detail"
+    - ".product-detail-image"
+    - ".product-detail-info"
+    - ".product-detail-title"
+    - ".product-detail-price"
+    - ".product-description"
+    - ".main-image-container"
+    - ".carousel-nav"
+    - ".thumbnail-scroll-container"
+    
+  media_queries:
+    - "@media (max-width: 768px) 内の商品詳細CSS"
+    - "商品詳細ページモバイル対応CSS"
+    
+  estimated_lines: "約150-200行のCSS削除"
+
+## CSS優先度確保戦略
+css_priority_enforcement:
+  method_1:
+    name: "セレクタ特異性向上"
+    before: ".product-detail"
+    after: "body .product-detail.desktop-layout"
+    specificity_score: "0,0,2,1 → 0,0,2,2"
+    
+  method_2:
+    name: "!important指定"
+    target: "全デスクトップレイアウトプロパティ"
+    scope: "display, flex-direction, width, height等"
+    
+  method_3:
+    name: "JavaScript強制適用"
+    action: "DOM操作でスタイル直接適用"
+    fallback: "CSS失敗時の代替手段"
+
+## JavaScript実装詳細
+javascript_implementation:
+  desktop_detection:
+    trigger: "DOMContentLoaded + window.resize"
+    condition: "window.innerWidth >= 1024"
+    action: "productDetail.classList.add('desktop-layout')"
+    
+  mobile_detection:
+    condition: "window.innerWidth < 1024"  
+    action: "productDetail.classList.remove('desktop-layout')"
+    
+  gallery_behavior:
+    desktop: "矢印ナビゲーション有効, スワイプ無効"
+    mobile: "矢印無効, スワイプ有効, カウンター表示"
+
+## 品質保証
+quality_assurance:
+  css_validation:
+    - "外部CSSライブラリの正常ビルド確認"
+    - "HTMLファイル内競合CSS完全削除確認"
+    - "デスクトップレイアウト適用確認"
+    
+  responsive_testing:
+    - "1024px以上: 左右分割レイアウト"
+    - "1023px以下: 従来の上下レイアウト"
+    - "リサイズ時の動的切り替え"
+    
+  cross_browser_testing:
+    - "Chrome, Firefox, Safari, Edge"
+    - "iOS Safari, Chrome Mobile"
+
+## 成功判定基準
+success_criteria:
+  desktop_layout:
+    - "1024px以上で左右分割表示: 100%達成"
+    - "左側画像ギャラリー: フルハイト表示"
+    - "右側商品情報: 550px固定幅, 独立スクロール"
+    
+  mobile_preservation:
+    - "1023px以下で従来レイアウト: 100%保持"
+    - "スワイプ操作: 正常動作"
+    - "画像カウンター: 正常表示"
+    
+  performance:
+    - "CSS競合解消: エラーゼロ"
+    - "読み込み速度: 劣化なし"
+    - "レスポンシブ切り替え: スムーズ"
+
+## リスク軽減策
+risk_mitigation:
+  backup_plan:
+    - "変更前HTMLファイルのバックアップ保持"
+    - "段階的実装で影響範囲限定"
+    - "即座にロールバック可能な仕組み"
+    
+  fallback_mechanism:
+    - "JavaScript無効環境での代替CSS"
+    - "CDN障害時の内部CSS活用"
+    - "ブラウザ互換性問題の対応策"
+
+## 実装後検証項目
+post_implementation_verification:
+  visual_verification:
+    - "キャプチャ画像との一致度確認"
+    - "レイアウト崩れの有無"
+    - "フォント・色・サイズの正確性"
+    
+  functional_verification:
+    - "画像ギャラリー操作"
+    - "商品購入フォーム"
+    - "スクロール動作"
+    - "レスポンシブ切り替え"
+    
+  performance_verification:
+    - "ページ読み込み速度"
+    - "CSS適用速度"
+    - "JavaScript実行速度"
+
+## 備考
+notes:
+  - "BASEテンプレート構文は完全保持"
+  - "外部ライブラリ構成は維持"
+  - "後方互換性を最優先"
+  - "段階的実装で安全性確保"
+  - "CSS競合問題の根本解決を重視" 

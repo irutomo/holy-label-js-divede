@@ -2024,6 +2024,31 @@
         
         // 言語切り替えシステム - LanguageManagerライブラリに移行済み
         // スクロール処理 - ScrollManagerライブラリに移行済み（最適化済み）
+        
+        // 商品詳細ページ デスクトップレイアウト制御システム v2.0
+        function initDesktopLayout() {
+            const productDetail = document.querySelector('.product-detail');
+            if (!productDetail) return;
+            
+            function updateLayout() {
+                if (window.innerWidth >= 1024) {
+                    productDetail.classList.add('desktop-layout');
+                } else {
+                    productDetail.classList.remove('desktop-layout');
+                }
+            }
+            
+            // 初期化時に実行
+            updateLayout();
+            
+            // リサイズ時に実行
+            window.addEventListener('resize', updateLayout);
+        }
+        
+        // デスクトップレイアウト制御の初期化
+        HL.ready(() => {
+            initDesktopLayout();
+        });
     </script>
 </body>
 </html>
