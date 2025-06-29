@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![File Size Reduction](https://img.shields.io/badge/サイズ削減-41.2%25-success.svg)]()
 
-> BASEテーマ「HOLY LABEL」の154,386文字HTMLファイルを15,000文字制限に対応させるための大規模外部化プロジェクト。JavaScript・CSS機能をjsDelivr CDNで配信し、41.2%の大幅削減を達成。
+> BASEテーマ「HOLY LABEL」の154,386文字HTMLファイルを15,0000文字制限に対応させるための大規模外部化プロジェクト。JavaScript・CSS機能をjsDelivr CDNで配信し、41.2%の大幅削減を達成。
 
 ## 🎯 プロジェクト概要
 
