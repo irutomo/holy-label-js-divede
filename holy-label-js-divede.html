@@ -85,11 +85,12 @@
             opacity: 0;
             visibility: hidden;
         }
-        .header__nav-area.-active {
-            left: 0;
-            transform: translateX(0);
-            opacity: 1;
-            visibility: visible;
+        .header__nav-area.-active,
+        .js-nav-area.-active {
+            left: 0 !important;
+            transform: translateX(0) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
         .body-fixed { overflow: hidden; }
         .body-fixed:after {
@@ -2094,44 +2095,75 @@
             initDesktopLayout();
         });
         
-        // ハンバーガーメニュー緊急初期化システム
+        // ハンバーガーメニュー緊急初期化システム v2.0
         function initHamburgerMenu() {
+            console.log('=== ハンバーガーメニュー初期化開始 ===');
+            
             const hamburger = document.getElementById('js-humberger');
             const navArea = document.querySelector('.js-nav-area');
+            const navArea2 = document.querySelector('.header__nav-area');
             const body = document.body;
             
-            if (!hamburger || !navArea) {
-                console.error('ハンバーガーメニュー要素が見つかりません');
+            console.log('要素検索結果:');
+            console.log('hamburger:', hamburger);
+            console.log('navArea (.js-nav-area):', navArea);
+            console.log('navArea2 (.header__nav-area):', navArea2);
+            
+            if (!hamburger) {
+                console.error('ハンバーガーボタン (#js-humberger) が見つかりません');
                 return;
             }
             
+            if (!navArea && !navArea2) {
+                console.error('ナビゲーションエリア (.js-nav-area または .header__nav-area) が見つかりません');
+                return;
+            }
+            
+            // 優先的にjs-nav-areaを使用、なければheader__nav-areaを使用
+            const targetNavArea = navArea || navArea2;
+            console.log('使用するナビゲーションエリア:', targetNavArea);
+            
             // ハンバーガーボタンクリックイベント
-            hamburger.addEventListener('click', function() {
+            hamburger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log('ハンバーガーボタンクリック！');
+                
                 const isActive = hamburger.classList.contains('-active');
+                console.log('現在の状態 - isActive:', isActive);
                 
                 if (isActive) {
                     // メニューを閉じる
+                    console.log('メニューを閉じます');
                     hamburger.classList.remove('-active');
-                    navArea.classList.remove('-active');
+                    targetNavArea.classList.remove('-active');
                     body.classList.remove('body-fixed');
                 } else {
                     // メニューを開く
+                    console.log('メニューを開きます');
                     hamburger.classList.add('-active');
-                    navArea.classList.add('-active');
+                    targetNavArea.classList.add('-active');
                     body.classList.add('body-fixed');
                 }
+                
+                console.log('変更後のクラス:');
+                console.log('hamburger classes:', hamburger.className);
+                console.log('navArea classes:', targetNavArea.className);
+                console.log('body classes:', body.className);
             });
             
             // メニュー外クリックで閉じる
             document.addEventListener('click', function(event) {
-                if (!navArea.contains(event.target) && !hamburger.contains(event.target)) {
+                if (!targetNavArea.contains(event.target) && !hamburger.contains(event.target)) {
+                    console.log('メニュー外クリック - メニューを閉じます');
                     hamburger.classList.remove('-active');
-                    navArea.classList.remove('-active');
+                    targetNavArea.classList.remove('-active');
                     body.classList.remove('body-fixed');
                 }
             });
             
-            console.log('ハンバーガーメニュー初期化完了');
+            console.log('=== ハンバーガーメニュー初期化完了 ===');
         }
         
         // 緊急初期化実行
