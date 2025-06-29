@@ -52,6 +52,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/ui-components-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/base-integration-bundle.min.css">
     
+    <!-- HOLY LABEL JavaScript外部ライブラリ -->
+    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
+    
     <style>
         /* 緊急修正: z-index変数定義 */
         :root {
@@ -1996,184 +1999,40 @@
     <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
     
     <script>
-        // HOLY LABEL 最小限初期化（外部ライブラリ連携）
-        window.HL={
-            init:function(){
-                document.body.classList.add('loaded');
-                this.dom=window.HolyLabelDOMUtils||window.DOMUtils;
-                this.page=window.HolyLabelPageState||window.PageState;
-                this.anim=window.HolyLabelAnimationConfig||window.AnimationConfig;
-                this.animMgr=window.HolyLabelAnimationManager||window.AnimationManager;
-                this.navMgr=window.HolyLabelNavigationManager||window.NavigationManager;
-                this.modal=window.HolyLabelModalUtils;
-                this.gallery=window.HolyLabelProductGallery||window.ProductImageGallery;
-                this.loadMore=window.HolyLabelLoadMoreManager||window.LoadMoreManager;
-                this.logo=window.HolyLabelLogoManager||window.LogoManager;
-                this.init=window.HolyLabelInitializationManager||window.InitializationManager;
-                this.lang=window.HolyLabelLanguageManager||window.LanguageManager;
-                this.scroll=window.HolyLabelScrollManager||window.ScrollManager;
-                
-                if(this.anim)this.anim.init();
-                if(this.animMgr)this.animMgr.init();
-                if(this.navMgr)this.navMgr.init();
-                if(this.modal)this.modal.init();
-                if(this.gallery)this.gallery.init();
-                if(this.loadMore)this.loadMore.init();
-                if(this.logo)this.logo.initAll();
-                if(this.lang)this.lang.init();
-                if(this.scroll)this.scroll.init();
-                
-                // 後方互換性のため
-                window.DOMUtils=this.dom;
-                window.PageState=this.page;
-                window.AnimationConfig=this.anim;
-                window.AnimationManager=this.animMgr;
-                window.NavigationManager=this.navMgr;
-                window.ProductImageGallery=this.gallery;
-                window.LoadMoreManager=this.loadMore;
-                window.LogoManager=this.logo;
-                window.InitializationManager=this.init;
-                window.LanguageManager=this.lang;
-                window.ScrollManager=this.scroll;
-                window.initRestockNotificationModal=this.modal?this.modal.initRestockNotificationModal:function(){};
-                window.initCategoryDisplay=this.logo?this.logo.initCategoryDisplay:function(){};
-                window.controlInstagramButton=this.logo?this.logo.controlInstagramButton:function(){};
-                window.switchLanguage=this.lang?this.lang.switchLanguage:function(){};
-            },
-            ready:function(fn){
-                if(document.readyState!=='loading')fn();
-                else document.addEventListener('DOMContentLoaded',fn);
-            }
-        };
-        HL.ready(()=>HL.init());
-        // JavaScript - 外部ライブラリ使用 (大幅削減完了)
-        // AnimationManager - 外部ライブラリに移行済み
-        // NavigationManager - 外部ライブラリに移行済み
-        /*
-           JavaScript - ロゴ制御
- */
-        // LogoManager - 外部ライブラリに移行済み（ロゴ制御外部化完了）
-        /*
-           JavaScript - カテゴリ表示制御
- */
-        // initCategoryDisplay - LogoManagerに統合済み
-        /*
-           JavaScript - Instagram固定ボタン制御
- */
-        // controlInstagramButton - LogoManagerに統合済み
-
-        // ProductImageGallery - 外部ライブラリに移行済み（超大幅削減完了）
-
-        // LoadMoreManager - 外部ライブラリに移行済み（Ajax機能外部化完了）
-        // 初期化処理 - 最終統合ライブラリに移行済み（自動初期化）
-        
-        // 言語切り替えシステム - LanguageManagerライブラリに移行済み
-        // スクロール処理 - ScrollManagerライブラリに移行済み（最適化済み）
-        
-        // 商品詳細ページ デスクトップレイアウト制御システム v2.0
-        function initDesktopLayout() {
-            const productDetail = document.querySelector('.product-detail');
-            if (!productDetail) return;
-            
-            function updateLayout() {
-                if (window.innerWidth >= 1024) {
-                    productDetail.classList.add('desktop-layout');
-                } else {
-                    productDetail.classList.remove('desktop-layout');
-                }
-            }
-            
-            // 初期化時に実行
-            updateLayout();
-            
-            // リサイズ時に実行
-            window.addEventListener('resize', updateLayout);
-        }
-        
-        // デスクトップレイアウト制御の初期化
-        HL.ready(() => {
-            initDesktopLayout();
-        });
-        
-        // ハンバーガーメニュー緊急初期化システム v2.0
-        function initHamburgerMenu() {
-            console.log('=== ハンバーガーメニュー初期化開始 ===');
-            
-            const hamburger = document.getElementById('js-humberger');
-            const navArea = document.querySelector('.js-nav-area');
-            const navArea2 = document.querySelector('.header__nav-area');
-            const body = document.body;
-            
-            console.log('要素検索結果:');
-            console.log('hamburger:', hamburger);
-            console.log('navArea (.js-nav-area):', navArea);
-            console.log('navArea2 (.header__nav-area):', navArea2);
-            
-            if (!hamburger) {
-                console.error('ハンバーガーボタン (#js-humberger) が見つかりません');
-                return;
-            }
-            
-            if (!navArea && !navArea2) {
-                console.error('ナビゲーションエリア (.js-nav-area または .header__nav-area) が見つかりません');
-                return;
-            }
-            
-            // 優先的にjs-nav-areaを使用、なければheader__nav-areaを使用
-            const targetNavArea = navArea || navArea2;
-            console.log('使用するナビゲーションエリア:', targetNavArea);
-            
-            // ハンバーガーボタンクリックイベント
-            hamburger.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                console.log('ハンバーガーボタンクリック！');
-                
-                const isActive = hamburger.classList.contains('-active');
-                console.log('現在の状態 - isActive:', isActive);
-                
-                if (isActive) {
-                    // メニューを閉じる
-                    console.log('メニューを閉じます');
-                    hamburger.classList.remove('-active');
-                    targetNavArea.classList.remove('-active');
-                    body.classList.remove('body-fixed');
-                } else {
-                    // メニューを開く
-                    console.log('メニューを開きます');
-                    hamburger.classList.add('-active');
-                    targetNavArea.classList.add('-active');
-                    body.classList.add('body-fixed');
-                }
-                
-                console.log('変更後のクラス:');
-                console.log('hamburger classes:', hamburger.className);
-                console.log('navArea classes:', targetNavArea.className);
-                console.log('body classes:', body.className);
-            });
-            
-            // メニュー外クリックで閉じる
-            document.addEventListener('click', function(event) {
-                if (!targetNavArea.contains(event.target) && !hamburger.contains(event.target)) {
-                    console.log('メニュー外クリック - メニューを閉じます');
-                    hamburger.classList.remove('-active');
-                    targetNavArea.classList.remove('-active');
-                    body.classList.remove('body-fixed');
-                }
-            });
-            
-            console.log('=== ハンバーガーメニュー初期化完了 ===');
-        }
-        
-        // 緊急初期化実行
+        // HOLY LABEL 外部ライブラリ初期化（最小限）
         document.addEventListener('DOMContentLoaded', function() {
-            initHamburgerMenu();
-        });
-        
-        // ページ完全読み込み後も再初期化
-        window.addEventListener('load', function() {
-            setTimeout(initHamburgerMenu, 100);
+            console.log('=== HOLY LABEL 外部ライブラリ初期化開始 ===');
+            
+            // ローディング状態解除
+            document.body.classList.add('loaded');
+            
+            // 外部ライブラリの初期化
+            if (window.HolyLabelNavigationManager) {
+                try {
+                    window.HolyLabelNavigationManager.init();
+                    console.log('✓ NavigationManager初期化完了');
+                } catch (e) {
+                    console.error('✗ NavigationManager初期化エラー:', e);
+                }
+            } else {
+                console.error('✗ NavigationManager外部ライブラリが読み込まれていません');
+            }
+            
+            // デスクトップレイアウト制御（商品詳細ページ）
+            const productDetail = document.querySelector('.product-detail');
+            if (productDetail) {
+                function updateLayout() {
+                    if (window.innerWidth >= 1024) {
+                        productDetail.classList.add('desktop-layout');
+                    } else {
+                        productDetail.classList.remove('desktop-layout');
+                    }
+                }
+                updateLayout();
+                window.addEventListener('resize', updateLayout);
+            }
+            
+            console.log('=== HOLY LABEL 初期化完了 ===');
         });
     </script>
 </body>
