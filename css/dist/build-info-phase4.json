@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-28T18:11:07.397Z",
+  "timestamp": "2025-06-29T04:05:09.155Z",
   "phase": "Phase 4",
   "libraries": [
     {
@@ -34,9 +34,9 @@
     },
     {
       "name": "product-detail",
-      "originalSize": 8935,
-      "optimizedSize": 6541,
-      "reduction": 26.8
+      "originalSize": 10593,
+      "optimizedSize": 7578,
+      "reduction": 28.5
     },
     {
       "name": "forms",
@@ -88,7 +88,7 @@
     },
     {
       "name": "product-detail-bundle",
-      "size": 6530,
+      "size": 7567,
       "description": "商品詳細ページ・購入フォーム・画像ギャラリー"
     },
     {
@@ -122,7 +122,7 @@
       "description": "BASE多言語・Instagram連携・外貨表示・アプリ統合"
     }
   ],
-  "totalOriginalSize": 71359,
-  "totalOptimizedSize": 52543,
-  "totalReduction": "26.4"
+  "totalOriginalSize": 73017,
+  "totalOptimizedSize": 53580,
+  "totalReduction": "26.6"
 }

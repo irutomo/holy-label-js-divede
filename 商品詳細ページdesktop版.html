@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レスポンシブ商品詳細ページ</title>
+    <style>
+        /* --- 基本設定とダークテーマ --- */
+        :root {
+            --main-text-color: #e0e0e0;
+            --secondary-text-color: #9e9e9e;
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --accent-color: #ffffff;
+            --border-color: #333;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--main-text-color);
+        }
+
+        /* --- 全体を囲むコンテナ --- */
+        .product-detail-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            /* デスクトップでは横並びが基本 */
+            flex-direction: row;
+        }
+
+        /* --- 左側：商品ギャラリー --- */
+        .product-gallery {
+            flex: 1; /* 左半分を占める */
+            position: relative;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .gallery-wrapper {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .gallery-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 画像が歪まないように調整 */
+            flex-shrink: 0;
+        }
+
+        /* ギャラリーのナビゲーションボタン */
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+            box-sizing: border-box;
+            pointer-events: none; /* 親要素がクリックイベントを受け取るように */
+        }
+
+        .gallery-nav button {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 28px;
+            font-weight: 100;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: auto; /* ボタン自体はクリック可能に */
+            transition: background-color 0.2s;
+        }
+        .gallery-nav button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* モバイル用のカウンター（デスクトップでは非表示） */
+        .gallery-counter {
+            display: none;
+        }
+
+
+        /* --- 右側：商品情報 --- */
+        .product-info {
+            flex: 1; /* 右半分を占める */
+            max-width: 550px; /* 右側の最大幅を設定 */
+            padding: 50px 40px;
+            box-sizing: border-box;
+            /* 右側だけスクロールさせるための重要設定 */
+            height: 100vh;
+            overflow-y: auto;
+            border-left: 1px solid var(--border-color);
+        }
+        .product-info h1 {
+            font-size: 1.5em;
+            margin: 0 0 15px 0;
+            font-weight: 500;
+        }
+        .product-info .price {
+            font-size: 1.6em;
+            margin: 0 0 30px 0;
+        }
+        .product-info .description p {
+            line-height: 1.8;
+            color: var(--secondary-text-color);
+        }
+        .option-group {
+            margin-bottom: 20px;
+        }
+        .option-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: var(--secondary-text-color);
+        }
+        .option-group select {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--surface-color);
+            color: var(--main-text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        /* =============================================== */
+        /* --- モバイル版のスタイル (max-width: 1023px) ---- */
+        /* =============================================== */
+        @media (max-width: 1023px) {
+            .product-detail-container {
+                /* 縦積みに変更 */
+                flex-direction: column;
+                height: auto; /* 高さを自動に */
+            }
+
+            .product-gallery {
+                /* 画面幅いっぱいの正方形に近付ける */
+                height: auto;
+                aspect-ratio: 1 / 1.1;
+                cursor: grab; /* スワイプ可能を示すカーソル */
+            }
+            .gallery-wrapper img {
+                object-fit: cover;
+            }
+            .gallery-nav {
+                display: none; /* モバイルでは矢印を非表示 */
+            }
+
+            /* モバイル用のカウンターを表示 */
+            .gallery-counter {
+                display: block;
+                position: absolute;
+                bottom: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                padding: 5px 12px;
+                border-radius: 15px;
+                font-size: 0.8em;
+            }
+
+            .product-info {
+                max-width: 100%; /* 幅をリセット */
+                height: auto; /* 高さをリセット */
+                overflow-y: visible; /* スクロールをリセット */
+                border-left: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="product-detail-container">
+    <!-- 左側：商品ギャラリー -->
+    <section class="product-gallery" id="productGallery">
+        <div class="gallery-wrapper" id="galleryWrapper">
+            <img src="https://storage.googleapis.com/gemini-prod/images/03b98159-0010-482f-82f5-d7a8d9a4f61f" alt="商品画像1: ベルト付きデニムショートパンツ 正面">
+            <img src="https://storage.googleapis.com/gemini-prod/images/22467b7e-0c03-4632-bd8a-02e078c54483" alt="商品画像2: モデル着用全身像">
+            <img src="https://storage.googleapis.com/gemini-prod/images/5d2d0c69-2f22-4a00-9831-7b0292f3922e" alt="商品画像3: ベルト部分のアップ">
+            <img src="https://storage.googleapis.com/gemini-prod/images/ab4865e9-d419-445a-8b1b-b26a632b704c" alt="商品画像4: サイドからのビュー">
+        </div>
+        <div class="gallery-nav">
+            <button class="prev-btn" id="prevBtn">&lt;</button>
+            <button class="next-btn" id="nextBtn">&gt;</button>
+        </div>
+        <div class="gallery-counter" id="galleryCounter"></div>
+    </section>
+
+    <!-- 右側：商品情報 -->
+    <section class="product-info">
+        <h1>【HL0029】ベルト付きカットオフデニムショートパンツ</h1>
+        <p class="price">¥8,800</p>
+        <div class="description">
+            <p>アメリカンストリートを感じる絶妙な色落ちと、大胆なカットオフが特徴のデニムショートパンツ。</p>
+            <p>コレクションのインスピレーションは、90年代のグランジシーンから得ています。付属のベルトでウエストマークを強調し、ハイウエストデザインとの相乗効果で、スタイルを良く見せてくれる脚長効果の高いアイテムです。ジャケットやシャツを合わせるだけでクールなコーディネートが即完成します。</p>
+        </div>
+        <div class="options">
+            <div class="option-group">
+                <label for="color-select">カラー</label>
+                <select id="color-select"><option>ホワイト</option></select>
+            </div>
+            <div class="option-group">
+                <label for="size-select">サイズ</label>
+                <select id="size-select">
+                    <option>S (在庫あり)</option>
+                    <option>M (在庫あり)</option>
+                    <option>L (残りわずか)</option>
+                </select>
+            </div>
+            <div class="option-group">
+                <label for="quantity-select">数量</label>
+                <select id="quantity-select">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+            </div>
+        </div>
+        <button class="add-to-cart-btn">カートに入れる</button>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const gallery = document.getElementById('productGallery');
+    const wrapper = document.getElementById('galleryWrapper');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('galleryCounter');
+    const images = wrapper.querySelectorAll('img');
+    const imageCount = images.length;
+
+    let currentIndex = 0;
+    let isDragging = false;
+    let startPosX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+
+    // --- UI更新関数 ---
+    const updateUI = () => {
+        // 画像の位置を更新
+        currentTranslate = currentIndex * -gallery.clientWidth;
+        prevTranslate = currentTranslate;
+        wrapper.style.transform = `translateX(${currentTranslate}px)`;
+        
+        // モバイル用カウンターの表示を更新
+        if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${imageCount}`;
+        }
+    };
+
+    // --- イベントハンドラ ---
+    const slideTo = (index) => {
+        currentIndex = index;
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex >= imageCount) currentIndex = imageCount - 1;
+        wrapper.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+        updateUI();
+    };
+
+    nextBtn.addEventListener('click', () => {
+        slideTo(currentIndex + 1);
+    });
+
+    prevBtn.addEventListener('click', () => {
+        slideTo(currentIndex - 1);
+    });
+
+    // --- スワイプ機能 (主にモバイル用) ---
+    const getPositionX = (event) => event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+
+    const touchStart = (event) => {
+        if (window.innerWidth >= 1024) return; // デスクトップではスワイプ無効
+        isDragging = true;
+        startPosX = getPositionX(event);
+        wrapper.style.transition = 'none'; // ドラッグ中はアニメーションをオフ
+    };
+
+    const touchMove = (event) => {
+        if (!isDragging) return;
+        const currentPosition = getPositionX(event);
+        currentTranslate = prevTranslate + currentPosition - startPosX;
+        wrapper.style.transform = `translateX(${currentTranslate}px)`;
+    };
+
+    const touchEnd = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        const movedBy = currentTranslate - prevTranslate;
+        // 画面幅の15%以上スワイプしたら画像を切り替える
+        if (movedBy < -gallery.clientWidth * 0.15 && currentIndex < imageCount - 1) {
+            currentIndex++;
+        }
+        if (movedBy > gallery.clientWidth * 0.15 && currentIndex > 0) {
+            currentIndex--;
+        }
+
+        slideTo(currentIndex);
+    };
+
+    gallery.addEventListener('mousedown', touchStart);
+    gallery.addEventListener('mouseup', touchEnd);
+    gallery.addEventListener('mouseleave', touchEnd);
+    gallery.addEventListener('mousemove', touchMove);
+    gallery.addEventListener('touchstart', touchStart, { passive: true });
+    gallery.addEventListener('touchend', touchEnd);
+    gallery.addEventListener('touchmove', touchMove, { passive: true });
+
+    // ウィンドウリサイズ時に位置を再計算
+    window.addEventListener('resize', updateUI);
+
+    // 初期化
+    updateUI();
+});
+</script>
+
+</body>
+</html>

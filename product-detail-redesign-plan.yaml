@@ -1,0 +1,181 @@
+# HOLY LABEL 商品詳細ページ デスクトップレイアウト改修計画
+# ========================================================
+
+project_name: "HOLY LABEL 商品詳細ページ デスクトップレイアウト改修"
+version: "1.0.0"
+target_file: "holy-label-js-divede.html"
+reference_file: "商品詳細ページdesktop版.html"
+
+## 改修概要
+overview:
+  purpose: "商品詳細ページのデスクトップ表示を左右分割レイアウトに変更"
+  scope: "デスクトップ（1024px以上）のみ対象、モバイルは現状維持"
+  impact: "商品詳細の視認性向上、モダンなECサイト体験の提供"
+
+## 現状分析
+current_state:
+  layout_type: "上下レイアウト（一般的なECサイト形式）"
+  image_section: ".product-detail-image - 上部配置"
+  info_section: ".product-detail-info - 下部配置"
+  mobile_responsive: "既存のレスポンシブ対応あり"
+  
+target_state:
+  desktop_layout: "左右分割レイアウト"
+  left_section: "商品ギャラリー（フルハイト、スワイプ/矢印ナビ）"
+  right_section: "商品情報（固定幅、独立スクロール）"
+  mobile_layout: "現状のレイアウトを維持（変更なし）"
+
+## 技術仕様
+technical_requirements:
+  css_changes:
+    - section: "商品詳細コンテナ"
+      selector: ".product-detail"
+      desktop_properties:
+        - "display: flex"
+        - "flex-direction: row"
+        - "min-height: 100vh"
+        - "width: 100%"
+      
+    - section: "商品画像ギャラリー"
+      selector: ".product-detail-image"
+      desktop_properties:
+        - "flex: 1"
+        - "height: 100vh"
+        - "position: relative"
+        - "overflow: hidden"
+        - "background-color: #000"
+      
+    - section: "商品情報エリア"
+      selector: ".product-detail-info"
+      desktop_properties:
+        - "flex: 1"
+        - "max-width: 550px"
+        - "height: 100vh"
+        - "overflow-y: auto"
+        - "padding: 50px 40px"
+        - "border-left: 1px solid var(--border-color)"
+
+  responsive_breakpoint:
+    desktop_min_width: "1024px"
+    mobile_max_width: "1023px"
+    
+  gallery_behavior:
+    desktop:
+      - "左右矢印ナビゲーション表示"
+      - "画像カウンター非表示"
+      - "スワイプ機能無効化"
+      - "画像aspect-ratio: contain"
+    mobile:
+      - "矢印ナビゲーション非表示"  
+      - "画像カウンター表示"
+      - "スワイプ機能有効"
+      - "画像aspect-ratio: cover"
+
+## 実装手順
+implementation_steps:
+  step_1:
+    name: "CSS外部化確認"
+    action: "product-detail関連CSSが外部ライブラリに含まれているか確認"
+    files: ["css/dist/product-detail-bundle.min.css"]
+    
+  step_2:
+    name: "CSSレイアウト実装"
+    action: "デスクトップ用レイアウトCSSを追加/修正"
+    target_areas:
+      - ".product-detail コンテナ"
+      - ".product-detail-image ギャラリー"
+      - ".product-detail-info 情報エリア"
+    
+  step_3:
+    name: "JavaScript動作調整"
+    action: "ギャラリー操作のデスクトップ/モバイル分岐実装"
+    modifications:
+      - "スワイプ検出の画面サイズ判定"
+      - "ナビゲーションボタン表示制御"
+      - "カウンター表示制御"
+      
+  step_4:
+    name: "レスポンシブ対応"
+    action: "メディアクエリでモバイル表示を現状維持"
+    breakpoint: "@media (max-width: 1023px)"
+    
+  step_5:
+    name: "不要機能削除"
+    action: "虫眼鏡（ズーム）機能の削除"
+    elements: [".zoom-icon", "#zoomBtn"]
+
+## 保持する要素
+preserve_elements:
+  mobile_layout: "モバイルでの現在のレイアウトを完全保持"
+  existing_functionality:
+    - "商品購入フォーム"
+    - "関連商品表示"
+    - "ソーシャルシェア"
+    - "レビュー機能"
+    - "在庫表示"
+  
+  gallery_features:
+    - "複数画像対応"
+    - "BASE画像URL連携"
+    - "画像遅延読み込み"
+
+## 削除する要素
+remove_elements:
+  zoom_functionality:
+    - selector: ".zoom-icon"
+    - selector: "#zoomBtn"
+    - related_js: "ズーム関連のJavaScript処理"
+
+## リスク分析
+risks:
+  compatibility:
+    - "BASE外部ライブラリとの競合"
+    - "既存JavaScript機能への影響"
+  
+  performance:
+    - "CSS外部ライブラリの再ビルド必要性"
+    - "初期読み込み時のレイアウトシフト"
+    
+  user_experience:
+    - "デスクトップでの操作性変更"
+    - "画面サイズ境界での表示切替"
+
+## テスト項目
+testing_checklist:
+  desktop_tests:
+    - "1024px以上での左右分割表示確認"
+    - "画像ギャラリーの矢印ナビゲーション"
+    - "右側情報エリアのスクロール動作"
+    - "ウィンドウリサイズ時の挙動"
+    
+  mobile_tests:
+    - "1023px以下での現状維持確認"
+    - "スワイプ操作の動作確認"
+    - "画像カウンター表示確認"
+    
+  cross_browser_tests:
+    - "Chrome, Firefox, Safari, Edge対応"
+    - "iOS Safari, Chrome Mobile対応"
+
+## 成功指標
+success_criteria:
+  layout_accuracy: "参考デザインとの視覚的一致度 95%以上"
+  responsive_integrity: "モバイル表示の完全保持"
+  performance_impact: "ページ読み込み速度の劣化なし"
+  functionality_preservation: "全既存機能の正常動作"
+
+## 承認後作業予定
+post_approval_tasks:
+  - "CSS外部ライブラリの更新"
+  - "HTMLテンプレートの修正"
+  - "JavaScript機能の調整"
+  - "ビルドシステムでの再構築"
+  - "CDN配信の更新"
+  - "動作テストの実行"
+
+## 備考
+notes:
+  - "BASEテンプレート構文は保持"
+  - "外部ライブラリ構成は維持"
+  - "後方互換性を最優先"
+  - "段階的な実装で安全性確保" 
