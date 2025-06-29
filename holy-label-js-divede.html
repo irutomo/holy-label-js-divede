@@ -1510,11 +1510,45 @@
             z-index: 1;
         }
         
-        /* ハンバーガーボタンの優先度を確保 */
+        /* ハンバーガーボタン完全定義（緊急修正） */
         button.humberger {
+            position: fixed !important;
+            top: calc(var(--information-banner-height, 0px) + 20px) !important;
+            left: 20px !important;
+            width: 3rem !important;
+            height: 2rem !important;
             z-index: var(--z-hamburger) !important;
+            background: transparent !important;
+            border: none !important;
+            cursor: pointer !important;
             pointer-events: auto !important;
         }
+
+        .humberger__line {
+            position: absolute !important;
+            top: 50% !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 2px !important;
+            background-color: var(--accent-color) !important;
+            transition: all var(--transition-fast) !important;
+        }
+
+        .humberger__line:before, .humberger__line:after {
+            content: '' !important;
+            position: absolute !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 2px !important;
+            background-color: var(--accent-color) !important;
+            transition: all var(--transition-fast) !important;
+        }
+
+        .humberger__line:before { top: -8px !important; }
+        .humberger__line:after { top: 8px !important; }
+        .humberger.-active .humberger__line { background-color: transparent !important; }
+        .humberger.-active .humberger__line::before { transform: rotate(45deg) !important; top: 0 !important; }
+        .humberger.-active .humberger__line::after { transform: rotate(-45deg) !important; top: 0 !important; }
     </style>
 </head>
 <body id="{block:IndexPage}shopTopPage{/block:IndexPage}{block:ItemPage}shopDetailPage{/block:ItemPage}" class="shop template loading">
