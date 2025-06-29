@@ -53,6 +53,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/base-integration-bundle.min.css">
     
     <style>
+        /* 緊急修正: z-index変数定義 */
+        :root {
+            --z-navigation: 999;
+            --z-header: 1000;
+            --z-hamburger: 1001;
+            --z-menu-open: 1002;
+            --z-modal: 2000;
+            --z-banner: 2005;
+        }
+        
         /* BASE色設定の活用（BASEテンプレート構文のためHTMLに残存） */
         {block:TextColor}body { color: {TextColor} !important; }{/block:TextColor}
         {block:LinkColor}a { color: {LinkColor} !important; }{/block:LinkColor}
