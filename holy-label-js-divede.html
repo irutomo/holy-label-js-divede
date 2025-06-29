@@ -2020,58 +2020,6 @@
         // ProductImageGallery - 外部ライブラリに移行済み（超大幅削減完了）
 
         // LoadMoreManager - 外部ライブラリに移行済み（Ajax機能外部化完了）
-                get productGrid() { return DOMUtils.getId('product-grid'); }
-            },
-            currentPage: 1,
-            maxPageNum: 1,
-            init() {
-                const { btn, maxPage, nextPage } = this.elements;
-                if (!btn || !maxPage || !nextPage) return;
-                this.maxPageNum = parseInt(maxPage.textContent);
-                this.currentPage = parseInt(nextPage.textContent);
-                if (this.maxPageNum > 1) {
-                    btn.style.display = 'block';
-                    btn.addEventListener('click', () => this.loadMore());
-                }
-            },
-            loadMore() {
-                if (this.currentPage <= this.maxPageNum) {
-                    this.loadItems(this.currentPage);
-                    this.currentPage++;
-                    if (this.currentPage > this.maxPageNum) {
-                        this.elements.btn.style.display = 'none';
-                    }
-                }
-            },
-            loadItems(page) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', '{LoadItemsPageURL}' + page + '{LoadItemsPageURLParams}', true);
-                xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                        this.processNewItems(xhr.responseText);
-                    }
-                };
-                xhr.send();
-            },
-            processNewItems(responseText) {
-                const { productGrid } = this.elements;
-                if (!productGrid) return;
-                const currentItemCount = productGrid.querySelectorAll('.product-item').length;
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = responseText;
-                const newItems = tempDiv.querySelectorAll('.product-item');
-                newItems.forEach((item, index) => {
-                    const delay = (currentItemCount + index + 1) % 9 || 9;
-                    item.style.animationDelay = (delay * AnimationConfig.STAGGER_DELAY) + 's';
-                    // Out of stock状態を確認
-                    if (item.classList.contains('out-of-stock') || item.innerHTML.includes('SOLD OUT')) {
-                                item.classList.add('out-of-stock');
-                            }
-                            productGrid.appendChild(item);
-                        });
-                setTimeout(() => AnimationManager.animateOnScroll(), 100);
-            }
-        };
         // 初期化処理 - 最終統合ライブラリに移行済み（自動初期化）
         
         // 言語切り替えシステム - LanguageManagerライブラリに移行済み
