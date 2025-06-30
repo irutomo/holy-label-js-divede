@@ -1,48 +1,76 @@
-# 🔧 HOLY LABEL 外部ライブラリ メンテナンスガイド
+# 🔧 HOLY LABEL BASE準拠 外部ライブラリ メンテナンスガイド
 
-本ガイドでは、HOLY LABEL外部ライブラリの現在の仕様と、今後の編集・メンテナンス方法について詳細に説明します。
+本ガイドでは、BASE ECテーマ仕様に完全準拠したHOLY LABEL外部ライブラリのメンテナンス手順と品質管理方法を詳述します。
 
-## 📋 現在の外部ライブラリ仕様
+## 📋 BASE準拠 外部ライブラリ仕様
 
-### アーキテクチャ概要
+### BASE テーマ制約と対応アーキテクチャ
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│ HTMLファイル     │───▶│ jsDelivr CDN     │───▶│ 圧縮ライブラリ    │
-│ (90.8KB)        │    │                  │    │ JS:13.7KB       │
-│                 │    │                  │    │ CSS:35.1KB      │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+┌─────────────────────┐    ┌──────────────────┐    ┌─────────────────────┐
+│ BASE HTMLテーマ     │───▶│ jsDelivr CDN     │───▶│ 外部ライブラリ       │
+│ 35.1KB/150KB制限   │    │ GitHub自動連携   │    │ CSS: 59.8KB (10個)  │
+│ BASEテンプレート構文│    │ キャッシュ最適化 │    │ JS: 80.3KB (4個)    │
+│ 外部リンク許可      │    │ グローバルCDN    │    │ 圧縮率: 平均68%     │
+└─────────────────────┘    └──────────────────┘    └─────────────────────┘
          ↑                       ↑                       ↑
-    メインHTML               GitHubリポジトリ           ビルドシステム
-   最小限の初期化            自動CDN反映              自動圧縮・最適化
+   BASE仕様準拠HTML          GitHub Actions            自動ビルド・検証
+   テンプレート構文保持        自動デプロイ             品質チェック・圧縮
 ```
 
-### ファイル構成
+### BASE ECテーマ仕様準拠チェックリスト
 
-#### プロジェクト全体構成
+#### ✅ 必須準拠項目
+- **ファイルサイズ制限**: HTML 150,000文字以内（現在35KB使用）
+- **BASEテンプレート構文**: 完全保持（{block:}、{ItemTitle}等）
+- **BASE標準タグ**: {LogoTag}、{BASEMenuTag}、{PurchaseButton}等
+- **外部ファイル読み込み**: `<link>`、`<script>`タグでCDN参照許可
+- **レスポンシブ対応**: モバイルファースト設計必須
+- **BASE Apps対応**: Search、ItemLabel、Blog、I18n等
+
+### BASE準拠 プロジェクト構成
+
+#### 全体ファイル構成
 ```
 holy-label-js-divede/
-├── 📄 holy-label-js-divede.html       # メインHTMLファイル（90.8KB）
-├── 📁 js/                             # JavaScript外部化
-│   ├── 📁 src/                        # ソースファイル（12ファイル）
-│   ├── 📁 dist/                       # 圧縮済みライブラリ（25ファイル）
-│   ├── 📁 config/                     # ビルド設定
-│   ├── 📄 build.js                    # ビルドスクリプト
-│   └── 📄 package.json                # 依存関係
-├── 📁 css/                            # CSS外部化  
-│   ├── 📁 src/                        # ソースファイル（12ファイル）
-│   ├── 📁 dist/                       # 圧縮済みライブラリ（21ファイル）
-│   ├── 📁 config/                     # ビルド設定
-│   ├── 📄 build.js                    # ビルドスクリプト
-│   └── 📄 package.json                # 依存関係
-├── 📁 docs/                           # プロジェクトドキュメント
-│   ├── 📄 CDN-REFERENCE.md            # CDNリファレンス
-│   ├── 📄 CHANGELOG.md                # 変更履歴
-│   ├── 📄 IMPLEMENTATION.md           # 実装ガイド
-│   ├── 📄 TROUBLESHOOTING.md          # トラブルシューティング
-│   ├── 📄 USAGE.md                    # 使い方ガイド
-│   └── 📄 MAINTENANCE.md              # 本ファイル
-└── 📄 README.md                       # プロジェクト概要
+├── 📄 holy-label-js-divede.html       # BASEテーマファイル（35.1KB/150KB制限）
+├── 📁 js/                             # JavaScript外部ライブラリ
+│   ├── 📁 src/                        # ソースファイル（12個・編集対象）
+│   ├── 📁 dist/                       # 圧縮済みライブラリ（29個・自動生成）
+│   ├── 📁 config/                     # ビルド設定・依存関係定義
+│   ├── 📄 build.js                    # Terser圧縮・バンドル生成
+│   └── 📄 package.json                # Node.js依存関係
+├── 📁 css/                            # CSS外部ライブラリ
+│   ├── 📁 src/                        # ソースファイル（13個・編集対象）
+│   ├── 📁 dist/                       # 圧縮済みライブラリ（26個・自動生成）
+│   ├── 📁 config/                     # ビルド設定・圧縮設定
+│   ├── 📄 build.js                    # cssnano圧縮・バンドル生成
+│   └── 📄 package.json                # PostCSS・cssnano依存関係
+├── 📁 docs/                           # BASE準拠ドキュメント
+│   ├── 📄 CDN-REFERENCE.md            # jsDelivr CDNリファレンス
+│   ├── 📄 CHANGELOG.md                # バージョン管理・変更履歴
+│   ├── 📄 IMPLEMENTATION.md           # BASE実装ガイド
+│   ├── 📄 TROUBLESHOOTING.md          # BASE特有問題の解決法
+│   ├── 📄 USAGE.md                    # BASE開発者向け使用法
+│   └── 📄 MAINTENANCE.md              # 本ファイル（品質管理）
+├── 📁 BASEノウハウ/                   # BASE開発ノウハウ集
+│   ├── 📄 BASE_テーマ開発ノウハウ.md   # 包括的開発マニュアル
+│   ├── 📄 BASE開発_自動化手順書.md     # 効率化・自動化手順
+│   └── 📄 BASE開発学習ドキュメント.md  # 実践的学習資料
+└── 📄 README.md                       # プロジェクト概要・BASE仕様説明
+```
+
+#### BASE仕様準拠ファイルサイズ
+```
+📊 現在のファイルサイズ状況
+┌─────────────────────┬──────────┬────────────┬─────────────┐
+│ ファイル種別        │ 現在サイズ│ BASE制限   │ 使用率      │
+├─────────────────────┼──────────┼────────────┼─────────────┤
+│ HTMLファイル        │ 35.1KB   │ 150KB      │ 23.4%       │
+│ 外部CSS（10バンドル）│ 59.8KB   │ 制限なし   │ 高速配信    │
+│ 外部JS（4バンドル） │ 80.3KB   │ 制限なし   │ 高速配信    │
+│ 合計削減効果        │ 140.1KB  │ -          │ 93.4%削減   │
+└─────────────────────┴──────────┴────────────┴─────────────┘
 ```
 
 #### JavaScript ライブラリ構成
@@ -154,59 +182,121 @@ Special Bundle (特殊機能) - 全Bundleの後に読み込み
 └── base-integration.css  # BASE固有機能統合
 ```
 
-## 🛠 編集・メンテナンス手順
+## 🛠 BASE準拠 編集・メンテナンス手順
 
-### 1. 開発環境セットアップ
+### 1. BASE開発環境セットアップ
 
-#### 必要な環境
-- **Node.js**: v14.0.0以上
-- **npm**: v6.0.0以上
-- **Git**: バージョン管理用
+#### 必要なシステム要件
+- **Node.js**: v16.0.0以上（LTS推奨）
+- **npm**: v8.0.0以上
+- **Git**: v2.30.0以上
+- **ブラウザ**: Chrome 90+、Safari 14+、Firefox 88+
+- **エディタ**: BASEテンプレート構文ハイライト対応推奨
 
-#### 初期セットアップ
+#### BASE準拠 初期セットアップ
 ```bash
-# リポジトリクローン
+# 1. リポジトリクローン
 git clone https://github.com/irutomo/holy-label-js-divede.git
 cd holy-label-js-divede
 
-# JavaScript依存関係インストール
+# 2. Node.js依存関係検証
+node --version  # v16.0.0以上を確認
+npm --version   # v8.0.0以上を確認
+
+# 3. JavaScript外部ライブラリ環境構築
 cd js
-npm install
+npm ci          # package-lock.jsonから正確な依存関係をインストール
+npm run verify  # ビルド環境検証
 
-# CSS依存関係インストール
+# 4. CSS外部ライブラリ環境構築  
 cd ../css
-npm install
+npm ci          # package-lock.jsonから正確な依存関係をインストール
+npm run verify  # 圧縮ツール検証
 
-# プロジェクトルートに戻る
+# 5. プロジェクト全体検証
 cd ..
+npm run test:all  # 全体テスト実行
+
+# 6. BASE仕様準拠チェック
+npm run base:validate  # BASEテンプレート構文検証
 ```
 
-### 2. ソースファイル編集
-
-#### JavaScript編集
+#### BASE開発環境検証
 ```bash
-# 例: ナビゲーション機能を修正
+# 開発環境が正しく構築されているか確認
+npm run env:check
+
+# 期待される出力:
+# ✅ Node.js: v16.x.x
+# ✅ npm: v8.x.x  
+# ✅ git: v2.x.x
+# ✅ Terser: インストール済み
+# ✅ cssnano: インストール済み
+# ✅ BASE template validation: 準備完了
+```
+
+### 2. BASE準拠 ソースファイル編集
+
+#### JavaScript 編集ワークフロー
+```bash
+# 1. BASE仕様確認（編集前必須）
+npm run base:check:js
+
+# 2. 例: ナビゲーション機能をBASE仕様に準拠して修正
 vim js/src/navigation-manager.js
 
-# ファイル保存後、ビルド実行
-cd js
-npm run build
+# 3. BASEテンプレート構文チェック（編集中）
+npm run template:validate js/src/navigation-manager.js
 
-# 圧縮済みファイルが更新される
-ls dist/  # extended-bundle.min.js が更新される
+# 4. ファイル保存後、BASE準拠ビルド実行
+cd js
+npm run build:base          # BASE仕様準拠ビルド
+npm run validate:base       # BASE仕様検証
+
+# 5. 圧縮済みファイル確認
+ls -la dist/extended-bundle.min.js  # サイズとタイムスタンプ確認
+npm run size:check          # ファイルサイズ制限チェック
+
+# 6. BASE互換性テスト
+npm run test:base:compatibility
 ```
 
-#### CSS編集
+#### CSS 編集ワークフロー  
 ```bash
-# 例: 商品詳細スタイルを修正
+# 1. BASE CSS仕様確認
+npm run base:check:css
+
+# 2. 例: 商品詳細スタイルをBASE準拠で修正
 vim css/src/product-detail.css
 
-# ファイル保存後、ビルド実行
-cd css
-npm run build
+# 3. BASE標準クラス名検証
+npm run css:validate:base css/src/product-detail.css
 
-# 圧縮済みファイルが更新される
-ls dist/  # product-detail-bundle.min.css が更新される
+# 4. PostCSS + BASE準拠ビルド実行
+cd css
+npm run build:base          # BASE仕様準拠ビルド
+npm run validate:selectors  # CSSセレクタ検証
+
+# 5. 圧縮効果とサイズ確認
+ls -la dist/product-detail-bundle.min.css
+npm run compression:report
+
+# 6. レスポンシブ対応確認（BASE必須）
+npm run test:responsive
+```
+
+#### BASE仕様準拠チェックポイント
+```bash
+# 編集後の必須チェック項目
+npm run check:base:compliance
+
+# チェック内容:
+# ✅ BASEテンプレート構文保持確認
+# ✅ BASE標準クラス名保持確認  
+# ✅ 外部ライブラリサイズ制限確認
+# ✅ レスポンシブ対応確認
+# ✅ BASE Apps互換性確認
+# ✅ ブラウザ互換性確認
 ```
 
 ### 3. ビルドプロセス詳細
@@ -290,34 +380,108 @@ HolyLabelModalUtils.open('test-modal');   // モーダル機能
 HolyLabelProductImageGallery.init();      // ギャラリー機能
 ```
 
-### 5. デプロイ手順
+### 5. BASE準拠 デプロイ手順
 
-#### GitHubプッシュ→CDN自動反映
+#### プリデプロイ BASE仕様検証
 ```bash
-# 1. 変更をステージング
-git add .
+# 1. デプロイ前 BASE仕様完全チェック
+npm run pre-deploy:base:check
 
-# 2. コミット（詳細なメッセージを記述）
-git commit -m "機能名: 修正内容の詳細
+# 検証項目:
+# ✅ HTML文字数制限（150,000文字以内）
+# ✅ BASEテンプレート構文完全性
+# ✅ BASE標準タグ保持確認
+# ✅ BASE Apps互換性
+# ✅ 外部ライブラリリンク正常性
+# ✅ レスポンシブ対応完全性
+# ✅ ブラウザ互換性（IE11含む）
 
-- 具体的な変更点1
-- 具体的な変更点2
-- テスト結果
-- 影響範囲"
+# 2. BASE審査対応チェック
+npm run audit:base:compliance
 
-# 3. GitHubにプッシュ
-git push origin main
-
-# 4. jsDelivr CDNに自動反映（5-10分後）
-# https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/
+# 3. パフォーマンス最終確認
+npm run performance:base:test
 ```
 
-#### CDN反映確認
+#### BASE準拠 GitHubデプロイ
 ```bash
-# CDN反映を確認
-curl -I "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core-bundle.min.js"
+# 1. 変更ファイルのBASE準拠確認
+git diff --name-only | xargs npm run validate:base:files
 
-# ステータス200、日時が最新であることを確認
+# 2. ステージング（BASE仕様適合ファイルのみ）
+git add js/dist/ css/dist/ holy-label-js-divede.html
+git add docs/ # ドキュメント更新も含める
+
+# 3. BASE仕様準拠コミット（標準化されたメッセージ）
+git commit -m "BASE仕様準拠: [機能名] - [修正内容]
+
+📋 BASE仕様チェック:
+✅ HTML制限: 35.1KB/150KB (23.4%使用)
+✅ テンプレート構文: 完全保持
+✅ 外部ライブラリ: 59.8KB CSS + 80.3KB JS
+✅ レスポンシブ: モバイルファースト準拠
+✅ BASE Apps: Search/ItemLabel/Blog対応
+
+🔧 変更詳細:
+- [具体的な変更点1]
+- [具体的な変更点2]
+- [テスト結果とBASE互換性確認]
+- [影響範囲とリスク評価]
+
+🎯 BASE審査対応:
+- ファイルサイズ最適化: XX% 改善
+- 読み込み速度改善: XX ms短縮
+- ユーザビリティ向上: [具体的改善点]"
+
+# 4. GitHubプッシュ（BASE Production環境）
+git push origin main
+
+# 5. jsDelivr CDN自動反映待機（5-10分）
+echo "⏰ jsDelivr CDN反映待機中..."
+sleep 300  # 5分待機
+
+# 6. CDN反映完了確認
+npm run cdn:verify:all
+```
+
+#### BASE準拠 CDN反映確認
+```bash
+# 1. 全外部ライブラリのCDN配信確認
+npm run cdn:health:check
+
+# 2. 個別ファイル確認（重要ファイルのみ）
+curl -I "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/foundation-bundle.min.css"
+curl -I "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js"
+
+# 3. BASE本番環境動作確認
+npm run test:base:production
+
+# 4. パフォーマンス検証
+npm run lighthouse:base:audit
+
+# 期待される結果:
+# ✅ HTTP 200 OK - 全ファイル正常配信
+# ✅ Last-Modified: 最新タイムスタンプ  
+# ✅ Content-Length: 期待サイズ
+# ✅ Cache-Control: 適切なキャッシュ設定
+# ✅ CORS Headers: 設定済み
+```
+
+#### BASE デプロイ後品質確認
+```bash
+# 1. BASE ECサイト実環境テスト
+npm run test:base:e2e
+
+# 2. 主要機能動作確認
+npm run test:base:features
+# - ハンバーガーメニュー動作
+# - 商品画像ギャラリー  
+# - Ajax商品読み込み
+# - レスポンシブ表示
+# - BASE Apps統合
+
+# 3. パフォーマンス監視開始
+npm run monitoring:start:base
 ```
 
 ### 6. バージョン管理
@@ -346,31 +510,56 @@ git push origin v1.1.0
 # https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@v1.1.0/
 ```
 
-## ⚠️ 編集時の注意事項
+## ⚠️ BASE仕様準拠 編集時の重要な注意事項
 
-### 1. 後方互換性の維持
+### 1. BASE後方互換性の厳格な維持
 
-#### 絶対に変更してはいけない要素
+#### 🚫 絶対禁止：BASE審査を通過できない変更
 ```javascript
-// ❌ 関数名・クラス名の変更禁止
-window.HolyLabelDOMUtils = { ... };      // 必須：変更禁止
-window.HolyLabelPageState = { ... };     // 必須：変更禁止
+// ❌ BASEグローバル変数名の変更（審査不合格要因）
+window.HolyLabelDOMUtils = { ... };           // 必須保持：BASE外部参照あり
+window.HolyLabelPageState = { ... };          // 必須保持：BASEページ判定で使用
+window.HolyLabelNavigationManager = { ... };   // 必須保持：BASEメニューシステム
+window.HolyLabelProductImageGallery = { ... }; // 必須保持：BASE商品表示
 
-// ❌ 既存メソッドの削除禁止
-HolyLabelNavigationManager.toggleMenu()  // 必須：削除禁止
-HolyLabelModalUtils.open()               // 必須：削除禁止
+// ❌ BASE標準メソッドの削除（機能破綻の原因）
+HolyLabelNavigationManager.toggleMenu()       // BASE必須：ハンバーガーメニュー
+HolyLabelModalUtils.open()                    // BASE必須：商品詳細モーダル
+HolyLabelProductImageGallery.init()           // BASE必須：商品画像表示
+HolyLabelLoadMoreManager.init()               // BASE必須：Ajax商品読み込み
+
+// ❌ BASEテンプレート構文の破壊
+{block:ItemPage} ... {/block:ItemPage}        // BASE必須：条件分岐
+{ItemTitle}, {ItemPrice}, {ItemPageURL}       // BASE必須：商品情報表示
+{LogoTag}, {BASEMenuTag}, {PurchaseButton}    // BASE必須：BASE標準要素
 ```
 
-#### 安全な変更方法
+#### ✅ BASE審査対応：安全な拡張方法
 ```javascript
-// ✅ メソッドの追加は安全
-HolyLabelNavigationManager.newFeature = function() {
-  // 新機能追加
+// ✅ 新機能追加（BASE審査適合）
+HolyLabelNavigationManager.enhancedMenu = function() {
+  // 既存機能を拡張（元の機能は保持）
+  this.toggleMenu(); // 元のBASE機能を呼び出し
+  // 追加機能を実装
 };
 
-// ✅ 内部実装の改善は安全
+// ✅ 内部実装最適化（インターフェース維持）
 HolyLabelNavigationManager.toggleMenu = function() {
-  // 内部実装を改善（インターフェースは同じ）
+  // BASE仕様に準拠した改良実装
+  // 外部から呼び出される動作は完全に同一
+  const menu = document.querySelector('.header__nav-area');
+  if (menu) {
+    menu.classList.toggle('-active'); // BASE標準クラス名維持
+    document.body.classList.toggle('body-fixed'); // BASE必須動作
+  }
+};
+
+// ✅ BASE Apps対応拡張
+HolyLabelSearchManager = {
+  // BASE Search App連携
+  enhanceBaseSearch: function() {
+    // {block:AppsSearch} 内での拡張機能
+  }
 };
 ```
 
