@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-30T05:42:11.457Z",
+  "timestamp": "2025-06-30T05:51:33.538Z",
   "phase": "Phase 4",
   "libraries": [
     {
@@ -58,9 +58,9 @@
     },
     {
       "name": "special-pages",
-      "originalSize": 10117,
-      "optimizedSize": 7304,
-      "reduction": 27.8
+      "originalSize": 10542,
+      "optimizedSize": 7626,
+      "reduction": 27.7
     },
     {
       "name": "ui-components",
@@ -108,7 +108,7 @@
     },
     {
       "name": "special-pages-bundle",
-      "size": 7309,
+      "size": 7631,
       "description": "LOOKBOOK・About・Contact・特定商取引法ページ専用スタイル"
     },
     {
@@ -122,7 +122,7 @@
       "description": "BASE多言語・Instagram連携・外貨表示・アプリ統合"
     }
   ],
-  "totalOriginalSize": 77628,
-  "totalOptimizedSize": 56324,
+  "totalOriginalSize": 78053,
+  "totalOptimizedSize": 56646,
   "totalReduction": "27.4"
 }
