@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-30T05:24:23.794Z",
+  "timestamp": "2025-06-30T05:32:12.042Z",
   "phase": "Phase 4",
   "libraries": [
     {
@@ -22,9 +22,9 @@
     },
     {
       "name": "product-components",
-      "originalSize": 4146,
-      "optimizedSize": 3190,
-      "reduction": 23.1
+      "originalSize": 4748,
+      "optimizedSize": 3536,
+      "reduction": 25.5
     },
     {
       "name": "animations",
@@ -46,9 +46,9 @@
     },
     {
       "name": "responsive",
-      "originalSize": 5914,
-      "optimizedSize": 3550,
-      "reduction": 40
+      "originalSize": 7554,
+      "optimizedSize": 4397,
+      "reduction": 41.8
     },
     {
       "name": "footer-pages",
@@ -83,7 +83,7 @@
     },
     {
       "name": "components-bundle",
-      "size": 8123,
+      "size": 8469,
       "description": "BASEメニュー・商品グリッド・アニメーション"
     },
     {
@@ -98,7 +98,7 @@
     },
     {
       "name": "responsive-bundle",
-      "size": 3538,
+      "size": 4385,
       "description": "レスポンシブ・メディアクエリ・モバイル対応"
     },
     {
@@ -122,7 +122,7 @@
       "description": "BASE多言語・Instagram連携・外貨表示・アプリ統合"
     }
   ],
-  "totalOriginalSize": 75096,
-  "totalOptimizedSize": 54955,
-  "totalReduction": "26.8"
+  "totalOriginalSize": 77338,
+  "totalOptimizedSize": 56148,
+  "totalReduction": "27.4"
 }

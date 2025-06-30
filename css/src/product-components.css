@@ -32,6 +32,37 @@
     gap: 12px;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 12px;
+}
+
+/* タブレット（768px以上）- 2カラム維持 */
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 0 20px;
+    }
+}
+
+/* デスクトップ（1024px以上）- 3カラム */
+@media (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 0 40px;
+    }
+    
+    .product-section {
+        padding: 100px 40px;
+    }
+}
+
+/* 大型ディスプレイ（1400px以上）- 4カラム */
+@media (min-width: 1400px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1400px;
+    }
 }
 
 .product-item {
