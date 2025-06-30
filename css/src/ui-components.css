@@ -289,22 +289,24 @@
 }
 
 .related-product-info {
-    padding: 16px 0;
-    text-align: left;
+    padding: 20px 0;
+    text-align: center;
 }
 
 .related-product-title {
-    font-size: var(--font-sm);
+    font-size: 1rem;
     font-weight: var(--weight-light);
     color: var(--primary-text);
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+    letter-spacing: 1px;
+    line-height: 1.4;
 }
 
 .related-product-price {
-    font-size: var(--font-xs);
+    font-size: 0.9rem;
     color: var(--secondary-text);
     font-weight: var(--weight-light);
+    margin: 0;
 }
 
 /* Ajax読み込みボタン・その他UI要素 */

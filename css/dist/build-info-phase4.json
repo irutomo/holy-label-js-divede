@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-30T05:13:49.530Z",
+  "timestamp": "2025-06-30T05:24:23.794Z",
   "phase": "Phase 4",
   "libraries": [
     {
@@ -46,9 +46,9 @@
     },
     {
       "name": "responsive",
-      "originalSize": 5866,
-      "optimizedSize": 3531,
-      "reduction": 39.8
+      "originalSize": 5914,
+      "optimizedSize": 3550,
+      "reduction": 40
     },
     {
       "name": "footer-pages",
@@ -64,9 +64,9 @@
     },
     {
       "name": "ui-components",
-      "originalSize": 9419,
-      "optimizedSize": 7186,
-      "reduction": 23.7
+      "originalSize": 9437,
+      "optimizedSize": 7209,
+      "reduction": 23.6
     },
     {
       "name": "base-integration",
@@ -98,7 +98,7 @@
     },
     {
       "name": "responsive-bundle",
-      "size": 3519,
+      "size": 3538,
       "description": "レスポンシブ・メディアクエリ・モバイル対応"
     },
     {
@@ -113,7 +113,7 @@
     },
     {
       "name": "ui-components-bundle",
-      "size": 7185,
+      "size": 7208,
       "description": "モーダル・PayID・関連商品・Ajax読み込み・アニメーション"
     },
     {
@@ -122,7 +122,7 @@
       "description": "BASE多言語・Instagram連携・外貨表示・アプリ統合"
     }
   ],
-  "totalOriginalSize": 75030,
-  "totalOptimizedSize": 54913,
+  "totalOriginalSize": 75096,
+  "totalOptimizedSize": 54955,
   "totalReduction": "26.8"
 }

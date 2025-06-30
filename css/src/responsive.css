@@ -94,8 +94,10 @@
     }
     
     .related-products-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: 1fr;
         gap: 20px;
+        max-width: 400px;
+        margin: 0 auto;
     }
     
     .related-products-title {
@@ -105,6 +107,7 @@
     
     .related-product-title {
         font-size: 0.9rem;
+        letter-spacing: 0.5px;
     }
     
     .related-product-price {
