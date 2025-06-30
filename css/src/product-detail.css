@@ -1,24 +1,44 @@
 /* HOLY LABEL Product Detail CSS Library */
 
-/* 商品詳細ページ - 元の仕様に準拠したデスクトップレイアウト */
+/* 商品詳細ページ - デスクトップ版フルハイト2カラムレイアウト */
 .product-detail {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    max-width: 1200px;
-    margin: 80px auto;
-    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    max-width: none;
 }
 
-/* デスクトップレイアウト追加制御 */
+/* デスクトップレイアウト - フルスクリーン横並び */
 @media (min-width: 1024px) {
     .product-detail {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 60px;
-        max-width: 1200px;
-        margin: 80px auto;
-        padding: 0 40px;
+        display: flex;
+        flex-direction: row;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+        gap: 0;
+    }
+    
+    .product-detail-image {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        background-color: #000;
+        height: 100vh;
+    }
+    
+    .product-detail-info {
+        flex: 1;
+        max-width: 550px;
+        padding: 50px 40px;
+        box-sizing: border-box;
+        height: 100vh;
+        overflow-y: auto;
+        border-left: 1px solid var(--border-color);
+        background-color: var(--primary-bg);
     }
 }
 
@@ -42,7 +62,7 @@
     transform: scale(1.02);
 }
 
-.product-detail-info {
+    .product-detail-info {
     padding: 0;
 }
 
@@ -290,7 +310,7 @@ body .product-detail.desktop-layout .main-image-item img {
     }
 }
 
-/* カルーセルナビゲーション */
+/* カルーセルナビゲーション - デスクトップのみ表示 */
 .carousel-nav {
     position: absolute;
     top: 50%;
@@ -303,10 +323,18 @@ body .product-detail.desktop-layout .main-image-item img {
     border-radius: 50%;
     cursor: pointer;
     z-index: 10;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    pointer-events: auto;
+}
+
+/* デスクトップ版でのみナビゲーションボタンを表示 */
+@media (min-width: 1024px) {
+    .carousel-nav {
+        display: flex;
+    }
 }
 
 .carousel-nav:hover {
@@ -322,13 +350,30 @@ body .product-detail.desktop-layout .main-image-item img {
 }
 
 .carousel-nav svg {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
+    font-weight: 100;
 }
 
-/* 画像カウンター（デスクトップでは非表示） */
+/* 画像カウンター - モバイルのみ表示 */
 .image-counter {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
     display: none;
+}
+
+/* モバイル版でのみカウンターを表示 */
+@media (max-width: 1023px) {
+    .image-counter {
+        display: block;
+    }
 }
 
 /* サムネイル横スクロールコンテナ */
@@ -395,14 +440,16 @@ body .product-detail.desktop-layout .main-image-item img {
         flex: none;
         height: auto;
         aspect-ratio: 1 / 1.1;
-        background-color: transparent;
-        overflow: visible;
+        background-color: #000;
+        overflow: hidden;
         cursor: grab;
+        position: relative;
     }
     
     .main-image-wrapper {
         height: auto;
         margin-bottom: 12px;
+        position: relative;
     }
     
     .main-image-container {

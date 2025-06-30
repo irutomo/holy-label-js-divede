@@ -86,8 +86,8 @@
                     
                     if (validIndex !== this.currentIndex) {
                         this.currentIndex = validIndex;
-                        this.updateUI();
-                    }
+                    this.updateUI();
+                }
                 }, 100); // デバウンス時間を100msに調整
             });
 
