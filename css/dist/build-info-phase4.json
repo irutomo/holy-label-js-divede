@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-30T06:05:32.869Z",
+  "timestamp": "2025-06-30T07:16:39.684Z",
   "phase": "Phase 4",
   "libraries": [
     {
@@ -46,9 +46,9 @@
     },
     {
       "name": "responsive",
-      "originalSize": 9253,
-      "optimizedSize": 5383,
-      "reduction": 41.8
+      "originalSize": 9366,
+      "optimizedSize": 5498,
+      "reduction": 41.3
     },
     {
       "name": "footer-pages",
@@ -98,7 +98,7 @@
     },
     {
       "name": "responsive-bundle",
-      "size": 5371,
+      "size": 5486,
       "description": "レスポンシブ・メディアクエリ・モバイル対応"
     },
     {
@@ -122,7 +122,7 @@
       "description": "BASE多言語・Instagram連携・外貨表示・アプリ統合"
     }
   ],
-  "totalOriginalSize": 79462,
-  "totalOptimizedSize": 57456,
+  "totalOriginalSize": 79575,
+  "totalOptimizedSize": 57571,
   "totalReduction": "27.7"
 }
