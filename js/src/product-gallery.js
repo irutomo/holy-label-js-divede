@@ -64,13 +64,25 @@
 
         // イベントリスナーの設定
         addEventListeners() {
-            // メイン画像のスワイプ（スクロール）を検知
+            // メイン画像のスワイプ（スクロール）を検知（デバウンス処理付き）
+            let scrollTimeout;
             this.elements.mainContainer.addEventListener('scroll', () => {
-                const newIndex = Math.round(this.elements.mainContainer.scrollLeft / this.elements.mainContainer.offsetWidth);
-                if (newIndex !== this.currentIndex) {
-                    this.currentIndex = newIndex;
-                    this.updateUI();
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
                 }
+                scrollTimeout = setTimeout(() => {
+                    const containerWidth = this.elements.mainContainer.offsetWidth;
+                    const scrollLeft = this.elements.mainContainer.scrollLeft;
+                    const newIndex = Math.round(scrollLeft / containerWidth);
+                    
+                    // インデックスが範囲内であることを確認
+                    const validIndex = Math.max(0, Math.min(newIndex, this.images.length - 1));
+                    
+                    if (validIndex !== this.currentIndex) {
+                        this.currentIndex = validIndex;
+                        this.updateUI();
+                    }
+                }, 50); // 50msのデバウンス
             });
 
             // サムネイルのクリックを検知
@@ -82,13 +94,19 @@
                 }
             });
 
-            // 矢印クリック検知
+            // 矢印クリック検知（イベント重複防止）
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             
             if (prevBtn && nextBtn) {
-                prevBtn.addEventListener('click', () => this.scrollToImage(this.currentIndex - 1));
-                nextBtn.addEventListener('click', () => this.scrollToImage(this.currentIndex + 1));
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.scrollToImage(this.currentIndex - 1);
+                });
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.scrollToImage(this.currentIndex + 1);
+                });
             }
 
             // ズームボタン機能
@@ -111,7 +129,7 @@
             });
         },
 
-        // 特定の画像へスクロール
+        // 特定の画像へスクロール（修正版）
         scrollToImage(index) {
             if (this.images.length === 0) return;
             
@@ -123,12 +141,19 @@
                 newIndex = 0;
             }
             
+            // インデックスが変わらない場合は処理しない
+            if (newIndex === this.currentIndex) return;
+            
             this.currentIndex = newIndex;
-            const scrollPosition = newIndex * this.elements.mainContainer.offsetWidth;
+            const containerWidth = this.elements.mainContainer.offsetWidth;
+            const scrollPosition = newIndex * containerWidth;
+            
             this.elements.mainContainer.scrollTo({
                 left: scrollPosition,
                 behavior: 'smooth'
             });
+            
+            // UIを即座に更新
             this.updateUI();
         },
 

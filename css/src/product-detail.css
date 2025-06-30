@@ -1,45 +1,35 @@
 /* HOLY LABEL Product Detail CSS Library */
 
-/* 商品詳細ページ - デスクトップ用左右分割レイアウト（強化版） */
-body .product-detail.desktop-layout {
-    display: flex !important;
-    flex-direction: row !important;
-    width: 100% !important;
-    min-height: 100vh !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    max-width: none !important;
+/* 商品詳細ページ - 元の仕様に準拠したデスクトップレイアウト */
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 0 40px;
 }
 
-/* デスクトップレイアウト時のデフォルト設定（1024px以上で自動適用） */
+/* デスクトップレイアウト追加制御 */
 @media (min-width: 1024px) {
     .product-detail {
-        display: flex !important;
-        flex-direction: row !important;
-        width: 100% !important;
-        min-height: 100vh !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width: none !important;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        max-width: 1200px;
+        margin: 80px auto;
+        padding: 0 40px;
     }
 }
 
-body .product-detail.desktop-layout .product-detail-image {
-    flex: 1 !important;
-    height: 100vh !important;
-    position: relative !important;
-    overflow: hidden !important;
-    background-color: #000 !important;
+.product-detail-image {
+    position: relative;
 }
 
-@media (min-width: 1024px) {
-    .product-detail-image {
-        flex: 1 !important;
-        height: 100vh !important;
-        position: relative !important;
-        overflow: hidden !important;
-        background-color: #000 !important;
-    }
+/* メイン画像コンテナ */
+.main-image-container {
+    position: relative;
+    margin-bottom: var(--space-md);
 }
 
 .main-image-container img {
@@ -52,26 +42,8 @@ body .product-detail.desktop-layout .product-detail-image {
     transform: scale(1.02);
 }
 
-body .product-detail.desktop-layout .product-detail-info {
-    flex: 1 !important;
-    max-width: 550px !important;
-    height: 100vh !important;
-    overflow-y: auto !important;
-    padding: 50px 40px !important;
-    border-left: 1px solid var(--border-color) !important;
-    box-sizing: border-box !important;
-}
-
-@media (min-width: 1024px) {
-    .product-detail-info {
-        flex: 1 !important;
-        max-width: 550px !important;
-        height: 100vh !important;
-        overflow-y: auto !important;
-        padding: 50px 40px !important;
-        border-left: 1px solid var(--border-color) !important;
-        box-sizing: border-box !important;
-    }
+.product-detail-info {
+    padding: 0;
 }
 
 .product-detail-title {

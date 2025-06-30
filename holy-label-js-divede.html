@@ -1,3 +1,4 @@
+{block:NotLoadItemsPage}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -148,6 +149,31 @@
             letter-spacing: 2px;
             font-weight: var(--weight-light);
         }
+        /*
+           商品グリッド - レスポンシブ対応
+ */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* タブレット（768px以上） */
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* デスクトップ（1024px以上） */
+        @media (min-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
         /*
            商品情報・価格表示（一覧では非表示）
  */
@@ -1978,8 +2004,8 @@
     </a>
     <footer class="footer">
         <div class="footer-links">
-            <a href="{PrivacyPageURL}">{lang:Privacy}</a>
-            <a href="{LawPageURL}">{lang:Law}</a>
+            <a href="{PrivacyPageURL}">PRIVACY POLICY</a>
+            <a href="{LawPageURL}">LEGAL INFORMATION</a>
             <a href="{ContactPageURL}">CONTACT</a>
                     </div>
         <div class="copyright">
@@ -2016,6 +2042,28 @@
                 }
             } else {
                 console.error('✗ NavigationManager外部ライブラリが読み込まれていません');
+            }
+            
+            // 商品画像ギャラリーの初期化
+            if (window.HolyLabelProductGallery) {
+                try {
+                    window.HolyLabelProductGallery.init();
+                    console.log('✓ ProductGallery初期化完了');
+                } catch (e) {
+                    console.error('✗ ProductGallery初期化エラー:', e);
+                }
+            } else {
+                console.error('✗ ProductGallery外部ライブラリが読み込まれていません');
+            }
+            
+            // LoadMoreManager（Ajax読み込み）の初期化
+            if (window.HolyLabelLoadMoreManager) {
+                try {
+                    window.HolyLabelLoadMoreManager.init();
+                    console.log('✓ LoadMoreManager初期化完了');
+                } catch (e) {
+                    console.error('✗ LoadMoreManager初期化エラー:', e);
+                }
             }
             
             // デスクトップレイアウト制御（商品詳細ページ）
