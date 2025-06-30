@@ -1,0 +1,237 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# HOLY LABEL 外部ライブラリプロジェクト - Cursor開発ルール
+
+## 🎯 プロジェクト概要
+HOLY LABEL BASE専用ECテーマの外部ライブラリ開発プロジェクト
+- メインHTML: 90.8KB（BASEの150,000文字制限内）
+- 外部JS: 13.7KB（圧縮済み）
+- 外部CSS: 35.1KB（圧縮済み）
+- CDN配信: jsDelivr経由でGitHub自動連携
+
+## 📁 プロジェクト構造理解
+```
+holy-label-js-divede/
+├── holy-label-js-divede.html     # メインHTMLファイル（BASE用）
+├── js/                           # JavaScript外部化
+│   ├── src/                      # ソースファイル（12ファイル）
+│   ├── dist/                     # 圧縮済みライブラリ（25ファイル）
+│   ├── config/                   # ビルド設定
+│   └── build.js                  # ビルドスクリプト
+├── css/                          # CSS外部化  
+│   ├── src/                      # ソースファイル（12ファイル）
+│   ├── dist/                     # 圧縮済みライブラリ（21ファイル）
+│   ├── config/                   # ビルド設定
+│   └── build.js                  # ビルドスクリプト
+└── docs/                         # プロジェクトドキュメント
+```
+
+## 🏗️ 外部ライブラリアーキテクチャ
+
+### JavaScript ライブラリ階層（依存関係順）
+1. **Phase 1: Core Bundle（基盤機能）**
+   - dom-utils.js: DOM操作の基盤（2.0KB）
+   - page-state.js: ページ状態管理（2.9KB）
+   - animation-config.js: アニメーション設定（2.9KB）
+
+2. **Phase 2: Extended Bundle（拡張機能）**
+   - animation-manager.js: アニメーション管理（5.7KB）
+   - navigation-manager.js: ナビゲーション管理（5.9KB）
+   - modal-utils.js: モーダル機能（7.6KB）
+
+3. **Phase 3: Advanced Bundle（高度機能）**
+   - product-gallery.js: 商品画像ギャラリー（12KB）
+   - loadmore-manager.js: Ajax読み込み（9.6KB）
+   - logo-manager.js: ロゴ管理（7.0KB）
+
+4. **Phase 4: Final Bundle（最終機能）**
+   - initialization-manager.js: 初期化管理（6.8KB）
+   - language-manager.js: 多言語管理（6.1KB）
+   - scroll-manager.js: スクロール管理（7.8KB）
+
+### CSS ライブラリ階層
+1. **Foundation Bundle**: foundation.css + layout.css
+2. **Components Bundle**: base-menu.css + product-components.css + animations.css
+3. **Product Bundle**: product-detail.css + forms.css + responsive.css + footer-pages.css
+4. **Special Bundle**: special-pages.css + ui-components.css + base-integration.css
+
+## 💻 開発ルール
+
+### 1. ファイル編集規則
+
+#### JavaScript開発
+- **編集対象**: `js/src/` 内のソースファイルのみ
+- **禁止**: `js/dist/` 内の圧縮済みファイルの直接編集
+- **ビルド必須**: 編集後は必ず `cd js && npm run build` 実行
+- **命名規則**: グローバル変数は `window.HolyLabel*` 形式維持
+
+#### CSS開発
+- **編集対象**: `css/src/` 内のソースファイルのみ
+- **禁止**: `css/dist/` 内の圧縮済みファイルの直接編集
+- **ビルド必須**: 編集後は必ず `cd css && npm run build` 実行
+- **CSS変数**: foundation.css内の`:root`変数を活用
+
+### 2. 後方互換性維持（重要）
+
+#### 絶対に変更禁止
+```javascript
+// ❌ 関数名・クラス名の変更禁止
+window.HolyLabelDOMUtils
+window.HolyLabelPageState
+window.HolyLabelNavigationManager
+window.HolyLabelAnimationManager
+// 以下、全HolyLabel*系のグローバル変数
+
+// ❌ 既存メソッドの削除禁止
+HolyLabelNavigationManager.toggleMenu()
+HolyLabelModalUtils.open()
+HolyLabelProductImageGallery.init()
+```
+
+#### 安全な変更方法
+```javascript
+// ✅ メソッドの追加は安全
+HolyLabelNavigationManager.newFeature = function() {
+  // 新機能追加
+};
+
+// ✅ 内部実装の改善は安全（インターフェース維持）
+HolyLabelNavigationManager.toggleMenu = function() {
+  // 内部実装を改善
+};
+```
+
+### 3. BASE仕様準拠
+
+#### BASEテンプレート構文の完全除去
+```javascript
+// ❌ BASEテンプレート構文を残さない
+{block:IfShowAnimation}
+// アニメーション処理
+{/block:IfShowAnimation}
+
+// ✅ プレーンJavaScriptに変換
+if (document.body.classList.contains('animation-enabled')) {
+  // アニメーション処理
+}
+```
+
+#### CSS クラス名の保持
+```css
+/* ✅ BASE標準のクラス名は必ず保持 */
+.product-item { ... }
+.cart-button { ... }
+.shop-nav { ... }
+```
+
+### 4. パフォーマンス制限
+
+#### ファイルサイズ制限
+- **JavaScript単一バンドル**: 5KB以下推奨
+- **CSS単一バンドル**: 10KB以下推奨
+- **全体合計**: 50KB以下維持
+
+#### 外部ライブラリ制限
+```javascript
+// ❌ 重いライブラリの追加禁止
+// jQuery、lodash、moment.js 等の大きなライブラリ
+
+// ✅ 軽量・必要最小限の機能のみ
+// ネイティブJavaScript実装を優先
+```
+
+## 🔧 開発ワークフロー
+
+### 1. セットアップ
+```bash
+# JavaScript依存関係インストール
+cd js && npm install
+
+# CSS依存関係インストール
+cd ../css && npm install
+```
+
+### 2. 開発サイクル
+```bash
+# 1. ソースファイル編集
+vim js/src/navigation-manager.js
+
+# 2. ビルド実行
+cd js && npm run build
+
+# 3. ローカル確認
+# holy-label-js-divede.html をブラウザで開く
+
+# 4. 機能テスト（ブラウザコンソール）
+HolyLabelNavigationManager.toggleMenu();
+```
+
+### 3. デプロイ
+```bash
+# 1. 変更をステージング
+git add .
+
+# 2. 詳細なコミット
+git commit -m "機能名: 修正内容の詳細
+
+- 具体的な変更点1
+- 具体的な変更点2
+- テスト結果
+- 影響範囲"
+
+# 3. GitHubにプッシュ
+git push origin main
+
+# 4. jsDelivr CDNに自動反映（5-10分後）
+```
+
+## 🧪 テスト・検証
+
+### 必須チェック項目
+```javascript
+// 1. ライブラリ読み込み確認
+console.log('Core:', !!window.HolyLabelDOMUtils);
+console.log('Extended:', !!window.HolyLabelAnimationManager);
+console.log('Advanced:', !!window.HolyLabelProductImageGallery);
+console.log('Final:', !!window.HolyLabelInitializationManager);
+
+// 2. 個別機能テスト
+HolyLabelNavigationManager.toggleMenu();  // ハンバーガーメニュー
+HolyLabelModalUtils.open('test-modal');   // モーダル機能
+HolyLabelProductImageGallery.init();      // ギャラリー機能
+```
+
+### ブラウザ確認
+- **Console**: JavaScriptエラーがないか確認
+- **Network**: ファイル読み込み状況確認
+- **Elements**: CSS適用状況確認
+
+## 🚫 注意事項・禁止事項
+
+### 絶対にやってはいけないこと
+1. **`dist/`フォルダの直接編集**: 圧縮済みファイルの手動変更
+2. **グローバル変数名の変更**: `window.HolyLabel*`の変更
+3. **既存メソッドの削除**: 後方互換性破壊
+4. **BASEテンプレート構文の残存**: プレーンJSに変換必須
+5. **重いライブラリの追加**: ファイルサイズ制限違反
+
+### 推奨事項
+1. **段階的機能追加**: 一度に大きな変更をしない
+2. **十分なテスト**: 各段階で動作確認
+3. **詳細なコミットメッセージ**: 変更内容の明確化
+4. **ドキュメント更新**: 重要な変更時はドキュメント更新
+
+## 🎯 開発目標
+- **高性能**: 軽量で高速なライブラリ
+- **モジュラー**: 独立したコンポーネント設計
+- **BASE準拠**: BASE仕様完全対応
+- **保守性**: 将来の拡張・修正が容易
+
+## 📚 参考ドキュメント
+- `docs/MAINTENANCE.md`: メンテナンスガイド
+- `docs/CDN-REFERENCE.md`: CDNリファレンス
+- `docs/IMPLEMENTATION.md`: 実装ガイド
+- `docs/TROUBLESHOOTING.md`: トラブルシューティング 
