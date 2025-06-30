@@ -2,9 +2,9 @@
 
 ## 🎯 プロジェクト概要
 HOLY LABEL BASE専用ECテーマの外部ライブラリ開発プロジェクト
-- メインHTML: 90.8KB（BASEの150,000文字制限内）
-- 外部JS: 13.7KB（圧縮済み）
-- 外部CSS: 35.1KB（圧縮済み）
+- メインHTML: 35.1KB（BASEの150,000文字制限内）
+- 外部JS: 80.3KB（圧縮済み）
+- 外部CSS: 59.8KB（圧縮済み）
 - CDN配信: jsDelivr経由でGitHub自動連携
 
 ## 📁 プロジェクト構造理解
@@ -13,12 +13,12 @@ holy-label-js-divede/
 ├── holy-label-js-divede.html     # メインHTMLファイル（BASE用）
 ├── js/                           # JavaScript外部化
 │   ├── src/                      # ソースファイル（12ファイル）
-│   ├── dist/                     # 圧縮済みライブラリ（25ファイル）
+│   ├── dist/                     # 圧縮済みライブラリ（29ファイル）
 │   ├── config/                   # ビルド設定
 │   └── build.js                  # ビルドスクリプト
 ├── css/                          # CSS外部化  
-│   ├── src/                      # ソースファイル（12ファイル）
-│   ├── dist/                     # 圧縮済みライブラリ（21ファイル）
+│   ├── src/                      # ソースファイル（13ファイル）
+│   ├── dist/                     # 圧縮済みライブラリ（24ファイル + 10バンドル）
 │   ├── config/                   # ビルド設定
 │   └── build.js                  # ビルドスクリプト
 └── docs/                         # プロジェクトドキュメント
@@ -47,11 +47,27 @@ holy-label-js-divede/
    - language-manager.js: 多言語管理（6.1KB）
    - scroll-manager.js: スクロール管理（7.8KB）
 
-### CSS ライブラリ階層
-1. **Foundation Bundle**: foundation.css + layout.css
-2. **Components Bundle**: base-menu.css + product-components.css + animations.css
-3. **Product Bundle**: product-detail.css + forms.css + responsive.css + footer-pages.css
-4. **Special Bundle**: special-pages.css + ui-components.css + base-integration.css
+### CSS ライブラリ階層（13ソースファイル → 34ファイル配信）
+**Foundation Bundle（基盤）**
+- foundation.css: CSS変数・リセット（1.3KB）
+- layout.css: レイアウト・ナビゲーション（2.6KB）
+
+**Components Bundle（コンポーネント）**
+- base-menu.css: BASEメニュー統合（3.3KB）
+- product-components.css: 商品コンポーネント（3.5KB）
+- animations.css: アニメーション定義（1.8KB）
+
+**Product Bundle（商品関連・4分割）**
+- product-detail.css: 商品詳細ページ（8.7KB）
+- forms.css: フォーム要素（3.3KB）
+- responsive.css: レスポンシブ対応（5.4KB）
+- footer-pages.css: フッター・ページ要素（4.3KB）
+
+**Special Bundle（特殊機能・4分割）**
+- special-pages.css: 特殊ページ（LOOKBOOK等）（7.3KB）
+- ui-components.css: 高度UIコンポーネント（7.0KB）
+- base-integration.css: BASE固有機能統合（7.6KB）
+- remaining-styles.css: HTMLから分離した残存CSS（5.0KB）
 
 ## 💻 開発ルール
 
@@ -125,9 +141,9 @@ if (document.body.classList.contains('animation-enabled')) {
 ### 4. パフォーマンス制限
 
 #### ファイルサイズ制限
-- **JavaScript単一バンドル**: 5KB以下推奨
+- **JavaScript単一バンドル**: 25KB以下推奨
 - **CSS単一バンドル**: 10KB以下推奨
-- **全体合計**: 50KB以下維持
+- **全体合計**: 200KB以下維持
 
 #### 外部ライブラリ制限
 ```javascript
@@ -229,4 +245,26 @@ HolyLabelProductImageGallery.init();      // ギャラリー機能
 - `docs/MAINTENANCE.md`: メンテナンスガイド
 - `docs/CDN-REFERENCE.md`: CDNリファレンス
 - `docs/IMPLEMENTATION.md`: 実装ガイド
-- `docs/TROUBLESHOOTING.md`: トラブルシューティング 
+- `docs/TROUBLESHOOTING.md`: トラブルシューティング
+
+## 🔍 Cursor AI 編集支援ルール
+
+### 1. ファイル構造の理解
+- CSS: 13ソースファイル → 24個別ファイル + 10バンドル
+- JS: 12ソースファイル → 個別ファイル + 4バンドル
+- remaining-styles.cssはHTMLから分離した重要なファイル
+
+### 2. 編集時の自動確認
+- ソースファイル編集後、必ずビルドコマンド提案
+- グローバル変数名変更を検出時、警告表示
+- BASEテンプレート構文残存を検出時、除去提案
+
+### 3. 段階的開発支援
+- 大きな変更時は段階的アプローチを提案
+- テストコード例を自動提示
+- デプロイ前チェックリスト提示
+
+### 4. 保守性向上
+- コードコメント追加提案
+- 依存関係の明確化
+- パフォーマンス影響の事前評価 
