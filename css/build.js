@@ -32,7 +32,10 @@ const cssLibraries = [
     // Phase 4: 特殊ページ・UI・統合機能CSS (新規)
     { name: 'special-pages', input: 'special-pages.css' },
     { name: 'ui-components', input: 'ui-components.css' },
-    { name: 'base-integration', input: 'base-integration.css' }
+    { name: 'base-integration', input: 'base-integration.css' },
+    
+    // Phase 5: 残存スタイル外部化 (NEW)
+    { name: 'remaining-styles', input: 'remaining-styles.css' }
 ];
 
 // バンドル設定
@@ -93,6 +96,13 @@ const bundles = [
         name: 'base-integration-bundle',
         files: ['base-integration.min.css'],
         description: 'BASE多言語・Instagram連携・外貨表示・アプリ統合'
+    },
+    
+    // Phase 5 バンドル (NEW)
+    {
+        name: 'remaining-styles-bundle',
+        files: ['remaining-styles.min.css'],
+        description: 'HTMLから分離した残存インラインCSS'
     }
 ];
 

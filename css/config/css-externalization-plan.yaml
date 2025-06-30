@@ -109,6 +109,23 @@ phase_4:
       - "BASEアプリ統合機能"
       - "情報バナー対応"
 
+# Phase 5: 残存スタイル外部化 (NEW)
+phase_5:
+  remaining_styles:
+    target_file: "remaining-styles.css"
+    description: "HTMLから分離した残存インラインCSS"
+    estimated_size: "~15KB"
+    css_sections:
+      - "z-index変数定義"
+      - "ナビゲーションエリア"
+      - "商品ステータス表示"
+      - "商品グリッド・商品情報"
+      - "ソーシャル・商品注意書き"
+      - "ページコンテンツ"
+      - "ハンバーガーボタン"
+      - "ローディング・状態管理"
+      - "BASE固有スタイル調整"
+
 # バンドル設定
 bundles:
   foundation_bundle:
@@ -157,6 +174,12 @@ bundles:
     files: ["base-integration.min.css"]
     output: "base-integration-bundle.min.css"
     cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/base-integration-bundle.min.css"
+
+  # Phase 5 新規バンドル
+  remaining_styles_bundle:
+    files: ["remaining-styles.min.css"]
+    output: "remaining-styles-bundle.min.css"
+    cdn_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/remaining-styles-bundle.min.css"
 
 # CDN設定
 cdn:
