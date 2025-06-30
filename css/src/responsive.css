@@ -153,6 +153,43 @@
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    /* 関連商品 - タブレット2カラム */
+    .related-products {
+        margin-top: 70px;
+        padding: 50px 30px;
+    }
+    
+    .related-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .related-products-title {
+        font-size: 1.3rem;
+        margin-bottom: 45px;
+    }
+    
+    .related-product-item {
+        text-align: center;
+    }
+    
+    .related-product-image {
+        max-width: none;
+        margin: 0;
+    }
+    
+    .related-product-title {
+        font-size: 0.95rem;
+        letter-spacing: 0.8px;
+        padding: 0;
+    }
+    
+    .related-product-price {
+        font-size: 0.85rem;
+    }
 }
 
 /* デスクトップ（1024px以上） */
@@ -185,6 +222,43 @@
     /* 商品セクション - デスクトップ */
     .product-section {
         padding: 0 40px;
+    }
+    
+    /* 関連商品 - デスクトップ3カラム */
+    .related-products {
+        margin-top: 80px;
+        padding: 60px 40px;
+    }
+    
+    .related-products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .related-products-title {
+        font-size: 1.4rem;
+        margin-bottom: 50px;
+    }
+    
+    .related-product-item {
+        text-align: center;
+    }
+    
+    .related-product-image {
+        max-width: none;
+        margin: 0;
+    }
+    
+    .related-product-title {
+        font-size: 1rem;
+        letter-spacing: 1px;
+        padding: 0;
+    }
+    
+    .related-product-price {
+        font-size: 0.9rem;
     }
     
     /* ナビゲーション - デスクトップ調整 */
