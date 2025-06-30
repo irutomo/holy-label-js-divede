@@ -13,6 +13,7 @@
         // プロパティ
         currentIndex: 0,
         images: [],
+        isScrolling: false, // スクロール中フラグを追加
         elements: {
             mainContainer: null,
             thumbnailContainer: null,
@@ -64,9 +65,14 @@
 
         // イベントリスナーの設定
         addEventListeners() {
-            // メイン画像のスワイプ（スクロール）を検知（デバウンス処理付き）
+            // メイン画像のスワイプ（スクロール）を検知（改良版）
             let scrollTimeout;
             this.elements.mainContainer.addEventListener('scroll', () => {
+                // 矢印ボタンによるスクロール中は処理をスキップ
+                if (this.isScrolling) {
+                    return;
+                }
+                
                 if (scrollTimeout) {
                     clearTimeout(scrollTimeout);
                 }
@@ -82,7 +88,7 @@
                         this.currentIndex = validIndex;
                         this.updateUI();
                     }
-                }, 50); // 50msのデバウンス
+                }, 100); // デバウンス時間を100msに調整
             });
 
             // サムネイルのクリックを検知
@@ -94,17 +100,19 @@
                 }
             });
 
-            // 矢印クリック検知（イベント重複防止）
+            // 矢印クリック検知（改良版）
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             
             if (prevBtn && nextBtn) {
                 prevBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     this.scrollToImage(this.currentIndex - 1);
                 });
                 nextBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     this.scrollToImage(this.currentIndex + 1);
                 });
             }
@@ -129,9 +137,9 @@
             });
         },
 
-        // 特定の画像へスクロール（修正版）
+        // 特定の画像へスクロール（修正版 - 二重処理防止）
         scrollToImage(index) {
-            if (this.images.length === 0) return;
+            if (this.images.length === 0 || this.isScrolling) return;
             
             // ループ機能追加
             let newIndex = index;
@@ -144,7 +152,10 @@
             // インデックスが変わらない場合は処理しない
             if (newIndex === this.currentIndex) return;
             
+            // スクロール中フラグを設定
+            this.isScrolling = true;
             this.currentIndex = newIndex;
+            
             const containerWidth = this.elements.mainContainer.offsetWidth;
             const scrollPosition = newIndex * containerWidth;
             
@@ -155,6 +166,11 @@
             
             // UIを即座に更新
             this.updateUI();
+            
+            // スクロール完了後にフラグをリセット（500ms後）
+            setTimeout(() => {
+                this.isScrolling = false;
+            }, 500);
         },
 
         // ズームモーダルを開く
