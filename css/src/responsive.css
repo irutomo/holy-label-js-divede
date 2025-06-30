@@ -90,28 +90,42 @@
     /* 関連商品（モバイル） */
     .related-products {
         margin-top: 60px;
-        padding: 40px 20px;
+        padding: 40px 15px;
     }
     
     .related-products-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
-        max-width: 400px;
+        gap: 30px;
+        max-width: 280px;
         margin: 0 auto;
     }
     
     .related-products-title {
         font-size: 1.2rem;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
+    .related-product-item {
+        text-align: center;
+        margin: 0 auto;
+    }
+    
+    .related-product-image {
+        max-width: 280px;
+        margin: 0 auto;
     }
     
     .related-product-title {
         font-size: 0.9rem;
         letter-spacing: 0.5px;
+        text-align: center;
+        padding: 0 10px;
     }
     
     .related-product-price {
         font-size: 0.8rem;
+        text-align: center;
     }
     
     /* フッター（モバイル） */
