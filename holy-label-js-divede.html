@@ -56,9 +56,6 @@
     <!-- HOLY LABEL CSS外部化 Phase 5: 残存スタイル -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/remaining-styles-bundle.min.css">
     
-    <!-- HOLY LABEL JavaScript外部ライブラリ -->
-    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
-    
     <style>
         /* BASE色設定の活用（BASEテンプレート構文のためHTMLに残存必須） */
         {block:TextColor}body { color: {TextColor} !important; }{/block:TextColor}
@@ -86,7 +83,7 @@
     {block:AppsI18n}{AppsI18nTag}{/block:AppsI18n}
     <div class="base-menu-container">
 {BASEMenuTag}
-                            </div>
+    </div>
     <button id="js-humberger" type="button" class="humberger" aria-controls="navigation" aria-expanded="false">
         <span class="humberger__line"></span>
     </button>
@@ -102,39 +99,39 @@
                 </form>
             </div>
         {/block:AppsSearch}
-                 <ul class="global-navigation__list mb4">
-             <li><a href="{IndexPageURL}">HOME</a></li>
-             <li>
-                 <a class="expand" href="#">ITEM</a>
-                 <ul class="ex-list" style="display: none;">
-                     {block:AppsItemCategory}
-                         {block:AppsItemCategoryCategories}
-                             <li><a href="{AppsItemCategoryCategoryPageURL}">{AppsItemCategoryCategoryName}</a></li>
-                             {block:HasAppsItemCategoryMediumCategories}
-                                 {block:AppsItemCategoryMediumCategories}
-                                     <li class="sub-category"><a href="{AppsItemCategoryMediumCategoryPageURL}">{AppsItemCategoryMediumCategoryName}</a></li>
-                                 {/block:AppsItemCategoryMediumCategories}
-                             {/block:HasAppsItemCategoryMediumCategories}
-                         {/block:AppsItemCategoryCategories}
-                     {/block:AppsItemCategory}
-                     <li style="display: none;" class="no-category-message">
-                         <span style="color: #666; font-size: 0.9rem; font-weight: 300;">カテゴリが設定されていません</span>
-                     </li>
-                 </ul>
-             </li>
-             {block:AppsBlog}
-                 <li><a href="{BlogPageURL}">LOOK BOOK</a></li>
-             {/block:AppsBlog}
-             <li><a href="{AboutPageURL}">ABOUT</a></li>
-             <li><a href="{ContactPageURL}">CONTACT</a></li>
-         </ul>
-         
-         {block:AppsI18n}
-             <div class="custom-language-switcher">
-                 <a href="#" onclick="switchLanguage('ja'); return false;" id="lang-ja" class="active">JA</a>
-                 <a href="#" onclick="switchLanguage('en'); return false;" id="lang-en">EN</a>
-             </div>
-         {/block:AppsI18n}
+        <ul class="global-navigation__list mb4">
+            <li><a href="{IndexPageURL}">HOME</a></li>
+            <li>
+                <a class="expand" href="#">ITEM</a>
+                <ul class="ex-list" style="display: none;">
+                    {block:AppsItemCategory}
+                        {block:AppsItemCategoryCategories}
+                            <li><a href="{AppsItemCategoryCategoryPageURL}">{AppsItemCategoryCategoryName}</a></li>
+                            {block:HasAppsItemCategoryMediumCategories}
+                                {block:AppsItemCategoryMediumCategories}
+                                    <li class="sub-category"><a href="{AppsItemCategoryMediumCategoryPageURL}">{AppsItemCategoryMediumCategoryName}</a></li>
+                                {/block:AppsItemCategoryMediumCategories}
+                            {/block:HasAppsItemCategoryMediumCategories}
+                        {/block:AppsItemCategoryCategories}
+                    {/block:AppsItemCategory}
+                    <li style="display: none;" class="no-category-message">
+                        <span style="color: #666; font-size: 0.9rem; font-weight: 300;">カテゴリが設定されていません</span>
+                    </li>
+                </ul>
+            </li>
+            {block:AppsBlog}
+                <li><a href="{BlogPageURL}">LOOK BOOK</a></li>
+            {/block:AppsBlog}
+            <li><a href="{AboutPageURL}">ABOUT</a></li>
+            <li><a href="{ContactPageURL}">CONTACT</a></li>
+        </ul>
+        
+        {block:AppsI18n}
+            <div class="custom-language-switcher">
+                <a href="#" onclick="switchLanguage('ja'); return false;" id="lang-ja" class="active">JA</a>
+                <a href="#" onclick="switchLanguage('en'); return false;" id="lang-en">EN</a>
+            </div>
+        {/block:AppsI18n}
     </div>
     {block:IndexPage}
         <span id="max_page" style="display: none;">{MaxPageNumber}</span>
@@ -497,77 +494,238 @@
             <small>© {ShopName} All rights reserved.</small>
     </div>
 </footer>
-    <!-- HOLY LABEL 外部ライブラリ（基盤ライブラリ） -->
-    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js"></script>
-    
-    <!-- HOLY LABEL 外部ライブラリ（拡張機能） -->
-    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js"></script>
-    
-    <!-- HOLY LABEL 外部ライブラリ（高度機能） -->
-    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
-    
-    <!-- HOLY LABEL 外部ライブラリ（最終システム） -->
-    <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
-    
-    <script>
-        // HOLY LABEL 外部ライブラリ初期化（最小限）
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('=== HOLY LABEL 外部ライブラリ初期化開始 ===');
-            
-            // ローディング状態解除
-            document.body.classList.add('loaded');
-            
-            // 外部ライブラリの初期化
-            if (window.HolyLabelNavigationManager) {
-                try {
-                    window.HolyLabelNavigationManager.init();
-                    console.log('✓ NavigationManager初期化完了');
-                } catch (e) {
-                    console.error('✗ NavigationManager初期化エラー:', e);
-                }
-            } else {
-                console.error('✗ NavigationManager外部ライブラリが読み込まれていません');
-            }
-            
-            // 商品画像ギャラリーの初期化
-            if (window.HolyLabelProductGallery) {
-                try {
-                    window.HolyLabelProductGallery.init();
-                    console.log('✓ ProductGallery初期化完了');
-                } catch (e) {
-                    console.error('✗ ProductGallery初期化エラー:', e);
-                }
-            } else {
-                console.error('✗ ProductGallery外部ライブラリが読み込まれていません');
-            }
-            
-            // LoadMoreManager（Ajax読み込み）の初期化
-            if (window.HolyLabelLoadMoreManager) {
-                try {
-                    window.HolyLabelLoadMoreManager.init();
-                    console.log('✓ LoadMoreManager初期化完了');
-                } catch (e) {
-                    console.error('✗ LoadMoreManager初期化エラー:', e);
-                }
-            }
-            
-            // デスクトップレイアウト制御（商品詳細ページ）
-            const productDetail = document.querySelector('.product-detail');
-            if (productDetail) {
-                function updateLayout() {
-                    if (window.innerWidth >= 1024) {
-                        productDetail.classList.add('desktop-layout');
-                    } else {
-                        productDetail.classList.remove('desktop-layout');
-                    }
-                }
-                updateLayout();
-                window.addEventListener('resize', updateLayout);
-            }
-            
-            console.log('=== HOLY LABEL 初期化完了 ===');
-        });
-    </script>
+  <!-- External JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
+  
+  <!-- JavaScript -->
+  <script>
+      /*
+         JavaScript - ユーティリティ関数（互換性維持用）
+       */
+      const DOMUtils = {
+          // 効率的なDOM要素取得
+          get: (selector) => document.querySelector(selector),
+          getAll: (selector) => document.querySelectorAll(selector),
+          getId: (id) => document.getElementById(id),
+          // 共通DOM要素キャッシュ
+          cache: {},
+          getCached: function(key, selector) {
+              if (!this.cache[key]) {
+                  this.cache[key] = this.get(selector);
+              }
+              return this.cache[key];
+          },
+          // 基本要素のキャッシュ
+          hamburger: () => DOMUtils.getCached('hamburger', '#js-humberger'),
+          navArea: () => DOMUtils.getCached('navArea', '.js-nav-area'),
+          logo: () => DOMUtils.getCached('logo', '.logo'),
+          body: () => document.body
+      };
+      // アニメーション設定
+      const AnimationConfig = {
+          FADE_DELAY: 2000,
+          STAGGER_DELAY: 0.1,
+          SCROLL_THRESHOLD: 100,
+          TRANSITION_DURATION: '0.8s'
+      };
+      // ページ状態管理
+      const PageState = {
+          cache: null,
+          get() {
+              if (!this.cache) {
+                  this.cache = {
+                      hasMainVisual: DOMUtils.get('.main-visual') !== null,
+                      hasProductDetail: DOMUtils.get('.product-detail') !== null,
+                      hasAboutSection: DOMUtils.get('.about-section') !== null,
+                      hasCategoryHeader: DOMUtils.get('.category-header') !== null,
+                      hasSearchHeader: DOMUtils.get('.search-header') !== null,
+                      hasProductSection: DOMUtils.get('.product-section') !== null,
+                      isShopTopPage: document.body.id === 'shopTopPage'
+                  };
+              }
+              return this.cache;
+          },
+          isHomePage() {
+              const state = this.get();
+              return state.isShopTopPage && 
+                     state.hasMainVisual && 
+                     !state.hasProductDetail && 
+                     !state.hasAboutSection && 
+                     !state.hasCategoryHeader && 
+                     !state.hasSearchHeader &&
+                     !state.hasProductSection;
+          }
+      };
+      /*
+         JavaScript - ナビゲーション制御
+       */
+      const NavigationManager = {
+          elements: {
+              get hamburger() { return DOMUtils.hamburger(); },
+              get navArea() { return DOMUtils.navArea(); },
+              get body() { return DOMUtils.body(); }
+          },
+          isActive() {
+              return this.elements.hamburger?.classList.contains('-active') || false;
+          },
+          toggle() {
+              const { hamburger, navArea, body } = this.elements;
+              if (!hamburger || !navArea) return;
+              const isActive = this.isActive();
+              const action = isActive ? 'remove' : 'add';
+              [hamburger, navArea].forEach(el => el.classList[action]('-active'));
+              body.classList[action]('body-fixed');
+              setTimeout(() => LogoManager.updatePosition(), 10);
+          },
+          close() {
+              const { hamburger, navArea, body } = this.elements;
+              if (hamburger && navArea) {
+                  [hamburger, navArea].forEach(el => el.classList.remove('-active'));
+                  body.classList.remove('body-fixed');
+              }
+          },
+          init() {
+              const { hamburger, navArea } = this.elements;
+              if (!hamburger || !navArea) return;
+              // ハンバーガーメニューのクリックイベント
+              hamburger.addEventListener('click', () => this.toggle());
+              // 展開メニューの初期化
+              this.initExpandMenus();
+              // メニュー外クリックで閉じる
+              document.addEventListener('click', (event) => {
+                  if (!navArea.contains(event.target) && !hamburger.contains(event.target)) {
+                      this.close();
+                      setTimeout(() => LogoManager.updatePosition(), 10);
+                  }
+              });
+          },
+          initExpandMenus() {
+              const expandLinks = DOMUtils.getAll('a.expand');
+              expandLinks.forEach(link => {
+                  link.addEventListener('click', (e) => {
+                      e.preventDefault();
+                      const exList = link.nextElementSibling;
+                      const isOpen = link.classList.contains('open');
+                      link.classList.toggle('open', !isOpen);
+                      exList.style.display = isOpen ? 'none' : 'block';
+                  });
+              });
+          }
+      };
+      /*
+         JavaScript - ロゴ制御
+       */
+      const LogoManager = {
+          updatePosition() {
+              const logo = DOMUtils.logo();
+              if (!logo) return;
+              const isMenuOpen = NavigationManager.isActive();
+              const isTop = PageState.isHomePage();
+              // 既存のクラスを削除
+              logo.classList.remove('center-position', 'header-position', 'menu-open-position');
+              // 適切なクラスを追加
+              if (isMenuOpen) {
+                  logo.classList.add('menu-open-position');
+              } else if (isTop) {
+                  logo.classList.add('center-position');
+              } else {
+                  logo.classList.add('header-position');
+              }
+          }
+      };
+      /*
+         JavaScript - カテゴリ表示制御
+       */
+      function initCategoryDisplay() {
+          const itemExpandLink = DOMUtils.get('a.expand[href="#"]');
+          if (itemExpandLink?.textContent.trim() === 'ITEM') {
+              const exList = itemExpandLink.nextElementSibling;
+              if (exList) {
+                  const categoryItems = exList.querySelectorAll('li:not(.no-category-message)');
+                  const noMessage = exList.querySelector('.no-category-message');
+                  if (categoryItems.length === 0 && noMessage) {
+                      noMessage.style.display = 'block';
+                  }
+              }
+          }
+      }
+      /*
+         JavaScript - Instagram固定ボタン制御
+       */
+      function controlInstagramButton() {
+          const instagramBtn = DOMUtils.get('.instagram-fixed-btn');
+          if (!instagramBtn) return;
+          DOMUtils.body().classList.toggle('home-page', PageState.isHomePage());
+      }
+      /*
+         JavaScript - 初期化処理
+       */
+      document.addEventListener('DOMContentLoaded', function() {
+          // メイン初期化
+          DOMUtils.body().classList.add('loaded');
+          
+          // 基本機能初期化
+          NavigationManager.close();
+          LogoManager.updatePosition();
+          NavigationManager.init();
+          initCategoryDisplay();
+          controlInstagramButton();
+          
+          // 商品詳細ページの機能初期化
+          if (document.querySelector('.product-detail')) {
+              // レスポンシブ制御の初期化
+              initResponsiveProductDetail();
+              
+              // 外部ライブラリが読み込まれてから商品ギャラリーを初期化
+              if (window.HolyLabelProductGallery) {
+                  window.HolyLabelProductGallery.init();
+              } else {
+                  // ライブラリ読み込み待機
+                  let retryCount = 0;
+                  const maxRetries = 10;
+                  const initInterval = setInterval(() => {
+                      if (window.HolyLabelProductGallery || retryCount >= maxRetries) {
+                          clearInterval(initInterval);
+                          if (window.HolyLabelProductGallery) {
+                              window.HolyLabelProductGallery.init();
+                          }
+                      }
+                      retryCount++;
+                  }, 200);
+              }
+          }
+      });
+      
+      /*
+         JavaScript - レスポンシブ商品詳細ページ制御
+       */
+      function initResponsiveProductDetail() {
+          const productDetail = document.querySelector('.product-detail');
+          if (!productDetail) return;
+          
+          // デスクトップ・モバイル表示の動的制御
+          function updateLayout() {
+              const isDesktop = window.innerWidth >= 1024;
+              
+              if (isDesktop) {
+                  productDetail.classList.add('desktop-layout');
+                  productDetail.classList.remove('mobile-layout');
+              } else {
+                  productDetail.classList.add('mobile-layout');
+                  productDetail.classList.remove('desktop-layout');
+              }
+          }
+          
+          // 初期レイアウト設定
+          updateLayout();
+          
+          // リサイズ時の再調整
+          window.addEventListener('resize', updateLayout);
+      }
+  </script>
 </body>
 </html>
 {/block:NotLoadItemsPage}
