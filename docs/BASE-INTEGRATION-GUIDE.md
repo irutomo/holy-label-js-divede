@@ -1,241 +1,275 @@
-# 🔧 HOLY LABEL BASE機能統合ガイド
+# 🔗 HOLY LABEL BASE機能統合ガイド
 
-**BASEテンプレート構文とHTML実装の詳細マッピング**
+**BASE ECプラットフォーム機能とHTML実装の完全マッピング資料**
 
----
+## 📋 BASE機能統合アーキテクチャ
 
-## 📋 概要
+### 🏗️ BASE準拠 外部ライブラリ構成
 
-このガイドでは、HOLY LABELテーマ内のBASE機能との詳細な紐付けと、外部ライブラリアーキテクチャの関係性を説明します。
-
----
-
-## 🏗️ プロジェクト構造とBASE統合
-
-### 外部化済みアーキテクチャ
 ```
-┌─────────────────────────┐    ┌──────────────────┐    ┌─────────────────────┐
-│ holy-label-js-divede.html│───▶│ jsDelivr CDN     │───▶│ 外部ライブラリ       │
-│ 35.1KB (23.4%使用)     │    │ GitHub自動連携   │    │ CSS: 59.8KB (34個)  │
-│ BASEテンプレート構文完備│    │ キャッシュ最適化 │    │ JS: 80.3KB (29個)   │
-└─────────────────────────┘    └──────────────────┘    └─────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    BASE ECテーマ仕様                        │
+│  HTML: 35.1KB (150KB制限の23.4%使用)                      │
+│  BASEテンプレート構文: 完全保持                             │
+│  外部ライブラリ: jsDelivr CDN経由                           │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│                 外部ライブラリアーキテクチャ                │
+│                                                             │
+│  📁 CSS外部化 (59.8KB)                                     │
+│  ├── Phase 1: Foundation Bundle (基盤CSS)                  │
+│  ├── Phase 2: Components Bundle (コンポーネント)           │
+│  ├── Phase 3: Product Bundle (商品関連・4分割)             │
+│  ├── Phase 4: Special Bundle (特殊機能・4分割)             │
+│  └── Phase 5: Remaining Styles (HTMLから分離)              │
+│                                                             │
+│  📁 JavaScript外部化 (80.3KB)                              │
+│  ├── Core Bundle (基盤JS)                                  │
+│  ├── Extended Bundle (拡張機能)                            │
+│  ├── Advanced Bundle (高度機能)                            │
+│  └── Final Bundle (最終機能)                               │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### BASE制限準拠状況
-- **HTMLファイル制限**: 150KB中35.1KB使用（23.4%）
-- **BASEテンプレート構文**: 完全保持
-- **BASE Apps対応**: Search、ItemLabel、Blog、I18n
-- **レスポンシブ対応**: モバイルファースト設計
+## 🔧 BASEテンプレート構文マッピング
 
----
+### 📱 BASE標準タグ
 
-## 🔗 BASE機能とHTML要素のマッピング
-
-### 1. BASE基本タグとHTML実装
-
-#### 🏷️ ロゴタグ `{LogoTag}`
-**場所**: 行番号 75-77
+#### 🏪 ショップ基本情報
 ```html
-<div class="logo">
-    <a href="{IndexPageURL}">{LogoTag}</a>
-</div>
+{LogoTag}                    → ショップロゴの自動表示
+{BASEMenuTag}               → BASE標準メニューの埋め込み
+{ShopName}                  → ショップ名の動的表示
+{PageTitle}                 → ページタイトルの自動生成
+{CanonicalTag}              → SEO用canonical URLの自動生成
+{FaviconTag}                → ファビコンの自動設定
+{BackgroundTag}             → 背景画像の自動適用
+{GoogleAnalyticsTag}        → GA4タグの自動埋め込み
 ```
-**機能**: BASE管理画面で設定したロゴを表示
-**外部ライブラリ連携**: `logo-manager.js`でポジション制御
 
-#### 🍔 BASEメニュータグ `{BASEMenuTag}`
-**場所**: 行番号 70-72
+#### 📄 ページ判定・制御
 ```html
-<div class="base-menu-container">
-    {BASEMenuTag}
-</div>
+{block:IndexPage}           → ホームページでのみ表示
+{block:ItemPage}            → 商品詳細ページでのみ表示
+{block:AboutPage}           → Aboutページでのみ表示
+{block:ContactPage}         → お問い合わせページでのみ表示
+{block:BlogPage}            → ブログページでのみ表示
+{block:LawPage}             → 特定商取引法ページでのみ表示
+{block:PrivacyPage}         → プライバシーポリシーページでのみ表示
+
+{block:NotIndexPage}        → ホームページ以外で表示
+{block:NotItemPage}         → 商品詳細ページ以外で表示
+{block:NotLoadItemsPage}    → Ajax読み込みページ以外で表示
+{block:LoadItemsPage}       → Ajax読み込みページでのみ表示
 ```
-**機能**: BASE標準のメニューを表示
-**CSS対応**: `base-menu.css`でスタイル統合
 
-#### 🛒 購入ボタン `{PurchaseButton}`
-**場所**: 行番号 431, 438
+#### 🛍️ 商品データ（自動表示・編集不可）
 ```html
-{block:HasItemStock}
-    {PurchaseButton}
-{/block:HasItemStock}
+{ItemTitle}                 → 商品タイトル
+{ItemPrice}                 → 商品価格
+{ItemProperPrice}           → 商品定価（セール時）
+{ItemDiscountRate}          → 割引率
+{ItemPageURL}               → 商品詳細ページURL
+{ItemImage1URL-500}         → 商品画像1（500pxサイズ）
+{ItemImage1URL-640}         → 商品画像1（640pxサイズ）
+{ItemNoImageURL}            → 商品画像なし時のデフォルト画像
+
+{block:ItemImage1}          → 商品画像1がある場合のみ表示
+{block:NoItemImage1}        → 商品画像1がない場合のみ表示
+{block:HasItemProperPrice}  → セール価格がある場合のみ表示
+{block:NoItemProperPrice}   → セール価格がない場合のみ表示
+{block:NoItemStock}         → 在庫切れの場合のみ表示
+{block:ItemEndOfSale}       → 販売終了の場合のみ表示
+{block:ItemNowOnSale}       → 販売中の場合のみ表示
 ```
-**機能**: BASE標準の購入ボタンを表示
-**条件分岐**: 在庫状況に応じて表示制御
 
-### 2. BASE Apps統合
-
-#### 🔍 検索機能 `{block:AppsSearch}`
-**場所**: 行番号 15-17, 78-84
+#### 📃 ページコンテンツ（管理画面で編集）
 ```html
-<!-- ヘッダー内CSS読み込み -->
+{PageContents}              → 各ページの本文内容（管理画面で編集）
+{IndexPageURL}              → ホームページURL
+{AboutPageURL}              → AboutページURL
+{ContactPageURL}            → お問い合わせページURL
+{PrivacyPageURL}            → プライバシーポリシーページURL
+{LawPageURL}                → 特定商取引法ページURL
+{BlogPageURL}               → ブログページURL
+{SearchPageURL}             → 検索ページURL
+```
+
+### 🧩 BASE Apps統合機能
+
+#### 🔍 Search App（検索機能）
+```html
 {block:AppsSearch}
     <link rel="stylesheet" type="text/css" href="{BASEURL}/search/css/shopTemplate/search.css?{UpdateTime}">
 {/block:AppsSearch}
 
 <!-- 検索フォーム -->
-{block:AppsSearch}
-    <div class="mb4">
-        <form role="search" method="get" class="search-form" action="{SearchPageURL}">
-            <input type="search" name="q" placeholder="SEARCH" value="{IndexPageSearch}" />
-            <input type="submit" value="→" />
-        </form>
-    </div>
-{/block:AppsSearch}
-```
-**機能**: BASE Search Appとの完全統合
-**スタイル**: 外部CSSと連携してデザイン統一
+<form role="search" method="get" class="search-form" action="{SearchPageURL}">
+    <input type="search" name="q" placeholder="SEARCH" value="{IndexPageSearch}" />
+    <input type="submit" value="→" />
+</form>
 
-#### 🏷️ アイテムラベル `{block:AppsItemLabel}`
-**場所**: 行番号 18-20, 154, 227等
+{block:IndexPageSearch}     → 検索結果ページでのみ表示
+{IndexPageSearch}           → 検索キーワード
+{lang:ItemSearchResult}     → 「検索結果」の多言語対応テキスト
+{lang:NoItemsMessage}       → 「商品がありません」の多言語対応テキスト
+```
+
+#### 🏷️ ItemLabel App（商品ラベル）
 ```html
-<!-- ヘッダー内設定 -->
 {block:AppsItemLabel}
     <link rel="stylesheet" type="text/css" href="{BASEURL}/item_label/css/ShopTemplate/style.css?{UpdateTime}">
     <script type="text/javascript" src="{BASEURL}/item_label/js/ShopTemplate/labelpostion.js?{UpdateTime}"></script>
 {/block:AppsItemLabel}
 
-<!-- 商品表示内 -->
+<!-- 商品ラベル表示 -->
 {block:AppsItemLabel}
-    {AppsItemLabelTag}
+    {AppsItemLabelTag}      → 「NEW」「SALE」「SOLD OUT」等のラベル
 {/block:AppsItemLabel}
 ```
-**機能**: 商品ラベル（SALE、NEWなど）の表示
 
-#### 📝 ブログ `{block:AppsBlog}`
-**場所**: 行番号 21-23, 96-98
+#### 📝 Blog App（ブログ機能）
 ```html
-<!-- RSS対応 -->
 {block:AppsBlog}
     <link href="{BlogFeedPageURL}" rel="alternate" type="application/rss+xml" title="Blog | {ShopName}">
 {/block:AppsBlog}
 
-<!-- ナビゲーション -->
 {block:AppsBlog}
     <li><a href="{BlogPageURL}">LOOK BOOK</a></li>
 {/block:AppsBlog}
-```
-**機能**: BASE Blog機能との統合
 
-#### 🌐 多言語対応 `{block:AppsI18n}`
-**場所**: 行番号 58-66, 104-109
+{BlogFeedPageURL}           → RSSフィードURL
+```
+
+#### 🌐 I18n App（多言語対応）
 ```html
-<!-- 言語切り替え表示 -->
 {block:AppsI18n}
-    <div class="custom-language-switcher">
-        <a href="#" onclick="switchLanguage('ja'); return false;" id="lang-ja" class="active">JA</a>
-        <a href="#" onclick="switchLanguage('en'); return false;" id="lang-en">EN</a>
-    </div>
+    {AppsI18nTag}           → 多言語切り替えタグ
 {/block:AppsI18n}
-```
-**機能**: 日本語・英語の言語切り替え
-**JavaScript連携**: `language-manager.js`で制御
 
-### 3. 商品データとBASE構文
-
-#### 💰 価格表示の条件分岐
-**場所**: 行番号 183-194, 378-389等
-```html
-<!-- 通常価格 -->
-{block:NoItemProperPrice}
-    <span class="current-price">{ItemPrice}</span>
-{/block:NoItemProperPrice}
-
-<!-- セール価格 -->
-{block:HasItemProperPrice}
-    <div class="price-sale">
-        <span class="original-price">{ItemProperPrice}</span>
-        <span class="sale-price">{ItemPrice}</span>
-        <span class="discount-rate">{ItemDiscountRate}</span>
-    </div>
-{/block:HasItemProperPrice}
-```
-**機能**: セール状況に応じた価格表示の自動切り替え
-
-#### 📦 在庫状況による表示制御
-**場所**: 行番号 156-171, 425-448等
-```html
-<!-- 在庫あり・販売中 -->
-{block:HasItemStock}
-    {block:ItemNowOnSale}
-        {PurchaseButton}
-    {/block:ItemNowOnSale}
-{/block:HasItemStock}
-
-<!-- 在庫なし -->
-{block:NoItemStock}
-    <div class="soldout_cover"><p>SOLD OUT</p></div>
-{/block:NoItemStock}
-```
-**機能**: 在庫状況と販売ステータスによる表示の自動制御
-
-### 4. 商品画像ギャラリーの実装
-
-#### 🖼️ 商品画像データの埋め込み
-**場所**: 行番号 231-242
-```html
-<!-- 画像データを埋め込む隠し要素 -->
-<div id="imageData" style="display: none;">
-    {block:ItemImage1}<span data-main="{ItemImage1URL-640}" data-thumb="{ItemImage1URL-174}"></span>{/block:ItemImage1}
-    {block:ItemImage2}<span data-main="{ItemImage2URL-640}" data-thumb="{ItemImage2URL-174}"></span>{/block:ItemImage2}
-    <!-- ... ItemImage10まで -->
+<!-- カスタム多言語スイッチャー -->
+<div class="custom-language-switcher">
+    <a href="#" onclick="switchLanguage('ja'); return false;" id="lang-ja" class="active">JA</a>
+    <a href="#" onclick="switchLanguage('en'); return false;" id="lang-en">EN</a>
 </div>
-```
-**機能**: BASEの商品画像を外部JavaScriptライブラリで処理
-**連携**: `product-gallery.js`で高度なギャラリー機能を実装
 
-#### 🎨 ギャラリーコンテナ
-**場所**: 行番号 244-262
+{lang:NotShopPublicMessage} → 「準備中」の多言語メッセージ
+{lang:ItemSearchResult}     → 「検索結果」の多言語メッセージ
+{lang:NoItemsMessage}       → 「商品なし」の多言語メッセージ
+```
+
+#### 🔔 InformationBanner App（お知らせバナー）
 ```html
-<div class="main-image-wrapper" id="mainImageWrapper">
-    <div class="main-image-container" id="mainImageContainer"></div>
-    <button class="carousel-nav prev" id="prevBtn"><!-- SVGアイコン --></button>
-    <button class="carousel-nav next" id="nextBtn"><!-- SVGアイコン --></button>
-    <div class="image-counter" id="imageCounter"></div>
-</div>
+{block:AppsInformationBanner}
+    {AppsInformationBannerTag}
+    <script type="text/javascript">
+        // バナーの高さ調整JavaScript
+        window.addEventListener('DOMContentLoaded', function() {
+            const banner = document.getElementsByClassName('informationBanner');
+            if (!banner || banner.length === 0) return;
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    const bannerHeight = entry.target.offsetHeight;
+                    document.documentElement.style.setProperty("--information-banner-height", bannerHeight + 'px');
+                }
+            });
+            resizeObserver.observe(banner[0]);
+        });
+    </script>
+{/block:AppsInformationBanner}
 ```
-**機能**: 外部JavaScriptによる高度な画像ギャラリー
 
----
-
-## 📱 レスポンシブ対応とBASE統合
-
-### 1. モバイルファースト設計
+#### 📁 ItemCategory App（カテゴリ機能）
 ```html
-<!-- デスクトップ・モバイル画像の自動切り替え -->
-<img src="..." alt="..." class="hero-image-desktop">
-<img src="..." alt="..." class="hero-image-mobile">
+{block:AppsItemCategory}
+    {block:BreadcrumbTag}
+        <div class="breadcrumb-container">
+            {BreadcrumbTag}     → パンくずナビ
+        </div>
+    {/block:BreadcrumbTag}
+    
+    <!-- カテゴリ一覧 -->
+    {block:AppsItemCategoryCategories}
+        <li><a href="{AppsItemCategoryCategoryPageURL}">{AppsItemCategoryCategoryName}</a></li>
+        {block:HasAppsItemCategoryMediumCategories}
+            {block:AppsItemCategoryMediumCategories}
+                <li class="sub-category"><a href="{AppsItemCategoryMediumCategoryPageURL}">{AppsItemCategoryMediumCategoryName}</a></li>
+            {/block:AppsItemCategoryMediumCategories}
+        {/block:HasAppsItemCategoryMediumCategories}
+    {/block:AppsItemCategoryCategories}
+    
+    <!-- 子カテゴリ -->
+    {block:HasAppsItemCategoryChildCategories}
+        <div class="child-categories">
+            <ul class="child-category-list">
+                {block:AppsItemCategoryChildCategories}
+                    <li><a href="{AppsItemCategoryChildCategoryPageURL}">{AppsItemCategoryChildCategoryName}</a></li>
+                {/block:AppsItemCategoryChildCategories}
+            </ul>
+        </div>
+    {/block:HasAppsItemCategoryChildCategories}
+{/block:AppsItemCategory}
+
+{IndexPageCategory}         → 現在のカテゴリ名
+{block:IndexPageCategory}   → カテゴリページでのみ表示
+{block:NoIndexPageCategory} → カテゴリページ以外で表示
 ```
 
-### 2. レスポンシブ制御JavaScript
-**場所**: 行番号 754-773
-```javascript
-function initResponsiveProductDetail() {
-    const productDetail = document.querySelector('.product-detail');
-    if (!productDetail) return;
-    
-    function updateLayout() {
-        const isDesktop = window.innerWidth >= 1024;
-        
-        if (isDesktop) {
-            productDetail.classList.add('desktop-layout');
-            productDetail.classList.remove('mobile-layout');
-        } else {
-            productDetail.classList.add('mobile-layout');
-            productDetail.classList.remove('desktop-layout');
-        }
-    }
-    
-    updateLayout();
-    window.addEventListener('resize', updateLayout);
-}
+## 🎨 HTMLクラス名とCSS対応
+
+### 🏠 ページ別bodyクラス
+```html
+<body id="shopTopPage" class="shop template loading">      ← ホームページ
+<body id="shopDetailPage" class="shop template loading">   ← 商品詳細ページ
 ```
 
----
+### 📱 レスポンシブ対応クラス
+```css
+.hero-image-desktop    → デスクトップ用画像（1024px以上で表示）
+.hero-image-mobile     → モバイル用画像（1023px以下で表示）
+.desktop-layout        → デスクトップ用レイアウト
+.mobile-layout         → モバイル用レイアウト
+```
 
-## 🚀 外部ライブラリアーキテクチャ
+### 🧩 コンポーネントクラス
+```css
+.product-item          → 商品アイテム
+.product-image         → 商品画像コンテナ
+.product-info          → 商品情報
+.product-title         → 商品タイトル
+.product-price         → 商品価格
+.out-of-stock          → 在庫切れ状態
+.soldout_cover         → 売り切れカバー
+.price-sale            → セール価格表示
+.original-price        → 元の価格
+.sale-price            → セール価格
+.discount-rate         → 割引率
+```
 
-### 1. CSS外部化（Phase 1-5）
+### 🎯 ナビゲーション関連
+```css
+.humberger             → ハンバーガーメニューボタン
+.header__nav-area      → ナビゲーションエリア
+.global-navigation__list → グローバルナビゲーションリスト
+.expand                → 展開可能メニュー
+.ex-list               → 展開されるリスト
+.sub-category          → サブカテゴリ
+.no-category-message   → カテゴリなしメッセージ
+```
+
+### 🎨 スタイル状態クラス
+```css
+.-active               → アクティブ状態
+.loaded                → 読み込み完了状態
+.body-fixed            → ボディ固定状態（メニュー開時）
+.loading               → 読み込み中状態
+.home-page             → ホームページ判定クラス
+```
+
+## 🔗 外部ライブラリ統合
+
+### 📦 CSS外部ライブラリ読み込み順序
 ```html
 <!-- Phase 1: 基盤CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/foundation-bundle.min.css">
@@ -243,13 +277,13 @@ function initResponsiveProductDetail() {
 <!-- Phase 2: コンポーネントCSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/components-bundle.min.css">
 
-<!-- Phase 3: 商品関連CSS -->
+<!-- Phase 3: 商品詳細・フォーム・レスポンシブ・フッター -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/product-detail-bundle.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/forms-bundle.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/responsive-bundle.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/footer-pages-bundle.min.css">
 
-<!-- Phase 4: 特殊機能CSS -->
+<!-- Phase 4: 特殊ページ・UI・統合機能 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/special-pages-bundle.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/ui-components-bundle.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/base-integration-bundle.min.css">
@@ -258,113 +292,88 @@ function initResponsiveProductDetail() {
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/remaining-styles-bundle.min.css">
 ```
 
-### 2. JavaScript外部化（4段階）
+### 📦 JavaScript外部ライブラリ読み込み順序
 ```html
-<!-- Core: 基盤機能 -->
+<!-- External JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js"></script>
-
-<!-- Extended: 拡張機能 -->
 <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js"></script>
-
-<!-- Advanced: 高度機能 -->
 <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
-
-<!-- Final: 最終機能 -->
 <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
 ```
 
-### 3. グローバル変数とAPI
+### 🔧 JavaScript グローバル変数（後方互換性維持）
 ```javascript
-// Core Bundle提供
-window.HolyLabelDOMUtils
-window.HolyLabelPageState
-window.HolyLabelAnimationConfig
-
-// Extended Bundle提供
-window.HolyLabelNavigationManager
-window.HolyLabelAnimationManager
-window.HolyLabelModalUtils
-
-// Advanced Bundle提供
-window.HolyLabelProductImageGallery
-window.HolyLabelLoadMoreManager
-window.HolyLabelLogoManager
-
-// Final Bundle提供
-window.HolyLabelInitializationManager
-window.HolyLabelLanguageManager
-window.HolyLabelScrollManager
+window.HolyLabelDOMUtils              → DOM操作ユーティリティ
+window.HolyLabelPageState             → ページ状態管理
+window.HolyLabelAnimationConfig       → アニメーション設定
+window.HolyLabelAnimationManager      → アニメーション管理
+window.HolyLabelNavigationManager     → ナビゲーション管理
+window.HolyLabelModalUtils            → モーダル機能
+window.HolyLabelProductGallery        → 商品ギャラリー（商品詳細用）
+window.HolyLabelLoadMoreManager       → Ajax読み込み管理
+window.HolyLabelLogoManager           → ロゴ管理
+window.HolyLabelInitializationManager → 初期化管理
+window.HolyLabelLanguageManager       → 多言語管理
+window.HolyLabelScrollManager         → スクロール管理
 ```
 
----
+## 🎯 BASE仕様準拠チェックポイント
 
-## ⚙️ BASE仕様準拠チェックポイント
+### ✅ 必須準拠項目
+- [ ] **ファイルサイズ**: HTML 150,000文字以内
+- [ ] **BASEテンプレート構文**: `{}`構文の完全保持
+- [ ] **BASE標準タグ**: LogoTag、BASEMenuTag等の適切な使用
+- [ ] **外部ライブラリ**: CDN読み込みの正常動作
+- [ ] **レスポンシブ**: モバイル・デスクトップ対応
+- [ ] **BASE Apps**: 検索、ラベル、ブログ、多言語対応
 
-### 1. 必須チェック項目
-- ✅ HTMLファイルサイズ: 35.1KB/150KB（23.4%使用）
-- ✅ BASEテンプレート構文: 完全保持
-- ✅ BASE Apps対応: Search、ItemLabel、Blog、I18n
-- ✅ レスポンシブ対応: モバイルファースト設計
-- ✅ 外部ライブラリ: jsDelivr CDN経由で配信
+### ⚠️ 注意事項
+- [ ] **BASEテンプレート構文**: 絶対に変更・削除禁止
+- [ ] **外部ライブラリパス**: CDNパスの変更禁止
+- [ ] **グローバル変数名**: `window.HolyLabel*`の変更禁止
+- [ ] **HTMLタグ構造**: BASE必須構造の保持
+- [ ] **CSSクラス名**: BASE連携クラスの保持
 
-### 2. 禁止事項
-- ❌ BASEテンプレート構文（`{}`）の削除・変更
-- ❌ 外部ライブラリパスの変更
-- ❌ グローバル変数名の変更
-- ❌ BASE標準タグの除去
+## 🔄 開発・メンテナンス手順
 
-### 3. 安全な変更範囲
-- ✅ 画像URLの変更（src属性内のみ）
-- ✅ テキストコンテンツの変更
-- ✅ ソーシャルリンクの変更（href属性内のみ）
-- ✅ alt属性の変更
-
----
-
-## 🔧 開発・メンテナンス手順
-
-### 1. ソースファイル編集時
+### 1. 開発環境
 ```bash
-# JavaScript編集
-cd js/src
-# ファイル編集後
-cd .. && npm run build
+# JavaScript依存関係
+cd js && npm install
 
-# CSS編集
-cd css/src  
-# ファイル編集後
-cd .. && npm run build
+# CSS依存関係  
+cd css && npm install
 ```
 
-### 2. BASE機能テスト
+### 2. ビルド・配信
+```bash
+# JavaScript圧縮・バンドル
+cd js && npm run build
+
+# CSS圧縮・バンドル
+cd css && npm run build
+
+# GitHubプッシュ（jsDelivr CDN自動更新）
+git add . && git commit -m "機能更新" && git push origin main
+```
+
+### 3. 品質検証
 ```javascript
-// ブラウザコンソールでテスト
+// ライブラリ読み込み確認
 console.log('Core:', !!window.HolyLabelDOMUtils);
-console.log('Extended:', !!window.HolyLabelNavigationManager);
-console.log('Advanced:', !!window.HolyLabelProductImageGallery);
-console.log('Final:', !!window.HolyLabelInitializationManager);
+console.log('Navigation:', !!window.HolyLabelNavigationManager);
+console.log('Gallery:', !!window.HolyLabelProductGallery);
 
-// 個別機能テスト
+// 機能テスト
 HolyLabelNavigationManager.toggleMenu();
-HolyLabelProductImageGallery.init();
+HolyLabelModalUtils.open('test-modal');
 ```
-
-### 3. デプロイチェックリスト
-- [ ] BASEテンプレート構文の完全性確認
-- [ ] 外部ライブラリの読み込み確認
-- [ ] レスポンシブ表示確認
-- [ ] BASE Apps機能確認
-- [ ] 商品データ表示確認
-
----
 
 ## 📚 関連ドキュメント
 
-- `CUSTOMER-GUIDE.md`: 顧客向け編集ガイド
-- `MAINTENANCE.md`: 開発者向けメンテナンスガイド
-- `CDN-REFERENCE.md`: CDN設定リファレンス
-- `TROUBLESHOOTING.md`: 問題解決ガイド
-
----
-
-**⚠️ 重要**: BASE機能との統合部分は慎重に扱い、変更時は必ず開発環境での十分なテストを実施してください。 
+- **顧客向け**: `CUSTOMER-GUIDE.md` - 安全な編集ガイド
+- **画像編集**: `IMAGE-INSERTION-GUIDE.md` - 画像変更専用ガイド
+- **メンテナンス**: `MAINTENANCE.md` - 技術者向けメンテナンス
+- **CDN参照**: `CDN-REFERENCE.md` - jsDelivr CDNリファレンス
+- **実装**: `IMPLEMENTATION.md` - BASE実装詳細
+- **トラブル**: `TROUBLESHOOTING.md` - 問題解決法 

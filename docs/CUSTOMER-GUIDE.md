@@ -1,219 +1,217 @@
-# 🎨 HOLY LABELテーマ 顧客編集ガイド
+# 🎨 HOLY LABEL 顧客向け編集ガイド
 
-**HTMLの知識がなくても安全に編集できる！画像挿入・カスタマイズマニュアル**
+**HTMLの知識がない方でも安全に画像とテキストを変更できる専用ガイド**
 
----
+## 🚨 重要：編集前の注意事項
 
-## 📋 このガイドについて
-
-このガイドでは、HOLY LABELテーマで**顧客が安全に編集できる箇所**と**絶対に触ってはいけない箇所**を明確に区別して説明します。
-
-### ⚠️ 重要な注意事項
-- **緑色のマーク（✅）**: 安全に編集できます
-- **赤色のマーク（❌）**: 絶対に触らないでください
-- **黄色のマーク（⚠️）**: 注意が必要です
-
----
-
-## 🖼️ 画像の挿入・変更箇所
-
-### ✅ 1. メインビジュアル（ヒーロー画像）
-**場所**: 行番号 122-125
-
+### ⚠️ 絶対に触ってはいけない箇所
 ```html
-<!-- デスクトップ用画像 -->
-<img src="https://basefile.akamaized.net/holylabel-official-ec/6858e8f347888/HLE382A4E383A1E383BCE382B7E38299E794BBE5838F-E7B7A8E99B86E6B888E381BF-E7B7A8E99B86E6B888E381BF28129.png" alt="Holy Label Collection" class="hero-image-desktop">
-
-<!-- モバイル用画像 -->
-<img src="https://basefile.akamaized.net/holylabel-official-ec/6857a47021abf/image30.png" alt="Holy Label Collection" class="hero-image-mobile">
+❌ これらは絶対に変更禁止！
+{LogoTag}              ← 波括弧で囲まれた部分
+{BASEMenuTag}          ← BASE機能部分
+{ItemImage1URL-500}    ← 商品画像は自動表示
+<script src="https://  ← 外部ライブラリ読み込み
+<link rel="stylesheet" ← CSSファイル読み込み
 ```
 
-**編集方法**:
-1. BASE管理画面でアップロードした画像のURLをコピー
-2. `src="ここの部分"`を新しいURLに変更
-3. `alt="ここの部分"`に画像の説明を入力
+### ✅ 安全に編集できる箇所
+- 🖼️ **画像URL**（httpから始まる画像のアドレス）
+- 📝 **テキスト内容**（日本語・英語のテキスト）
+- 🔗 **ソーシャルリンク**（Instagram、TikTokのURL）
 
-**重要**: デスクトップ用とモバイル用の2つの画像が必要です！
+## 📍 編集可能箇所マップ
 
-### ✅ 2. アバウトページ画像
-**場所**: 行番号 492-494
+### 🏠 1. メインビジュアル画像（最優先）
 
-```html
-<div class="about-image">
-    <img src="https://basefile.akamaized.net/holylabel-official-ec/685dea2a874d4/E382B5E383B3E38395E3829AE383AB2822928129.png" alt="About Holy Label" />
-</div>
-```
-
-**編集方法**:
-1. `src="ここの部分"`を新しい画像URLに変更
-2. `alt="ここの部分"`に適切な説明を入力
-
----
-
-## 🔗 ソーシャルリンクの変更
-
-### ✅ 3. Instagramリンク（複数箇所）
-**場所1**: 行番号 495-506（アバウトページ内）
-**場所2**: 行番号 632-638（固定ボタン）
+**📍 場所**: 151-152行目
+**🎯 目的**: ホームページの第一印象を決める重要な画像
 
 ```html
-<!-- アバウトページ内のInstagramリンク -->
-<a href="https://www.instagram.com/hello24___?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-link">
-
-<!-- 固定ボタンのInstagramリンク -->
-<a href="https://www.instagram.com/hello24___?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="instagram-fixed-btn">
+✅ 編集可能（画像URLのみ変更）
+<img src="ここの画像URLを変更" alt="Holy Label Collection" class="hero-image-desktop">
+<img src="ここの画像URLを変更" alt="Holy Label Collection" class="hero-image-mobile">
 ```
 
-**編集方法**:
-1. `href="ここの部分"`を新しいInstagramのURLに変更
+**📏 推奨サイズ**:
+- デスクトップ用: 1920×800px以上
+- モバイル用: 750×1000px以上
 
-### ✅ 4. TikTokリンク
-**場所**: 行番号 507-512
+**🔄 変更手順**:
+1. `src="https://basefile.akamaized.net/holylabel-official-ec/..."`の部分を探す
+2. `"`マークの間のURLだけを新しい画像URLに変更
+3. デスクトップ用とモバイル用の2箇所を変更
+
+### 🌟 2. Aboutページ画像
+
+**📍 場所**: 430行目
+**🎯 目的**: ブランドの世界観を伝える画像
 
 ```html
-<a href="https://www.tiktok.com/@hello24___" target="_blank" class="social-link">
+✅ 編集可能（画像URLのみ変更）
+<img src="ここの画像URLを変更" alt="About Holy Label" />
 ```
 
-**編集方法**:
-1. `href="ここの部分"`を新しいTikTokのURLに変更
+**📏 推奨サイズ**: 800×600px以上
 
----
+### 📱 3. ソーシャルリンク設定
 
-## 📝 テキストの変更
+#### Instagram（2箇所）
 
-### ✅ 5. ナビゲーションメニュー
-**場所**: 行番号 85-98
+**📍 場所1**: 432行目（Aboutページ内）
+```html
+✅ 編集可能（URLのみ変更）
+<a href="新しいInstagramのURLを入力" target="_blank" class="social-link">
+```
+
+**📍 場所2**: 473行目（固定ボタン）
+```html
+✅ 編集可能（URLのみ変更）
+<a href="新しいInstagramのURLを入力" target="_blank" class="instagram-fixed-btn">
+```
+
+#### TikTok
+
+**📍 場所**: 445行目（Aboutページ内）
+```html
+✅ 編集可能（URLのみ変更）
+<a href="新しいTikTokのURLを入力" target="_blank" class="social-link">
+```
+
+### 🧭 4. ナビゲーションメニューテキスト
+
+**📍 場所**: 102-119行目
+**🎯 目的**: メニューの表示名を変更
 
 ```html
-<ul class="global-navigation__list mb4">
-    <li><a href="{IndexPageURL}">HOME</a></li>
-    <li>
-        <a class="expand" href="#">ITEM</a>
-        <!-- カテゴリは自動表示されます -->
-    </li>
-    <li><a href="{BlogPageURL}">LOOK BOOK</a></li>
-    <li><a href="{AboutPageURL}">ABOUT</a></li>
-    <li><a href="{ContactPageURL}">CONTACT</a></li>
-</ul>
+✅ 編集可能（テキストのみ変更）
+<li><a href="{IndexPageURL}">HOME</a></li>
+<li><a href="#">ITEM</a></li>
+<li><a href="{BlogPageURL}">LOOK BOOK</a></li>
+<li><a href="{AboutPageURL}">ABOUT</a></li>
+<li><a href="{ContactPageURL}">CONTACT</a></li>
 ```
 
-**編集可能なテキスト**:
-- `HOME` → 他の言語に変更可能
-- `ITEM` → 「商品」「PRODUCTS」等に変更可能
-- `LOOK BOOK` → 「ルックブック」等に変更可能
-- `ABOUT` → 「アバウト」等に変更可能
-- `CONTACT` → 「お問い合わせ」等に変更可能
+**⚠️ 注意**: `{}`で囲まれた部分は絶対に変更しない！
 
-**⚠️ 注意**: `{IndexPageURL}` のような `{}` で囲まれた部分は絶対に変更しないでください！
+## 🔧 安全な編集手順
 
----
+### Step 1: バックアップ作成
+```
+1. 編集前に必ずHTMLファイル全体をコピー
+2. 「holy-label-backup-YYYY-MM-DD.html」として保存
+3. 間違えた時はこのファイルに戻す
+```
 
-## ❌ 絶対に触ってはいけない箇所
+### Step 2: 画像URL変更方法
 
-### 1. BASEテンプレート構文（最重要）
+**✅ 正しい例**:
 ```html
-{block:IndexPage}
-{ItemTitle}
-{ItemPrice}
-{LogoTag}
-{BASEMenuTag}
-{PurchaseButton}
+変更前: src="https://basefile.akamaized.net/holylabel-official-ec/6858e8f347888/古い画像.png"
+変更後: src="https://basefile.akamaized.net/holylabel-official-ec/6858e8f347888/新しい画像.png"
 ```
-**理由**: BASEの機能と直結しており、変更するとサイトが動かなくなります
 
-### 2. 外部ライブラリの読み込み部分
+**❌ 間違った例**:
 ```html
-<!-- HOLY LABEL CSS外部化 Phase 1-5 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/...">
-
-<!-- External JavaScript Libraries -->
-<script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/..."></script>
+❌ src=" を削除してしまった
+❌ class="hero-image-desktop" を変更してしまった
+❌ alt="Holy Label Collection" を変更してしまった
 ```
-**理由**: サイトの動作に必要な重要なファイルです
 
-### 3. JavaScript コード
+### Step 3: テキスト変更方法
+
+**✅ 正しい例**:
 ```html
-<script>
-// ここにあるすべてのコード
-</script>
+変更前: <li><a href="{IndexPageURL}">HOME</a></li>
+変更後: <li><a href="{IndexPageURL}">ホーム</a></li>
 ```
-**理由**: サイトの機能を制御しているため、変更すると動作不良を起こします
 
-### 4. CSS スタイル
+**❌ 間違った例**:
 ```html
-<style>
-/* ここにあるすべてのスタイル */
-</style>
+❌ {IndexPageURL} を変更してしまった
+❌ <li><a href= を削除してしまった
 ```
-**理由**: デザインが崩れる可能性があります
 
----
+## 🆘 トラブルシューティング
 
-## 🛡️ 安全な編集手順
-
-### 編集前の準備
-1. **必ずバックアップを取る**
-   - 編集前のHTMLファイルをコピーして保存
-   - 日付付きのファイル名で保存（例：`holy-label-backup-2024-01-15.html`）
-
-2. **少しずつ編集する**
-   - 一度に複数箇所を変更せず、1つずつ確認
-
-3. **編集後の確認**
-   - BASEプレビュー機能で確認
-   - 必ずスマートフォンでも表示確認
-
-### 編集時のルール
-1. **引用符（`"`）の削除・追加禁止**
-   - ❌ `src=新しいURL` 
-   - ✅ `src="新しいURL"`
-
-2. **タグの削除・変更禁止**
-   - ❌ `<img>` → `<image>`
-   - ✅ src属性の中身だけ変更
-
-3. **BASE構文は絶対に触らない**
-   - `{}`で囲まれた部分は変更禁止
-
----
-
-## 🔧 よくある質問
-
-### Q: 画像が表示されません
+### Q1: 画像が表示されない
 **A**: 以下を確認してください
-1. 画像URLが正しいか（BASE管理画面からコピーしたものか）
-2. 引用符が正しくついているか
-3. ファイル拡張子（.jpg, .png等）が含まれているか
+- ✅ 画像URLが「https://」で始まっている
+- ✅ 画像URLの前後に余分なスペースがない
+- ✅ `"`マークが正しく設置されている
 
-### Q: サイトが真っ白になりました
-**A**: 
-1. バックアップファイルから復元
-2. 最後に編集した箇所を元に戻す
-3. BASEテンプレート構文（`{}`部分）を間違って削除していないか確認
+### Q2: レイアウトが崩れた
+**A**: 以下をチェックしてください
+- ✅ `<`や`>`を誤って削除していない
+- ✅ `"`マークを誤って削除していない
+- ✅ BASEテンプレート構文（`{}`）を変更していない
 
-### Q: スマホで表示が崩れます
-**A**: 
-1. メインビジュアルのモバイル用画像も変更したか確認
-2. 極端に大きなサイズの画像を使用していないか確認
+### Q3: メニューが動かない
+**A**: 以下を確認してください
+- ✅ `{}`で囲まれた部分を変更していない
+- ✅ `href="`の部分を変更していない
+- ✅ `<li>`や`<a>`タグを削除していない
 
-### Q: 新しいページを追加したい
-**A**: 
-1. BASE管理画面の「ページ」機能を使用
-2. HTMLファイルでの追加は推奨しません（複雑なため）
+## 🚨 緊急時の復旧方法
 
----
+### 完全に壊れてしまった場合
+1. **バックアップファイルを使用**:
+   ```
+   holy-label-backup-YYYY-MM-DD.html をコピー
+   元のファイル名に戻す
+   ```
 
-## 📞 サポート
+2. **GitHubからの復旧**（技術者向け）:
+   ```bash
+   git checkout HEAD -- holy-label-js-divede.html
+   ```
 
-### 緊急時の連絡先
-- 何か問題が発生した場合は、必ずバックアップから復元してください
-- 技術的な問題については、開発者にご相談ください
+3. **専門家への依頼**:
+   ```
+   編集内容をメモに残して技術者に依頼
+   「○○の画像を△△に変更したい」
+   「□□のテキストを××に変更したい」
+   ```
 
-### 編集代行サービス
-- 自分で編集するのが不安な場合
-- 複雑なカスタマイズが必要な場合
-- 開発者による編集代行サービスをご利用ください
+## 📋 編集チェックリスト
 
----
+### 編集前チェック ☑️
+- [ ] バックアップファイルを作成した
+- [ ] 変更したい箇所の行番号を確認した
+- [ ] 新しい画像URLを準備した
 
-**⚠️ 重要**: このガイドに記載されていない箇所の編集は、開発者にご相談ください。無理な編集はサイトの動作不良を招く可能性があります。 
+### 編集中チェック ☑️
+- [ ] `{}`で囲まれた部分は変更していない
+- [ ] `"`マークは正しく設置されている
+- [ ] HTMLタグ（`<>`）は削除していない
+
+### 編集後チェック ☑️
+- [ ] ブラウザでプレビュー確認した
+- [ ] 画像が正しく表示されている
+- [ ] メニューが正常に動作している
+- [ ] スマートフォンでも確認した
+
+## 🎯 編集作業の優先順位
+
+### 🥇 最優先（必ず変更推奨）
+1. **メインビジュアル画像**（デスクトップ・モバイル）
+2. **Aboutページ画像**
+
+### 🥈 中優先（必要に応じて変更）
+3. **ソーシャルリンク**（Instagram、TikTok）
+4. **ナビゲーションテキスト**
+
+### 🥉 低優先（通常は変更不要）
+5. その他のテキスト内容
+
+## 📞 サポート連絡先
+
+技術的な問題が発生した場合：
+- 📧 **メール**: [技術サポートアドレス]
+- 📱 **電話**: [サポート電話番号]
+- 💬 **チャット**: [サポートチャット]
+
+**連絡時に準備いただく情報**：
+1. 変更しようとした内容
+2. エラーメッセージ（あれば）
+3. 使用ブラウザとデバイス情報
+4. バックアップファイルの有無 

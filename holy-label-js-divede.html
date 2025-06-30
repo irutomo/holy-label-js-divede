@@ -61,6 +61,132 @@
         {block:TextColor}body { color: {TextColor} !important; }{/block:TextColor}
         {block:LinkColor}a { color: {LinkColor} !important; }{/block:LinkColor}
         {block:NavColor}.nav-item { color: {NavColor} !important; }{/block:NavColor}
+        
+        /* 商品詳細ページ デスクトップ・モバイル分離レイアウト */
+        .product-detail-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            flex-direction: row; /* デスクトップは横並び */
+        }
+
+        /* 左側：商品ギャラリー */
+        .product-gallery {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .gallery-wrapper {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .gallery-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        /* ギャラリーのナビゲーションボタン */
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .gallery-nav button {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 28px;
+            font-weight: 100;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: auto;
+            transition: background-color 0.2s;
+        }
+        
+        .gallery-nav button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* モバイル用のカウンター（デスクトップでは非表示） */
+        .gallery-counter {
+            display: none;
+        }
+
+        /* 右側：商品情報 */
+        .product-info {
+            flex: 1;
+            max-width: 550px;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            height: 100vh;
+            overflow-y: auto;
+            border-left: 1px solid #333;
+        }
+
+        /* =============================================== */
+        /* --- モバイル版のスタイル (max-width: 1023px) ---- */
+        /* =============================================== */
+        @media (max-width: 1023px) {
+            .product-detail-container {
+                flex-direction: column; /* 縦積みに変更 */
+                height: auto;
+            }
+
+            .product-gallery {
+                height: auto;
+                aspect-ratio: 1 / 1.1;
+                cursor: grab;
+            }
+            
+            .gallery-wrapper img {
+                object-fit: cover;
+            }
+            
+            .gallery-nav {
+                display: none; /* モバイルでは矢印を非表示 */
+            }
+
+            /* モバイル用のカウンターを表示 */
+            .gallery-counter {
+                display: block;
+                position: absolute;
+                bottom: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                padding: 5px 12px;
+                border-radius: 15px;
+                font-size: 0.8em;
+            }
+
+            .product-info {
+                max-width: 100%;
+                height: auto;
+                overflow-y: visible;
+                border-left: none;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body id="{block:IndexPage}shopTopPage{/block:IndexPage}{block:ItemPage}shopDetailPage{/block:ItemPage}" class="shop template loading">
@@ -293,8 +419,9 @@
 {/block:IndexPage}
     {block:ItemPage}
         {IllegalReportMessageTag}
-        <section class="product-detail">
-            <div class="product-detail-image">
+        <div class="product-detail-container">
+            <!-- 左側：商品ギャラリー -->
+            <section class="product-gallery" id="productGallery">
                 {block:AppsItemLabel}
                     {AppsItemLabelTag}
                 {/block:AppsItemLabel}
@@ -313,22 +440,25 @@
                     {block:ItemImage10}<span data-main="{ItemImage10URL-640}" data-thumb="{ItemImage10URL-174}"></span>{/block:ItemImage10}
                 </div>
 
-                <div class="main-image-wrapper" id="mainImageWrapper">
+                <div class="gallery-wrapper" id="galleryWrapper">
                     <div class="main-image-container" id="mainImageContainer">
                         </div>
-                    <button class="carousel-nav prev" id="prevBtn">
+                </div>
+                
+                <div class="gallery-nav">
+                    <button class="prev-btn" id="prevBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     </button>
-                    <button class="carousel-nav next" id="nextBtn">
+                    <button class="next-btn" id="nextBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </button>
-                    <div class="image-counter" id="imageCounter"></div>
                 </div>
+                
+                <div class="gallery-counter" id="galleryCounter"></div>
+            </section>
 
-                <div class="thumbnail-scroll-container" id="thumbnailContainer">
-                    </div>
-            </div>
-            <div class="product-detail-info">
+            <!-- 右側：商品情報 -->
+            <section class="product-info">
                 <h1 class="product-detail-title">{ItemTitle}</h1>
                 <div class="product-detail-price">
                 {block:NoItemProperPrice}
@@ -385,9 +515,9 @@
                 </div>
                 <div class="illegal-report">
                 {IllegalReportTag}
-            </div>
+                </div>
+            </section>
         </div>
-        </section>
         {block:AppsReview}
         {AppsReviewTag}
         {/block:AppsReview}
@@ -494,12 +624,6 @@
             <small>© {ShopName} All rights reserved.</small>
     </div>
 </footer>
-  <!-- External JavaScript Libraries -->
-  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
-  
   <!-- External JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js"></script>
