@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-30T07:42:12.605Z",
+  "timestamp": "2025-06-30T07:54:48.240Z",
   "phase": "Phase 4",
   "libraries": [
     {
@@ -58,9 +58,9 @@
     },
     {
       "name": "special-pages",
-      "originalSize": 10542,
-      "optimizedSize": 7626,
-      "reduction": 27.7
+      "originalSize": 10424,
+      "optimizedSize": 7519,
+      "reduction": 27.9
     },
     {
       "name": "ui-components",
@@ -114,7 +114,7 @@
     },
     {
       "name": "special-pages-bundle",
-      "size": 7631,
+      "size": 7524,
       "description": "LOOKBOOK・About・Contact・特定商取引法ページ専用スタイル"
     },
     {
@@ -133,7 +133,7 @@
       "description": "HTMLから分離した残存インラインCSS"
     }
   ],
-  "totalOriginalSize": 86457,
-  "totalOptimizedSize": 62648,
-  "totalReduction": "27.5"
+  "totalOriginalSize": 86339,
+  "totalOptimizedSize": 62541,
+  "totalReduction": "27.6"
 }
