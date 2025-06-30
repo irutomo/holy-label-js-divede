@@ -500,147 +500,44 @@
   <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
   
-  <!-- JavaScript -->
+  <!-- External JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/extended.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/advanced.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js"></script>
+  
+  <!-- JavaScript Initialization and Compatibility -->
   <script>
       /*
-         JavaScript - ユーティリティ関数（互換性維持用）
+         JavaScript - 初期化とブリッジ機能（外部ライブラリとの互換性維持）
        */
-      const DOMUtils = {
-          // 効率的なDOM要素取得
-          get: (selector) => document.querySelector(selector),
-          getAll: (selector) => document.querySelectorAll(selector),
-          getId: (id) => document.getElementById(id),
-          // 共通DOM要素キャッシュ
-          cache: {},
-          getCached: function(key, selector) {
-              if (!this.cache[key]) {
-                  this.cache[key] = this.get(selector);
-              }
-              return this.cache[key];
-          },
-          // 基本要素のキャッシュ
-          hamburger: () => DOMUtils.getCached('hamburger', '#js-humberger'),
-          navArea: () => DOMUtils.getCached('navArea', '.js-nav-area'),
-          logo: () => DOMUtils.getCached('logo', '.logo'),
-          body: () => document.body
-      };
-      // アニメーション設定
-      const AnimationConfig = {
-          FADE_DELAY: 2000,
-          STAGGER_DELAY: 0.1,
-          SCROLL_THRESHOLD: 100,
-          TRANSITION_DURATION: '0.8s'
-      };
-      // ページ状態管理
-      const PageState = {
-          cache: null,
-          get() {
-              if (!this.cache) {
-                  this.cache = {
-                      hasMainVisual: DOMUtils.get('.main-visual') !== null,
-                      hasProductDetail: DOMUtils.get('.product-detail') !== null,
-                      hasAboutSection: DOMUtils.get('.about-section') !== null,
-                      hasCategoryHeader: DOMUtils.get('.category-header') !== null,
-                      hasSearchHeader: DOMUtils.get('.search-header') !== null,
-                      hasProductSection: DOMUtils.get('.product-section') !== null,
-                      isShopTopPage: document.body.id === 'shopTopPage'
-                  };
-              }
-              return this.cache;
-          },
-          isHomePage() {
-              const state = this.get();
-              return state.isShopTopPage && 
-                     state.hasMainVisual && 
-                     !state.hasProductDetail && 
-                     !state.hasAboutSection && 
-                     !state.hasCategoryHeader && 
-                     !state.hasSearchHeader &&
-                     !state.hasProductSection;
-          }
-      };
-      /*
-         JavaScript - ナビゲーション制御
-       */
-      const NavigationManager = {
-          elements: {
-              get hamburger() { return DOMUtils.hamburger(); },
-              get navArea() { return DOMUtils.navArea(); },
-              get body() { return DOMUtils.body(); }
-          },
-          isActive() {
-              return this.elements.hamburger?.classList.contains('-active') || false;
-          },
-          toggle() {
-              const { hamburger, navArea, body } = this.elements;
-              if (!hamburger || !navArea) return;
-              const isActive = this.isActive();
-              const action = isActive ? 'remove' : 'add';
-              [hamburger, navArea].forEach(el => el.classList[action]('-active'));
-              body.classList[action]('body-fixed');
-              setTimeout(() => LogoManager.updatePosition(), 10);
-          },
-          close() {
-              const { hamburger, navArea, body } = this.elements;
-              if (hamburger && navArea) {
-                  [hamburger, navArea].forEach(el => el.classList.remove('-active'));
-                  body.classList.remove('body-fixed');
-              }
-          },
-          init() {
-              const { hamburger, navArea } = this.elements;
-              if (!hamburger || !navArea) return;
-              // ハンバーガーメニューのクリックイベント
-              hamburger.addEventListener('click', () => this.toggle());
-              // 展開メニューの初期化
-              this.initExpandMenus();
-              // メニュー外クリックで閉じる
-              document.addEventListener('click', (event) => {
-                  if (!navArea.contains(event.target) && !hamburger.contains(event.target)) {
-                      this.close();
-                      setTimeout(() => LogoManager.updatePosition(), 10);
-                  }
-              });
-          },
-          initExpandMenus() {
-              const expandLinks = DOMUtils.getAll('a.expand');
-              expandLinks.forEach(link => {
-                  link.addEventListener('click', (e) => {
-                      e.preventDefault();
-                      const exList = link.nextElementSibling;
-                      const isOpen = link.classList.contains('open');
-                      link.classList.toggle('open', !isOpen);
-                      exList.style.display = isOpen ? 'none' : 'block';
-                  });
-              });
-          }
-      };
-      /*
-         JavaScript - ロゴ制御
-       */
-      const LogoManager = {
-          updatePosition() {
-              const logo = DOMUtils.logo();
-              if (!logo) return;
-              const isMenuOpen = NavigationManager.isActive();
-              const isTop = PageState.isHomePage();
-              // 既存のクラスを削除
-              logo.classList.remove('center-position', 'header-position', 'menu-open-position');
-              // 適切なクラスを追加
-              if (isMenuOpen) {
-                  logo.classList.add('menu-open-position');
-              } else if (isTop) {
-                  logo.classList.add('center-position');
+      
+      // 外部ライブラリが読み込まれるまで待機する関数
+      function waitForLibraries(callback) {
+          const checkLibraries = () => {
+              if (window.HolyLabelDOMUtils && 
+                  window.HolyLabelNavigationManager && 
+                  window.HolyLabelPageState && 
+                  window.HolyLabelAnimationManager) {
+                  callback();
               } else {
-                  logo.classList.add('header-position');
+                  setTimeout(checkLibraries, 100);
               }
-          }
-      };
+          };
+          checkLibraries();
+      }
+      // 基本的なページ状態管理（外部ライブラリと併用）
+      function isHomePage() {
+          return document.body.id === 'shopTopPage' && 
+                 document.querySelector('.main-visual') !== null &&
+                 document.querySelector('.product-detail') === null;
+      }
+
       /*
          JavaScript - カテゴリ表示制御
        */
       function initCategoryDisplay() {
-          const itemExpandLink = DOMUtils.get('a.expand[href="#"]');
+          const itemExpandLink = document.querySelector('a.expand[href="#"]');
           if (itemExpandLink?.textContent.trim() === 'ITEM') {
               const exList = itemExpandLink.nextElementSibling;
               if (exList) {
@@ -652,51 +549,74 @@
               }
           }
       }
+      
       /*
          JavaScript - Instagram固定ボタン制御
        */
       function controlInstagramButton() {
-          const instagramBtn = DOMUtils.get('.instagram-fixed-btn');
+          const instagramBtn = document.querySelector('.instagram-fixed-btn');
           if (!instagramBtn) return;
-          DOMUtils.body().classList.toggle('home-page', PageState.isHomePage());
+          document.body.classList.toggle('home-page', isHomePage());
       }
       /*
-         JavaScript - 初期化処理
+         JavaScript - 初期化処理（外部ライブラリ使用）
        */
       document.addEventListener('DOMContentLoaded', function() {
-          // メイン初期化
-          DOMUtils.body().classList.add('loaded');
-          
-          // 基本機能初期化
-          NavigationManager.close();
-          LogoManager.updatePosition();
-          NavigationManager.init();
-          initCategoryDisplay();
-          controlInstagramButton();
-          
-          // 商品詳細ページの機能初期化
-          if (document.querySelector('.product-detail')) {
-              // レスポンシブ制御の初期化
-              initResponsiveProductDetail();
+          // 外部ライブラリの読み込み完了を待機してから初期化
+          waitForLibraries(function() {
+              // メイン初期化
+              document.body.classList.add('loaded');
               
-              // 外部ライブラリが読み込まれてから商品ギャラリーを初期化
-              if (window.HolyLabelProductGallery) {
-                  window.HolyLabelProductGallery.init();
-              } else {
-                  // ライブラリ読み込み待機
-                  let retryCount = 0;
-                  const maxRetries = 10;
-                  const initInterval = setInterval(() => {
-                      if (window.HolyLabelProductGallery || retryCount >= maxRetries) {
-                          clearInterval(initInterval);
-                          if (window.HolyLabelProductGallery) {
-                              window.HolyLabelProductGallery.init();
-                          }
-                      }
-                      retryCount++;
-                  }, 200);
+              // 外部ライブラリを使用した基本機能初期化
+              if (window.HolyLabelNavigationManager) {
+                  window.HolyLabelNavigationManager.init();
+                  window.HolyLabelNavigationManager.close();
               }
-          }
+              
+              if (window.HolyLabelPageState && window.HolyLabelLogoManager) {
+                  window.HolyLabelLogoManager.updatePosition();
+              }
+              
+              // カテゴリ表示制御
+              initCategoryDisplay();
+              
+              // Instagram固定ボタン制御
+              controlInstagramButton();
+              
+              // 商品詳細ページの機能初期化
+              if (document.querySelector('.product-detail')) {
+                  // レスポンシブ制御の初期化
+                  initResponsiveProductDetail();
+                  
+                  // 商品ギャラリーの初期化
+                  if (window.HolyLabelProductGallery) {
+                      window.HolyLabelProductGallery.init();
+                  }
+              }
+          });
+          
+          // フォールバック：外部ライブラリが読み込まれない場合の基本的なハンバーガーメニュー
+          setTimeout(function() {
+              const hamburger = document.getElementById('js-humberger');
+              const navArea = document.querySelector('.js-nav-area');
+              
+              if (hamburger && navArea && !window.HolyLabelNavigationManager) {
+                  console.log('Using fallback hamburger menu');
+                  hamburger.addEventListener('click', function() {
+                      const isActive = hamburger.classList.contains('-active');
+                      
+                      if (isActive) {
+                          hamburger.classList.remove('-active');
+                          navArea.classList.remove('-active');
+                          document.body.classList.remove('body-fixed');
+                      } else {
+                          hamburger.classList.add('-active');
+                          navArea.classList.add('-active');
+                          document.body.classList.add('body-fixed');
+                      }
+                  });
+              }
+          }, 1000);
       });
       
       /*
