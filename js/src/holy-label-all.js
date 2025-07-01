@@ -869,11 +869,6 @@
                 counter: !!this.elements.counter
             });
 
-            if (!this.elements.mainContainer || !this.elements.thumbnailContainer) {
-                console.log('Required elements not found, exiting');
-                return;
-            }
-
             this.collectImages();
             console.log('Collected images:', this.images.length);
             
@@ -882,10 +877,39 @@
                 return;
             }
 
-            this.renderImages();
-            this.addEventListeners();
-            this.updateUI();
+            // デスクトップ版用の画像を先に作成
+            this.createDesktopImage();
+            
+            // モバイル版用の複雑画像システム
+            if (this.elements.mainContainer && this.elements.thumbnailContainer) {
+                this.renderImages();
+                this.addEventListeners();
+                this.updateUI();
+                console.log('Mobile gallery system initialized');
+            }
+            
             console.log('ProductGallery initialization completed');
+        },
+
+        // デスクトップ版用の画像表示
+        createDesktopImage() {
+            const productDetailImage = document.querySelector('.product-detail-image');
+            if (!productDetailImage || this.images.length === 0) return;
+            
+            // 既存のデスクトップ画像があれば削除
+            const existingImage = productDetailImage.querySelector('.desktop-main-image');
+            if (existingImage) {
+                existingImage.remove();
+            }
+            
+            // 最初の画像を表示
+            const img = document.createElement('img');
+            img.src = this.images[0].main;
+            img.alt = document.querySelector('.product-detail-title')?.textContent || '商品画像';
+            img.className = 'desktop-main-image';
+            
+            productDetailImage.appendChild(img);
+            console.log('Desktop image created:', this.images[0].main);
         },
 
         // 画像データの収集

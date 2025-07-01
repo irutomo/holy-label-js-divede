@@ -976,6 +976,12 @@ ul.ex-list > li.sub-category > a:hover {
     align-items: start;
 }
 
+/* 商品詳細画像エリア */
+.product-detail-image {
+    position: relative;
+    width: 100%;
+}
+
 .product-detail-image {
     position: relative;
 }
@@ -1151,6 +1157,26 @@ ul.ex-list > li.sub-category > a:hover {
     object-fit: cover;
 }
 
+/* 画像コンテナの基本設定 */
+.main-image-container {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.main-image-container .main-image-item {
+    width: 100%;
+    height: auto;
+}
+
+.main-image-container .main-image-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
 /* デスクトップ版では複雑画像システムを隠す */
 @media (min-width: 769px) {
     .main-image-wrapper,
@@ -1164,18 +1190,24 @@ ul.ex-list > li.sub-category > a:hover {
     /* デスクトップ版では元の仕様通りシンプル表示 */
     .product-detail-image {
         position: relative;
+        aspect-ratio: 1;
+        max-width: 500px;
+        margin: 0 auto;
     }
     
-    /* デスクトップ版：画像データからの表示 */
-    .product-detail-image::before {
-        content: "";
-        display: block;
+    /* デスクトップ版：最初の画像を表示 */
+    .product-detail-image .desktop-main-image {
         width: 100%;
-        height: 400px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23666'%3ENo Image%3C/text%3E%3C/svg%3E");
-        background-size: cover;
-        background-position: center;
-        border-radius: 4px;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* デスクトップ版での画像ホバー効果 */
+    .product-detail-image .desktop-main-image:hover {
+        transform: scale(1.02);
+        transition: transform 0.3s ease;
     }
 }
 
@@ -1220,6 +1252,65 @@ ul.ex-list > li.sub-category > a:hover {
         gap: 30px;
         margin: 60px auto;
         padding: 0 20px;
+    }
+    
+    /* モバイル版：商品画像エリア */
+    .product-detail-image {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    /* モバイル版：メイン画像ラッパー */
+    .main-image-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1;
+        margin-bottom: 16px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* モバイル版：メイン画像コンテナ */
+    .main-image-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    
+    .main-image-container::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .main-image-container .main-image-item {
+        flex: 0 0 100%;
+        width: 100%;
+        height: 100%;
+        scroll-snap-align: start;
+    }
+    
+    .main-image-container .main-image-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    
+    /* モバイル版：サムネイル表示を強制 */
+    .thumbnail-scroll-container {
+        display: flex !important;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 8px;
+        padding: 8px 0;
+        margin-top: 16px;
     }
     
     .product-detail-info {
