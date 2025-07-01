@@ -5,6 +5,9 @@
   "main": "build.js",
   "scripts": {
     "build": "node build.js",
+    "build:single": "node build.js single",
+    "build:all": "node build.js all", 
+    "build:bundles": "node build.js bundles",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

@@ -1,0 +1,64 @@
+{
+  "timestamp": "2025-07-01T04:24:58.386Z",
+  "type": "single_file_consolidation",
+  "outputFile": "holy-label-all.min.css",
+  "totalFiles": 13,
+  "files": [
+    {
+      "name": "foundation.css",
+      "size": 1635
+    },
+    {
+      "name": "layout.css",
+      "size": 6042
+    },
+    {
+      "name": "base-menu.css",
+      "size": 4339
+    },
+    {
+      "name": "product-components.css",
+      "size": 4748
+    },
+    {
+      "name": "animations.css",
+      "size": 2586
+    },
+    {
+      "name": "product-detail.css",
+      "size": 12606
+    },
+    {
+      "name": "forms.css",
+      "size": 4321
+    },
+    {
+      "name": "responsive.css",
+      "size": 9366
+    },
+    {
+      "name": "footer-pages.css",
+      "size": 5961
+    },
+    {
+      "name": "special-pages.css",
+      "size": 10424
+    },
+    {
+      "name": "ui-components.css",
+      "size": 9437
+    },
+    {
+      "name": "base-integration.css",
+      "size": 10358
+    },
+    {
+      "name": "remaining-styles.css",
+      "size": 6882
+    }
+  ],
+  "totalOriginalSize": 88705,
+  "finalSize": 57550,
+  "reduction": 35.1,
+  "cdnUrl": "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/holy-label-all.min.css"
+}

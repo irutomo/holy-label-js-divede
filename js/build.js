@@ -281,6 +281,155 @@ async function buildFinal() {
     }
 }
 
+// 単一ファイル統合関数（新機能）
+async function buildSingleFile() {
+    console.log('🎯 単一ファイル統合開始: holy-label-all.min.js');
+    
+    // 統合順序（依存関係順）
+    const consolidationOrder = [
+        // Phase 1: Core (基盤機能)
+        'dom-utils.js',
+        'page-state.js', 
+        'animation-config.js',
+        
+        // Phase 2: Extended (拡張機能)
+        'animation-manager.js',
+        'navigation-manager.js',
+        'modal-utils.js',
+        
+        // Phase 3: Advanced (高度機能)
+        'product-gallery.js',
+        'loadmore-manager.js',
+        'logo-manager.js',
+        
+        // Phase 4: Final (最終機能)
+        'initialization-manager.js',
+        'language-manager.js',
+        'scroll-manager.js'
+    ];
+    
+    let consolidatedCode = '';
+    let totalOriginalSize = 0;
+    let consolidatedFiles = [];
+    
+    // ヘッダーコメント
+    consolidatedCode += `/*! HOLY LABEL JavaScript - All-in-One Bundle v1.0.0
+ * Complete JavaScript library for HOLY LABEL BASE theme
+ * github.com/irutomo/holy-label-js-divede
+ * (c) 2024 HOLY LABEL | MIT License
+ */\n\n`;
+    
+    console.log('📄 ファイル統合順序:');
+    
+    // 各ファイルを順序通りに統合
+    for (const fileName of consolidationOrder) {
+        const inputPath = path.join(srcDir, fileName);
+        
+        if (fs.existsSync(inputPath)) {
+            const code = fs.readFileSync(inputPath, 'utf8');
+            const fileSize = Buffer.byteLength(code, 'utf8');
+            totalOriginalSize += fileSize;
+            
+            // ファイル区切りコメント追加
+            consolidatedCode += `\n/* ========== ${fileName} ========== */\n`;
+            consolidatedCode += code + '\n';
+            
+            consolidatedFiles.push({
+                name: fileName,
+                size: fileSize
+            });
+            
+            console.log(`  ✅ ${fileName}: ${formatBytes(fileSize)}`);
+        } else {
+            console.warn(`  ⚠️  ${fileName}: ファイルが見つかりません`);
+        }
+    }
+    
+    // JavaScript最適化
+    console.log('⚡ JavaScript最適化処理中...');
+    
+    // 全てのHolyLabel関数名を保護
+    const reservedNames = [
+        'HolyLabelDOMUtils', 'HolyLabelPageState', 'HolyLabelAnimationConfig',
+        'HolyLabelAnimationManager', 'HolyLabelNavigationManager', 'HolyLabelModalUtils',
+        'HolyLabelProductGallery', 'HolyLabelLoadMoreManager', 'HolyLabelLogoManager',
+        'HolyLabelInitializationManager', 'HolyLabelLanguageManager', 'HolyLabelScrollManager',
+        'DOMUtils', 'PageState', 'AnimationConfig', 'AnimationManager', 'NavigationManager',
+        'ProductImageGallery', 'LoadMoreManager', 'LogoManager', 'InitializationManager',
+        'LanguageManager', 'ScrollManager', 'switchLanguage', 'initRestockNotificationModal',
+        'initCategoryDisplay', 'controlInstagramButton', 'initCustomLanguageSwitcher'
+    ];
+    
+    const result = await minify(consolidatedCode, {
+        compress: {
+            drop_console: false,
+            drop_debugger: true,
+            pure_funcs: ['console.log']
+        },
+        mangle: {
+            reserved: reservedNames
+        },
+        format: {
+            comments: function(node, comment) {
+                return comment.value.includes('HOLY LABEL');
+            }
+        }
+    });
+    
+    if (result.error) {
+        throw result.error;
+    }
+    
+    // ヘッダーを保持して最終ファイル生成
+    const finalCode = '/*! HOLY LABEL JavaScript - All-in-One Bundle v1.0.0 | Complete JS library | github.com/irutomo/holy-label-js-divede */\n' + result.code;
+    
+    // ファイル出力
+    const outputPath = path.join(distDir, 'holy-label-all.min.js');
+    fs.writeFileSync(outputPath, finalCode);
+    
+    const finalSize = Buffer.byteLength(finalCode, 'utf8');
+    const reduction = ((totalOriginalSize - finalSize) / totalOriginalSize * 100).toFixed(1);
+    
+    console.log('\n🎯 単一ファイル統合完了:');
+    console.log('=' .repeat(50));
+    console.log(`統合ファイル数: ${consolidatedFiles.length}`);
+    console.log(`元サイズ: ${formatBytes(totalOriginalSize)}`);
+    console.log(`最終サイズ: ${formatBytes(finalSize)}`);
+    console.log(`削減率: ${reduction}%`);
+    console.log(`出力ファイル: holy-label-all.min.js`);
+    
+    // CDN URL表示
+    const cdnUrl = 'https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/holy-label-all.min.js';
+    console.log(`CDN URL: ${cdnUrl}`);
+    
+    // 統合情報を保存
+    const consolidationInfo = {
+        timestamp: new Date().toISOString(),
+        type: 'single_file_consolidation',
+        outputFile: 'holy-label-all.min.js',
+        totalFiles: consolidatedFiles.length,
+        files: consolidatedFiles,
+        totalOriginalSize,
+        finalSize,
+        reduction: parseFloat(reduction),
+        cdnUrl
+    };
+    
+    fs.writeFileSync(path.join(distDir, 'js-consolidation-info.json'), JSON.stringify(consolidationInfo, null, 2));
+    
+    return consolidationInfo;
+}
+
+// ファイルサイズをフォーマットする関数
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
 async function build() {
     console.log('🚀 Starting HOLY LABEL JS build process...\n');
     
@@ -338,4 +487,62 @@ async function build() {
     console.log('🏁 最終: https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/final.min.js');
 }
 
-build(); 
+// 単一ファイル統合のみ実行
+async function buildSingle() {
+    console.log('🎯 HOLY LABEL JavaScript 単一ファイル統合モード\n');
+    
+    const consolidationResult = await buildSingleFile();
+    
+    console.log('\n✨ 単一ファイル統合完了！');
+    console.log(`📁 出力: js/dist/${consolidationResult.outputFile}`);
+    console.log(`🌐 CDN: ${consolidationResult.cdnUrl}`);
+}
+
+// すべてのビルド（個別 + バンドル + 単一ファイル）
+async function buildAllWithConsolidation() {
+    console.log('🚀 HOLY LABEL JavaScript 完全ビルドモード\n');
+    
+    // 従来のビルド実行
+    await build();
+    
+    console.log('\n' + '='.repeat(60));
+    
+    // 単一ファイル統合追加
+    const consolidationResult = await buildSingleFile();
+    
+    console.log('\n🎊 完全ビルド完了！');
+    console.log('📦 生成ファイル:');
+    console.log('  - 個別JS: 12ファイル');
+    console.log('  - バンドルJS: 4ファイル');
+    console.log(`  - 統合JS: ${consolidationResult.outputFile}`);
+}
+
+// コマンドライン引数の処理
+const args = process.argv.slice(2);
+const command = args[0] || 'default';
+
+// エラーハンドリング付きビルド実行
+async function run() {
+    try {
+        switch (command) {
+            case 'single':
+                await buildSingle();
+                break;
+            case 'all':
+                await buildAllWithConsolidation();
+                break;
+            case 'bundles':
+                await build();
+                break;
+            default:
+                // デフォルトは従来のバンドルビルド
+                await build();
+                break;
+        }
+    } catch (error) {
+        console.error('❌ ビルド失敗:', error);
+        process.exit(1);
+    }
+}
+
+run(); 

@@ -195,6 +195,115 @@ async function buildLibrary(library) {
     }
 }
 
+// 単一ファイル統合関数（新機能）
+async function buildSingleFile() {
+    console.log('🎯 単一ファイル統合開始: holy-label-all.min.css');
+    
+    // 統合順序（依存関係順）
+    const consolidationOrder = [
+        // Phase 1: 基盤CSS
+        'foundation.css',
+        'layout.css',
+        
+        // Phase 2: コンポーネントCSS
+        'base-menu.css',
+        'product-components.css',
+        'animations.css',
+        
+        // Phase 3: 商品関連CSS
+        'product-detail.css',
+        'forms.css',
+        'responsive.css',
+        'footer-pages.css',
+        
+        // Phase 4: 特殊機能CSS
+        'special-pages.css',
+        'ui-components.css',
+        'base-integration.css',
+        'remaining-styles.css'
+    ];
+    
+    let consolidatedCSS = '';
+    let totalOriginalSize = 0;
+    let consolidatedFiles = [];
+    
+    // ヘッダーコメント
+    consolidatedCSS += `/*! HOLY LABEL CSS - All-in-One Bundle v1.0.0
+ * Complete CSS library for HOLY LABEL BASE theme
+ * github.com/irutomo/holy-label-js-divede
+ * (c) 2024 HOLY LABEL | MIT License
+ */\n\n`;
+    
+    console.log('📄 ファイル統合順序:');
+    
+    // 各ファイルを順序通りに統合
+    for (const fileName of consolidationOrder) {
+        const inputPath = path.join(srcDir, fileName);
+        
+        if (fs.existsSync(inputPath)) {
+            const css = fs.readFileSync(inputPath, 'utf8');
+            const fileSize = css.length;
+            totalOriginalSize += fileSize;
+            
+            // ファイル区切りコメント追加
+            consolidatedCSS += `/* ========== ${fileName} ========== */\n`;
+            consolidatedCSS += css + '\n\n';
+            
+            consolidatedFiles.push({
+                name: fileName,
+                size: fileSize
+            });
+            
+            console.log(`  ✅ ${fileName}: ${formatBytes(fileSize)}`);
+        } else {
+            console.warn(`  ⚠️  ${fileName}: ファイルが見つかりません`);
+        }
+    }
+    
+    // CSS最適化
+    console.log('⚡ CSS最適化処理中...');
+    const optimizedCSS = await optimizeCSS(consolidatedCSS);
+    
+    // ヘッダーを保持して最終ファイル生成
+    const finalCSS = `/*! HOLY LABEL CSS - All-in-One Bundle v1.0.0 | Complete CSS library | github.com/irutomo/holy-label-js-divede */\n` + optimizedCSS;
+    
+    // ファイル出力
+    const outputPath = path.join(distDir, 'holy-label-all.min.css');
+    fs.writeFileSync(outputPath, finalCSS);
+    
+    const finalSize = finalCSS.length;
+    const reduction = ((totalOriginalSize - finalSize) / totalOriginalSize * 100).toFixed(1);
+    
+    console.log('\n🎯 単一ファイル統合完了:');
+    console.log('=' .repeat(50));
+    console.log(`統合ファイル数: ${consolidatedFiles.length}`);
+    console.log(`元サイズ: ${formatBytes(totalOriginalSize)}`);
+    console.log(`最終サイズ: ${formatBytes(finalSize)}`);
+    console.log(`削減率: ${reduction}%`);
+    console.log(`出力ファイル: holy-label-all.min.css`);
+    
+    // CDN URL表示
+    const cdnUrl = 'https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/holy-label-all.min.css';
+    console.log(`CDN URL: ${cdnUrl}`);
+    
+    // 統合情報を保存
+    const consolidationInfo = {
+        timestamp: new Date().toISOString(),
+        type: 'single_file_consolidation',
+        outputFile: 'holy-label-all.min.css',
+        totalFiles: consolidatedFiles.length,
+        files: consolidatedFiles,
+        totalOriginalSize,
+        finalSize,
+        reduction: parseFloat(reduction),
+        cdnUrl
+    };
+    
+    fs.writeFileSync(path.join(distDir, 'consolidation-info.json'), JSON.stringify(consolidationInfo, null, 2));
+    
+    return consolidationInfo;
+}
+
 // バンドルを作成する関数
 async function createBundle(bundle) {
     const bundlePath = path.join(distDir, `${bundle.name}.min.css`);
@@ -288,14 +397,68 @@ async function buildAll() {
     fs.writeFileSync(path.join(distDir, 'build-info-phase4.json'), JSON.stringify(buildInfo, null, 2));
 }
 
+// 単一ファイル統合のみ実行
+async function buildSingle() {
+    console.log('🎯 HOLY LABEL CSS 単一ファイル統合モード\n');
+    
+    const consolidationResult = await buildSingleFile();
+    
+    console.log('\n✨ 単一ファイル統合完了！');
+    console.log(`📁 出力: css/dist/${consolidationResult.outputFile}`);
+    console.log(`🌐 CDN: ${consolidationResult.cdnUrl}`);
+}
+
+// すべてのビルド（個別 + バンドル + 単一ファイル）
+async function buildAllWithConsolidation() {
+    console.log('🚀 HOLY LABEL CSS 完全ビルドモード\n');
+    
+    // 従来のビルド実行
+    await buildAll();
+    
+    console.log('\n' + '='.repeat(60));
+    
+    // 単一ファイル統合追加
+    const consolidationResult = await buildSingleFile();
+    
+    console.log('\n🎊 完全ビルド完了！');
+    console.log('📦 生成ファイル:');
+    console.log('  - 個別CSS: 13ファイル');
+    console.log('  - バンドルCSS: 10ファイル');
+    console.log(`  - 統合CSS: ${consolidationResult.outputFile}`);
+}
+
 // エラーハンドリング
 process.on('unhandledRejection', (error) => {
     console.error('❌ ビルドエラー:', error);
     process.exit(1);
 });
 
+// コマンドライン引数の処理
+const args = process.argv.slice(2);
+const command = args[0] || 'default';
+
 // ビルド実行
-buildAll().catch(error => {
-    console.error('❌ ビルド失敗:', error);
-    process.exit(1);
-}); 
+async function run() {
+    try {
+        switch (command) {
+            case 'single':
+                await buildSingle();
+                break;
+            case 'all':
+                await buildAllWithConsolidation();
+                break;
+            case 'bundles':
+                await buildAll();
+                break;
+            default:
+                // デフォルトは従来のバンドルビルド
+                await buildAll();
+                break;
+        }
+    } catch (error) {
+        console.error('❌ ビルド失敗:', error);
+        process.exit(1);
+    }
+}
+
+run(); 

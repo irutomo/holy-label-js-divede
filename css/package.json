@@ -4,7 +4,10 @@
   "main": "build.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node build.js"
+    "build": "node build.js",
+    "build:single": "node build.js single",
+    "build:all": "node build.js all",
+    "build:bundles": "node build.js bundles"
   },
   "keywords": [],
   "author": "",
