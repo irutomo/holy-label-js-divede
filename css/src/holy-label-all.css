@@ -974,35 +974,23 @@ ul.ex-list > li.sub-category > a:hover {
     max-width: none;
 }
 
-/* デスクトップレイアウト - フルスクリーン横並び */
+/* デスクトップレイアウト - 元の仕様に合わせた2カラムグリッドレイアウト */
 @media (min-width: 1024px) {
     .product-detail {
-        display: flex;
-        flex-direction: row;
-        min-height: 100vh;
-        margin: 0;
-        padding: 0;
-        max-width: none;
-        gap: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        max-width: 1200px;
+        margin: 80px auto;
+        padding: 0 40px;
     }
     
     .product-detail-image {
-        flex: 1;
         position: relative;
-        overflow: hidden;
-        background-color: #000;
-        height: 100vh;
     }
     
     .product-detail-info {
-        flex: 1;
-        max-width: 550px;
-        padding: 50px 40px;
-        box-sizing: border-box;
-        height: 100vh;
-        overflow-y: auto;
-        border-left: 1px solid var(--border-color);
-        background-color: var(--primary-bg);
+        padding: 40px 0;
     }
 }
 
@@ -1024,6 +1012,152 @@ ul.ex-list > li.sub-category > a:hover {
 
 .main-image-container:hover img {
     transform: scale(1.02);
+}
+
+/* 画像カルーセル用ナビゲーション */
+.image-carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(200, 200, 200, 0.8);
+    color: #333;
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+}
+
+.image-carousel-nav:hover {
+    background-color: rgba(255, 255, 255, 1);
+    border-color: rgba(150, 150, 150, 0.9);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.image-carousel-nav:active,
+.image-carousel-nav:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(212, 56, 131, 0.2);
+}
+
+.image-carousel-nav.prev {
+    left: 16px;
+}
+
+.image-carousel-nav.next {
+    right: 16px;
+}
+
+.image-carousel-nav svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* 画像が1枚しかない場合はナビゲーションを非表示 */
+.main-image-container.single-image .image-carousel-nav {
+    display: none;
+}
+
+/* 画像インジケーター */
+.image-indicators {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.image-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.image-indicator.active {
+    background-color: var(--accent-color);
+    transform: scale(1.2);
+}
+
+.image-indicator:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* 画像が1枚しかない場合はインジケーターを非表示 */
+.main-image-container.single-image .image-indicators {
+    display: none;
+}
+
+/* サムネイル画像コンテナ（カルーセル形式のため非表示） */
+.thumbnail-container {
+    display: none;
+}
+
+/* レスポンシブ対応（商品画像カルーセル） */
+@media (max-width: 768px) {
+    .image-carousel-nav {
+        width: 40px;
+        height: 40px;
+        opacity: 0.85;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+    .image-carousel-nav.prev {
+        left: 12px;
+    }
+    .image-carousel-nav.next {
+        right: 12px;
+    }
+    .image-carousel-nav svg {
+        width: 16px;
+        height: 16px;
+    }
+    .main-image-container {
+        margin-bottom: var(--space-sm);
+    }
+    .image-indicators {
+        bottom: 12px;
+    }
+    .image-indicator {
+        width: 6px;
+        height: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-carousel-nav {
+        width: 36px;
+        height: 36px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    .image-carousel-nav.prev {
+        left: 8px;
+    }
+    .image-carousel-nav.next {
+        right: 8px;
+    }
+    .image-carousel-nav svg {
+        width: 14px;
+        height: 14px;
+    }
 }
 
     .product-detail-info {
