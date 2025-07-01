@@ -271,18 +271,17 @@ button.humberger {
 /* 展開メニュー */
 .global-navigation__list > li > a.expand {
     position: relative;
-    padding-right: 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: block;
+    text-align: center;
+    padding: 8px 0;
 }
 
 a.expand:after {
     content: '+';
     position: absolute;
-    right: 0;
+    right: 50%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) translateX(calc(50% + 4rem));
     font-size: var(--font-lg);
     font-weight: var(--weight-light);
     line-height: 1;
@@ -299,10 +298,14 @@ ul.ex-list {
     list-style: none;
     display: none;
     text-align: center;
+    width: 100%;
+    position: relative;
+    clear: both;
 }
 
 ul.ex-list > li {
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 ul.ex-list > li > a {
@@ -415,9 +418,9 @@ ul.ex-list > li.sub-category > a:hover {
     
     .global-navigation__list > li {
         margin-bottom: 1.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
+        width: 100%;
+        text-align: center;
     }
     
     /* 検索フォーム（モバイル） */
@@ -427,6 +430,24 @@ ul.ex-list > li.sub-category > a:hover {
         padding-bottom: 2rem;
         border-bottom: 1px solid #333;
         margin-bottom: 2rem;
+    }
+    
+    /* モバイル版サブカテゴリ表示修正 */
+    ul.ex-list {
+        position: static !important;
+        width: 100% !important;
+        margin-top: 1rem !important;
+        display: none;
+    }
+    
+    ul.ex-list.show {
+        display: block !important;
+    }
+    
+    .global-navigation__list > li {
+        position: relative;
+        display: block !important;
+        flex-direction: column !important;
     }
 } 
 
@@ -570,10 +591,14 @@ ul.ex-list {
     list-style: none;
     display: none;
     text-align: center;
+    width: 100%;
+    position: relative;
+    clear: both;
 }
 
 ul.ex-list > li {
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 ul.ex-list > li > a {
