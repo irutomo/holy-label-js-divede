@@ -1,0 +1,336 @@
+# HOLY LABEL BASE 単一ファイル統合プラン
+# BASEでの外部ライブラリ管理簡便化
+version: "1.0.0"
+project: "holy-label-js-divede"
+purpose: "BASE外部ライブラリを単一ファイル化してアップロード・管理を簡便化"
+
+# =============================================================================
+# 現状分析
+# =============================================================================
+current_structure:
+  css:
+    source_files: 13
+    individual_builds: 13
+    bundle_builds: 10
+    total_builds: 23
+    total_size: "62.78KB"
+    cdn_files_count: 34
+
+  javascript:
+    source_files: 12
+    individual_builds: 12
+    bundle_builds: 4
+    total_builds: 16
+    total_size: "33KB"
+    cdn_files_count: 29
+
+# =============================================================================
+# 統合目標
+# =============================================================================
+consolidation_target:
+  css:
+    output_file: "holy-label-all.min.css"
+    expected_size: "45-50KB"
+    compression_ratio: "25-30%"
+    
+  javascript:
+    output_file: "holy-label-all.min.js"
+    expected_size: "25-30KB"
+    compression_ratio: "20-25%"
+
+# =============================================================================
+# CSS統合計画
+# =============================================================================
+css_consolidation:
+  strategy: "dependency_order_merge"
+  
+  merge_order:
+    phase_1_foundation:
+      files:
+        - "foundation.css"        # CSS変数・リセット（1.3KB）
+        - "layout.css"           # レイアウト・ナビ（2.6KB）
+      priority: 1
+      
+    phase_2_components:
+      files:
+        - "base-menu.css"        # BASEメニュー統合（3.3KB）
+        - "product-components.css" # 商品コンポーネント（3.5KB）
+        - "animations.css"       # アニメーション定義（1.8KB）
+      priority: 2
+      
+    phase_3_product:
+      files:
+        - "product-detail.css"   # 商品詳細ページ（8.7KB）
+        - "forms.css"           # フォーム要素（3.3KB）
+        - "responsive.css"      # レスポンシブ対応（5.4KB）
+        - "footer-pages.css"    # フッター・ページ（4.3KB）
+      priority: 3
+      
+    phase_4_special:
+      files:
+        - "special-pages.css"   # 特殊ページ（7.3KB）
+        - "ui-components.css"   # UIコンポーネント（7.0KB）
+        - "base-integration.css" # BASE統合（7.6KB）
+        - "remaining-styles.css" # HTMLから分離（5.0KB）
+      priority: 4
+
+  build_process:
+    input_directory: "css/src/"
+    output_directory: "css/dist/"
+    output_filename: "holy-label-all.min.css"
+    processing_steps:
+      1: "source_files_concatenation"
+      2: "postcss_processing"
+      3: "cssnano_minification"
+      4: "source_map_generation"
+
+# =============================================================================
+# JavaScript統合計画
+# =============================================================================
+javascript_consolidation:
+  strategy: "dependency_order_merge"
+  
+  merge_order:
+    phase_1_core:
+      files:
+        - "dom-utils.js"         # DOM操作基盤（2.0KB）
+        - "page-state.js"        # ページ状態管理（2.9KB）
+        - "animation-config.js"  # アニメーション設定（2.9KB）
+      priority: 1
+      dependency_note: "基盤機能、他の全ライブラリが依存"
+      
+    phase_2_extended:
+      files:
+        - "animation-manager.js" # アニメーション管理（5.7KB）
+        - "navigation-manager.js" # ナビゲーション管理（5.9KB）
+        - "modal-utils.js"       # モーダル機能（7.6KB）
+      priority: 2
+      dependency_note: "Core Bundleに依存"
+      
+    phase_3_advanced:
+      files:
+        - "product-gallery.js"  # 商品ギャラリー（12KB）
+        - "loadmore-manager.js" # Ajax読み込み（9.6KB）
+        - "logo-manager.js"     # ロゴ管理（7.0KB）
+      priority: 3
+      dependency_note: "Extended Bundleに依存"
+      
+    phase_4_final:
+      files:
+        - "initialization-manager.js" # 初期化管理（6.8KB）
+        - "language-manager.js"       # 多言語管理（6.1KB）
+        - "scroll-manager.js"         # スクロール管理（7.8KB）
+      priority: 4
+      dependency_note: "全ライブラリ統合・初期化"
+
+  build_process:
+    input_directory: "js/src/"
+    output_directory: "js/dist/"
+    output_filename: "holy-label-all.min.js"
+    processing_steps:
+      1: "source_files_concatenation"
+      2: "terser_minification"
+      3: "source_map_generation"
+      4: "global_namespace_verification"
+
+# =============================================================================
+# ビルドシステム更新
+# =============================================================================
+build_system_updates:
+  css_build_script:
+    file: "css/build.js"
+    new_tasks:
+      - "add_single_file_build_task"
+      - "maintain_existing_bundle_builds"
+      - "add_size_optimization"
+    
+  javascript_build_script:
+    file: "js/build.js"
+    new_tasks:
+      - "add_single_file_build_task"
+      - "maintain_existing_bundle_builds"
+      - "verify_global_variables"
+
+  package_json_scripts:
+    css:
+      new_commands:
+        - "npm run build:single"
+        - "npm run build:all"
+        - "npm run build:bundles"
+    
+    javascript:
+      new_commands:
+        - "npm run build:single"
+        - "npm run build:all"
+        - "npm run build:bundles"
+
+# =============================================================================
+# HTML更新計画
+# =============================================================================
+html_integration:
+  current_loading_method:
+    css_files: 10
+    js_files: 4
+    total_requests: 14
+    
+  new_loading_method:
+    css_files: 1
+    js_files: 1
+    total_requests: 2
+    
+  html_changes:
+    file: "holy-label-js-divede.html"
+    modifications:
+      css_section:
+        remove: "10個のCSSバンドルリンク"
+        add: "単一CSSファイルリンク"
+        new_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/holy-label-all.min.css"
+        
+      javascript_section:
+        remove: "4個のJavaScriptバンドル"
+        add: "単一JavaScriptファイル"
+        new_url: "https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/js/dist/holy-label-all.min.js"
+
+# =============================================================================
+# 後方互換性保証
+# =============================================================================
+backward_compatibility:
+  maintenance_strategy: "dual_support"
+  
+  preserved_features:
+    global_variables:
+      - "window.HolyLabelDOMUtils"
+      - "window.HolyLabelNavigationManager"
+      - "window.HolyLabelProductGallery"
+      - "すべてのHolyLabel*系変数"
+      
+    api_methods:
+      - "HolyLabelNavigationManager.toggleMenu()"
+      - "HolyLabelModalUtils.open()"
+      - "HolyLabelProductImageGallery.init()"
+      - "既存のすべてのメソッド"
+
+  legacy_support:
+    bundle_files: "既存バンドルファイルも並行維持"
+    individual_files: "個別ファイルも並行維持"
+    duration: "3ヶ月間の移行期間"
+
+# =============================================================================
+# パフォーマンス最適化
+# =============================================================================
+performance_optimization:
+  loading_improvements:
+    request_reduction: "14リクエスト → 2リクエスト（85%削減）"
+    parallel_loading: "CSS・JavaScriptの並行ロード"
+    cache_efficiency: "単一ファイルによるキャッシュ効率向上"
+    
+  size_optimization:
+    css_compression: "62.78KB → 45-50KB予想"
+    js_compression: "33KB → 25-30KB予想"
+    total_reduction: "約20-25%のサイズ削減予想"
+    
+  base_constraints:
+    html_file_limit: "150KB（現在34.8KB使用、問題なし）"
+    cdn_file_size: "制限なし（jsDelivr）"
+    loading_performance: "大幅な改善期待"
+
+# =============================================================================
+# 実装フェーズ
+# =============================================================================
+implementation_phases:
+  phase_1_preparation:
+    duration: "1日"
+    tasks:
+      - "ビルドスクリプト更新"
+      - "統合順序の確認"
+      - "依存関係テスト"
+      
+  phase_2_css_consolidation:
+    duration: "1日"
+    tasks:
+      - "CSS統合ビルドスクリプト作成"
+      - "holy-label-all.min.css生成"
+      - "サイズ・品質確認"
+      
+  phase_3_javascript_consolidation:
+    duration: "1日"
+    tasks:
+      - "JavaScript統合ビルドスクリプト作成"
+      - "holy-label-all.min.js生成"
+      - "機能・グローバル変数確認"
+      
+  phase_4_html_integration:
+    duration: "半日"
+    tasks:
+      - "HTMLファイル更新"
+      - "CDN URL設定"
+      - "ロード確認"
+      
+  phase_5_testing:
+    duration: "1日"
+    tasks:
+      - "全機能動作確認"
+      - "パフォーマンステスト"
+      - "ブラウザ互換性確認"
+
+# =============================================================================
+# BASE仕様準拠確認
+# =============================================================================
+base_compliance:
+  editing_rules:
+    ✓: "js/src/ css/src/ のみ編集"
+    ✓: "dist/フォルダは自動生成"
+    ✓: "後方互換性完全維持"
+    ✓: "グローバル変数名変更なし"
+    
+  file_size_limits:
+    ✓: "HTMLファイル150KB制限内（現在34.8KB）"
+    ✓: "統合CSS予想50KB（問題なし）"
+    ✓: "統合JS予想30KB（問題なし）"
+    ✓: "jsDelivrCDN制限なし"
+    
+  deployment_process:
+    ✓: "git push → jsDelivr自動反映"
+    ✓: "5-10分でCDN更新"
+    ✓: "BASEでの単一ファイルアップロード可能"
+
+# =============================================================================
+# 期待効果
+# =============================================================================
+expected_benefits:
+  development_efficiency:
+    - "BASEへのファイルアップロード作業85%削減"
+    - "管理ファイル数の大幅削減"
+    - "デプロイプロセス簡素化"
+    
+  performance_improvements:
+    - "HTTPリクエスト数85%削減"
+    - "初期ロード時間短縮"
+    - "ブラウザキャッシュ効率向上"
+    
+  maintenance_benefits:
+    - "単一ファイル管理による運用簡素化"
+    - "デバッグ・トラブルシューティング改善"
+    - "BASE固有制約への最適化"
+
+# =============================================================================
+# リスク管理
+# =============================================================================
+risk_management:
+  potential_risks:
+    file_size_increase:
+      risk: "ファイルサイズ増加"
+      mitigation: "高圧縮率、不要コード削除"
+      
+    loading_performance:
+      risk: "大きなファイルの初期ロード時間"
+      mitigation: "gzip圧縮、CDN活用"
+      
+    debugging_complexity:
+      risk: "統合ファイルでのデバッグ困難"
+      mitigation: "ソースマップ生成、開発環境は分離維持"
+      
+  fallback_strategy:
+    - "既存バンドル方式の並行維持"
+    - "問題発生時の即座切り戻し可能"
+    - "段階的移行による安全性確保" 
