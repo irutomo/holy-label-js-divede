@@ -857,18 +857,35 @@
 
         // 初期化
         init() {
+            console.log('HolyLabelProductGallery.init() called');
+            
             this.elements.mainContainer = document.getElementById('mainImageContainer');
             this.elements.thumbnailContainer = document.getElementById('thumbnailContainer');
             this.elements.counter = document.getElementById('imageCounter');
 
-            if (!this.elements.mainContainer || !this.elements.thumbnailContainer) return;
+            console.log('Found elements:', {
+                mainContainer: !!this.elements.mainContainer,
+                thumbnailContainer: !!this.elements.thumbnailContainer,
+                counter: !!this.elements.counter
+            });
+
+            if (!this.elements.mainContainer || !this.elements.thumbnailContainer) {
+                console.log('Required elements not found, exiting');
+                return;
+            }
 
             this.collectImages();
-            if (this.images.length === 0) return;
+            console.log('Collected images:', this.images.length);
+            
+            if (this.images.length === 0) {
+                console.log('No images found, exiting');
+                return;
+            }
 
             this.renderImages();
             this.addEventListeners();
             this.updateUI();
+            console.log('ProductGallery initialization completed');
         },
 
         // 画像データの収集
