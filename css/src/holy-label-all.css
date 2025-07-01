@@ -970,8 +970,10 @@ ul.ex-list > li.sub-category > a:hover {
     grid-template-columns: 1fr 1fr;
     gap: 60px;
     max-width: 1200px;
-    margin: 80px auto;
+    margin: 120px auto 80px;
     padding: 0 40px;
+    min-height: 600px;
+    align-items: start;
 }
 
 .product-detail-image {
@@ -1087,9 +1089,17 @@ ul.ex-list > li.sub-category > a:hover {
     display: none;
 }
 
-/* サムネイル画像コンテナ（元の仕様通り非表示） */
+/* サムネイル画像コンテナ - レスポンシブ対応 */
 .thumbnail-container {
-    display: none;
+    display: none; /* デスクトップ版では非表示 */
+}
+
+/* モバイル版ではサムネイル表示 */
+@media (max-width: 768px) {
+    .thumbnail-container {
+        display: block !important;
+        margin-top: 16px;
+    }
 }
 
 /* レスポンシブ対応（商品画像カルーセル） */
@@ -1141,7 +1151,10 @@ ul.ex-list > li.sub-category > a:hover {
 }
 
 .product-detail-info {
-    padding: 40px 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .product-detail-title {
@@ -3481,6 +3494,37 @@ button.humberger {
     gap: 30px;
     max-width: 800px;
     margin: 0 auto;
+}
+
+/* モバイル版: Related Items 2列表示 */
+@media (max-width: 768px) {
+    .related-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        max-width: 100%;
+        padding: 0 20px;
+    }
+    
+    .related-product-item {
+        margin-bottom: 20px;
+    }
+    
+    .related-product-image {
+        aspect-ratio: 1 / 1;
+    }
+    
+    .related-product-info {
+        padding: 12px 0;
+    }
+    
+    .related-product-title {
+        font-size: 0.9rem;
+        line-height: 1.3;
+    }
+    
+    .related-product-price {
+        font-size: 0.8rem;
+    }
 }
 
 .related-product-item {
