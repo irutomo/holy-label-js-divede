@@ -923,20 +923,78 @@
             const productDetailImage = document.querySelector('.product-detail-image');
             if (!productDetailImage || this.images.length === 0) return;
             
-            // 既存のデスクトップ画像があれば削除
-            const existingImage = productDetailImage.querySelector('.desktop-main-image');
-            if (existingImage) {
-                existingImage.remove();
+            // デスクトップ版の場合、メイン画像表示領域を作成
+            if (window.innerWidth > 768) {
+                // 既存のデスクトップ画像があれば削除
+                const existingImage = productDetailImage.querySelector('.desktop-main-image');
+                if (existingImage) {
+                    existingImage.remove();
+                }
+                
+                // メイン画像表示コンテナを作成
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'desktop-image-container';
+                imageContainer.innerHTML = `
+                    <img src="${this.images[0].main}" 
+                         alt="${document.querySelector('.product-detail-title')?.textContent || '商品画像'}" 
+                         class="desktop-main-image"
+                         data-index="0">
+                    ${this.images.length > 1 ? `
+                    <button class="desktop-nav prev" onclick="window.HolyLabelProductGallery.goToImage(${this.currentIndex - 1})">‹</button>
+                    <button class="desktop-nav next" onclick="window.HolyLabelProductGallery.goToImage(${this.currentIndex + 1})">›</button>
+                    <div class="desktop-indicators">
+                        ${this.images.map((_, index) => `
+                            <button class="desktop-indicator ${index === 0 ? 'active' : ''}" 
+                                    onclick="window.HolyLabelProductGallery.goToImage(${index})"
+                                    data-index="${index}"></button>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                `;
+                
+                productDetailImage.appendChild(imageContainer);
+                console.log('Desktop image container created with navigation');
             }
+        },
+
+        // デスクトップ版用の画像切り替え
+        goToImage(index) {
+            if (this.images.length <= 1 || window.innerWidth <= 768) return;
             
-            // 最初の画像を表示
-            const img = document.createElement('img');
-            img.src = this.images[0].main;
-            img.alt = document.querySelector('.product-detail-title')?.textContent || '商品画像';
-            img.className = 'desktop-main-image';
+            // インデックスの範囲チェック
+            if (index < 0) index = this.images.length - 1;
+            if (index >= this.images.length) index = 0;
             
-            productDetailImage.appendChild(img);
-            console.log('Desktop image created:', this.images[0].main);
+            this.currentIndex = index;
+            this.updateDesktopImage();
+            this.updateDesktopIndicators();
+        },
+
+        // デスクトップ版メイン画像を更新
+        updateDesktopImage() {
+            const desktopImage = document.querySelector('.desktop-main-image');
+            if (!desktopImage || window.innerWidth <= 768) return;
+            
+            const currentImage = this.images[this.currentIndex];
+            if (currentImage) {
+                desktopImage.src = currentImage.main;
+                desktopImage.setAttribute('data-index', this.currentIndex);
+                
+                // 更新ボタンのイベントハンドラを更新
+                const prevBtn = document.querySelector('.desktop-nav.prev');
+                const nextBtn = document.querySelector('.desktop-nav.next');
+                if (prevBtn) prevBtn.onclick = () => this.goToImage(this.currentIndex - 1);
+                if (nextBtn) nextBtn.onclick = () => this.goToImage(this.currentIndex + 1);
+            }
+        },
+
+        // デスクトップ版インジケータを更新
+        updateDesktopIndicators() {
+            const indicators = document.querySelectorAll('.desktop-indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === this.currentIndex);
+                indicator.onclick = () => this.goToImage(index);
+            });
         },
 
         // 画像データの収集
