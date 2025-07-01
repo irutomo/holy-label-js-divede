@@ -4224,12 +4224,12 @@ body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
     position: fixed;
     top: 0;
     left: -100%;
-    width: 25rem;
+    width: 30rem;
     height: 100vh;
     background-color: var(--overlay-bg);
     transition: all var(--transition-fast);
     z-index: var(--z-navigation);
-    padding: var(--space-xl) var(--space-md);
+    padding: var(--space-xl) var(--space-lg);
     overflow-y: auto;
     transform: translateX(-100%);
     opacity: 0;
