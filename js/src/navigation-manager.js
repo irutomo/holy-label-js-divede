@@ -34,58 +34,71 @@
             if (!hamburger || !navArea) return;
             
             const isActive = this.isActive();
+            const action = isActive ? 'remove' : 'add';
             
-            // トグル状態を切り替え
-            hamburger.classList.toggle('-active', !isActive);
-            navArea.classList.toggle('-active', !isActive);
-            body.classList.toggle('nav-open', !isActive);
+            // 元の仕様に合わせたクラス制御
+            [hamburger, navArea].forEach(el => el.classList[action]('-active'));
+            body.classList[action]('body-fixed');
             
             // アクセシビリティ属性の更新
             hamburger.setAttribute('aria-expanded', !isActive);
             
-            // スクロール制御
-            if (!isActive) {
-                body.style.overflow = 'hidden';
-            } else {
-                body.style.overflow = '';
-            }
+            // LogoManagerの位置更新を呼び出し
+            setTimeout(() => {
+                const LogoManager = window.HolyLabelLogoManager || window.LogoManager;
+                if (LogoManager && typeof LogoManager.updatePosition === 'function') {
+                    LogoManager.updatePosition();
+                }
+            }, 10);
         },
         
         close() {
             const { hamburger, navArea, body } = this.elements;
             if (!hamburger || !navArea) return;
             
-            hamburger.classList.remove('-active');
-            navArea.classList.remove('-active');
-            body.classList.remove('nav-open');
+            [hamburger, navArea].forEach(el => el.classList.remove('-active'));
+            body.classList.remove('body-fixed');
             hamburger.setAttribute('aria-expanded', 'false');
-            body.style.overflow = '';
+            
+            // LogoManagerの位置更新
+            setTimeout(() => {
+                const LogoManager = window.HolyLabelLogoManager || window.LogoManager;
+                if (LogoManager && typeof LogoManager.updatePosition === 'function') {
+                    LogoManager.updatePosition();
+                }
+            }, 10);
         },
         
         open() {
             const { hamburger, navArea, body } = this.elements;
             if (!hamburger || !navArea) return;
             
-            hamburger.classList.add('-active');
-            navArea.classList.add('-active');
-            body.classList.add('nav-open');
+            [hamburger, navArea].forEach(el => el.classList.add('-active'));
+            body.classList.add('body-fixed');
             hamburger.setAttribute('aria-expanded', 'true');
-            body.style.overflow = 'hidden';
+            
+            // LogoManagerの位置更新
+            setTimeout(() => {
+                const LogoManager = window.HolyLabelLogoManager || window.LogoManager;
+                if (LogoManager && typeof LogoManager.updatePosition === 'function') {
+                    LogoManager.updatePosition();
+                }
+            }, 10);
         },
         
-        // サブメニューの制御
+        // サブメニューの制御（元の仕様準拠）
         initSubMenus() {
             const DOMUtils = window.HolyLabelDOMUtils || window.DOMUtils;
-            const expandLinks = DOMUtils.getAll('.expand');
+            const expandLinks = DOMUtils.getAll('a.expand');
             
             expandLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const subList = link.nextElementSibling;
-                    if (subList && subList.classList.contains('ex-list')) {
-                        const isVisible = subList.style.display !== 'none';
-                        subList.style.display = isVisible ? 'none' : 'block';
-                        link.classList.toggle('active', !isVisible);
+                    const exList = link.nextElementSibling;
+                    if (exList && exList.classList.contains('ex-list')) {
+                        const isOpen = link.classList.contains('open');
+                        link.classList.toggle('open', !isOpen);
+                        exList.style.display = isOpen ? 'none' : 'block';
                     }
                 });
             });
@@ -100,11 +113,11 @@
                 hamburger.addEventListener('click', () => this.toggle());
             }
             
-            // ナビエリア外クリックで閉じる
-            document.addEventListener('click', (e) => {
+            // ナビエリア外クリックで閉じる（元の仕様準拠）
+            document.addEventListener('click', (event) => {
                 if (this.isActive() && 
-                    !navArea?.contains(e.target) && 
-                    !hamburger?.contains(e.target)) {
+                    !navArea?.contains(event.target) && 
+                    !hamburger?.contains(event.target)) {
                     this.close();
                 }
             });

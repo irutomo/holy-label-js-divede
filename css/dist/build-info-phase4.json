@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-30T15:24:27.707Z",
+  "timestamp": "2025-07-01T02:48:40.226Z",
   "phase": "Phase 4",
   "libraries": [
     {
@@ -10,9 +10,9 @@
     },
     {
       "name": "layout",
-      "originalSize": 3676,
-      "optimizedSize": 2661,
-      "reduction": 27.6
+      "originalSize": 6042,
+      "optimizedSize": 4403,
+      "reduction": 27.1
     },
     {
       "name": "base-menu",
@@ -84,7 +84,7 @@
   "bundles": [
     {
       "name": "foundation-bundle",
-      "size": 3959,
+      "size": 5701,
       "description": "CSS変数・リセット・ハンバーガーメニュー・ロゴ・ナビゲーション"
     },
     {
@@ -133,7 +133,7 @@
       "description": "HTMLから分離した残存インラインCSS"
     }
   ],
-  "totalOriginalSize": 86339,
-  "totalOptimizedSize": 62541,
-  "totalReduction": "27.6"
+  "totalOriginalSize": 88705,
+  "totalOptimizedSize": 64283,
+  "totalReduction": "27.5"
 }
