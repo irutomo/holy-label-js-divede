@@ -773,8 +773,44 @@
               }
           }
           
+          // ITEMボタン展開メニュー機能の初期化（フォールバック）
+          function initExpandMenus() {
+              const expandLinks = document.querySelectorAll('a.expand');
+              console.log('Initializing expand menus, found:', expandLinks.length, 'links');
+              
+              expandLinks.forEach(link => {
+                  // 既存のイベントリスナーを削除するためクローン
+                  const newLink = link.cloneNode(true);
+                  link.parentNode.replaceChild(newLink, link);
+                  
+                  newLink.addEventListener('click', function(e) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      
+                      const exList = newLink.nextElementSibling;
+                      if (!exList) return;
+                      
+                      const isOpen = newLink.classList.contains('open');
+                      
+                      // 状態を切り替え
+                      if (isOpen) {
+                          newLink.classList.remove('open');
+                          exList.style.display = 'none';
+                          console.log('Closing menu:', newLink.textContent);
+                      } else {
+                          newLink.classList.add('open');
+                          exList.style.display = 'block';
+                          console.log('Opening menu:', newLink.textContent);
+                      }
+                  });
+              });
+          }
+          
           // 外部ライブラリの状況に関係なく、フォールバックを確実に初期化
           setTimeout(initFallbackHamburger, 500);
+          
+          // ITEMボタン展開メニューを確実に初期化
+          setTimeout(initExpandMenus, 600);
       });
       
       /*
