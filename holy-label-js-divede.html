@@ -36,25 +36,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <!-- HOLY LABEL CSS外部化 Phase 1: 基盤CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/foundation-bundle.min.css">
+    <!-- 外部JavaScriptライブラリ読み込み（Phase別バンドル） -->
+    <script src="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/js/dist/core-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/js/dist/extended-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/js/dist/advanced-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/js/dist/final-bundle.min.js"></script>
     
-    <!-- HOLY LABEL CSS外部化 Phase 2: コンポーネントCSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/components-bundle.min.css">
-    
-    <!-- HOLY LABEL CSS外部化 Phase 3: 商品詳細・フォーム・レスポンシブ・フッター -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/product-detail-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/forms-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/responsive-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/footer-pages-bundle.min.css">
-    
-    <!-- HOLY LABEL CSS外部化 Phase 4: 特殊ページ・UI・統合機能 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/special-pages-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/ui-components-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/base-integration-bundle.min.css">
-    
-    <!-- HOLY LABEL CSS外部化 Phase 5: 残存スタイル -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/irutomo/holy-label-js-divede@main/css/dist/remaining-styles-bundle.min.css">
+    <!-- 外部CSSライブラリ読み込み（Phase別バンドル） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/foundation-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/components-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/product-detail-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/forms-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/responsive-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/footer-pages-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/special-pages-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/ui-components-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/base-integration-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ori-holy-angel/holy-label-js-divede@main/css/dist/remaining-styles-bundle.min.css">
     
     <style>
         /* BASE色設定の活用（BASEテンプレート構文のためHTMLに残存必須） */
@@ -419,9 +417,8 @@
 {/block:IndexPage}
     {block:ItemPage}
         {IllegalReportMessageTag}
-        <div class="product-detail-container">
-            <!-- 左側：商品ギャラリー -->
-            <section class="product-gallery" id="productGallery">
+        <section class="product-detail">
+            <div class="product-detail-image">
                 {block:AppsItemLabel}
                     {AppsItemLabelTag}
                 {/block:AppsItemLabel}
@@ -440,25 +437,25 @@
                     {block:ItemImage10}<span data-main="{ItemImage10URL-640}" data-thumb="{ItemImage10URL-174}"></span>{/block:ItemImage10}
                 </div>
 
-                <div class="gallery-wrapper" id="galleryWrapper">
+                <div class="main-image-wrapper" id="mainImageWrapper">
                     <div class="main-image-container" id="mainImageContainer">
                         </div>
-                </div>
-                
-                <div class="gallery-nav">
-                    <button class="prev-btn" id="prevBtn">
+                    <button class="carousel-nav prev" id="prevBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     </button>
-                    <button class="next-btn" id="nextBtn">
+                    <button class="carousel-nav next" id="nextBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                    <div class="image-counter" id="imageCounter"></div>
+                    <button class="zoom-icon" id="zoomBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
                     </button>
                 </div>
 
-                <div class="gallery-counter" id="galleryCounter"></div>
-            </section>
-
-            <!-- 右側：商品情報 -->
-            <section class="product-info">
+                <div class="thumbnail-scroll-container" id="thumbnailContainer">
+                    </div>
+            </div>
+            <div class="product-detail-info">
                 <h1 class="product-detail-title">{ItemTitle}</h1>
                 <div class="product-detail-price">
                 {block:NoItemProperPrice}
@@ -515,9 +512,9 @@
                 </div>
                 <div class="illegal-report">
                 {IllegalReportTag}
+            </div>
         </div>
         </section>
-        </div>
         {block:AppsReview}
         {AppsReviewTag}
         {/block:AppsReview}
@@ -636,63 +633,165 @@
          JavaScript - 初期化とブリッジ機能（外部ライブラリとの互換性維持）
        */
       
-      // 外部ライブラリが読み込まれるまで待機する関数（タイムアウト付き）
+      // 外部ライブラリの読み込み完了を待機する関数
       function waitForLibraries(callback, timeout = 3000) {
-          let elapsed = 0;
-          const interval = 100;
+          const startTime = Date.now();
           
-          const checkLibraries = () => {
-              if (window.HolyLabelDOMUtils && 
-                  window.HolyLabelNavigationManager && 
-                  window.HolyLabelPageState && 
-                  window.HolyLabelAnimationManager) {
-                  console.log('External libraries loaded successfully');
+          function checkLibraries() {
+              const coreAvailable = window.HolyLabelDOMUtils && window.HolyLabelPageState;
+              const extendedAvailable = window.HolyLabelNavigationManager && window.HolyLabelAnimationManager;
+              const advancedAvailable = window.HolyLabelProductGallery && window.HolyLabelLoadMoreManager;
+              const finalAvailable = window.HolyLabelInitializationManager && window.HolyLabelLanguageManager;
+              
+              if (coreAvailable && extendedAvailable && advancedAvailable && finalAvailable) {
+                  console.log('All external libraries loaded successfully');
                   callback();
-              } else if (elapsed >= timeout) {
-                  console.log('External libraries timeout, using fallback');
+              } else if (Date.now() - startTime > timeout) {
+                  console.log('External libraries timeout, using fallback implementation');
                   callback();
               } else {
-                  elapsed += interval;
-                  setTimeout(checkLibraries, interval);
-              }
-          };
-          checkLibraries();
-      }
-      // 基本的なページ状態管理（外部ライブラリと併用）
-      function isHomePage() {
-          return document.body.id === 'shopTopPage' && 
-                 document.querySelector('.main-visual') !== null &&
-                 document.querySelector('.product-detail') === null;
-      }
-
-      /*
-         JavaScript - カテゴリ表示制御
-       */
-      function initCategoryDisplay() {
-          const itemExpandLink = document.querySelector('a.expand[href="#"]');
-          if (itemExpandLink?.textContent.trim() === 'ITEM') {
-              const exList = itemExpandLink.nextElementSibling;
-              if (exList) {
-                  const categoryItems = exList.querySelectorAll('li:not(.no-category-message)');
-                  const noMessage = exList.querySelector('.no-category-message');
-                  if (categoryItems.length === 0 && noMessage) {
-                      noMessage.style.display = 'block';
-                  }
+                  setTimeout(checkLibraries, 100);
               }
           }
+          
+          checkLibraries();
       }
       
-      /*
-         JavaScript - Instagram固定ボタン制御
-       */
-      function controlInstagramButton() {
-          const instagramBtn = document.querySelector('.instagram-fixed-btn');
-          if (!instagramBtn) return;
-          document.body.classList.toggle('home-page', isHomePage());
-      }
-      /*
-         JavaScript - 初期化処理（外部ライブラリ使用）
-       */
+      // 完全なProductImageGallery実装（フォールバック）
+      const ProductImageGallery = {
+          currentIndex: 0,
+          images: [],
+          elements: {
+              mainContainer: null,
+              thumbnailContainer: null,
+              counter: null,
+          },
+
+          init() {
+              this.elements.mainContainer = document.getElementById('mainImageContainer');
+              this.elements.thumbnailContainer = document.getElementById('thumbnailContainer');
+              this.elements.counter = document.getElementById('imageCounter');
+
+              if (!this.elements.mainContainer || !this.elements.thumbnailContainer) return;
+
+              this.collectImages();
+              if (this.images.length === 0) return;
+
+              this.renderImages();
+              this.addEventListeners();
+              this.updateUI();
+          },
+
+          collectImages() {
+              const imageDataElement = document.getElementById('imageData');
+              if (!imageDataElement) return;
+              
+              const imageSpans = imageDataElement.querySelectorAll('span[data-main]');
+              this.images = Array.from(imageSpans).map(span => ({
+                  main: span.getAttribute('data-main'),
+                  thumb: span.getAttribute('data-thumb')
+              })).filter(img => img.main && img.thumb);
+          },
+
+          renderImages() {
+              let mainHTML = '';
+              let thumbHTML = '';
+              const itemTitle = document.querySelector('.product-detail-title')?.textContent || '商品画像';
+
+              this.images.forEach((img, index) => {
+                  mainHTML += `<div class="main-image-item"><img src="${img.main}" alt="${itemTitle} ${index + 1}"></div>`;
+                  thumbHTML += `<div class="thumbnail-item" data-index="${index}"><img src="${img.thumb}" alt="${itemTitle} サムネイル ${index + 1}"></div>`;
+              });
+              
+              this.elements.mainContainer.innerHTML = mainHTML;
+              this.elements.thumbnailContainer.innerHTML = thumbHTML;
+          },
+
+          addEventListeners() {
+              this.elements.mainContainer.addEventListener('scroll', () => {
+                  const newIndex = Math.round(this.elements.mainContainer.scrollLeft / this.elements.mainContainer.offsetWidth);
+                  if (newIndex !== this.currentIndex) {
+                      this.currentIndex = newIndex;
+                      this.updateUI();
+                  }
+              });
+
+              this.elements.thumbnailContainer.addEventListener('click', (e) => {
+                  const thumbnail = e.target.closest('.thumbnail-item');
+                  if (thumbnail) {
+                      const index = parseInt(thumbnail.dataset.index, 10);
+                      this.scrollToImage(index);
+                  }
+              });
+
+              const prevBtn = document.getElementById('prevBtn');
+              const nextBtn = document.getElementById('nextBtn');
+              
+              if (prevBtn && nextBtn) {
+                  prevBtn.addEventListener('click', () => this.scrollToImage(this.currentIndex - 1));
+                  nextBtn.addEventListener('click', () => this.scrollToImage(this.currentIndex + 1));
+              }
+          },
+
+          scrollToImage(index) {
+              if (this.images.length === 0) return;
+              
+              let newIndex = index;
+              if (newIndex < 0) {
+                  newIndex = this.images.length - 1;
+              } else if (newIndex >= this.images.length) {
+                  newIndex = 0;
+              }
+              
+              this.currentIndex = newIndex;
+              const scrollPosition = newIndex * this.elements.mainContainer.offsetWidth;
+              this.elements.mainContainer.scrollTo({
+                  left: scrollPosition,
+                  behavior: 'smooth'
+              });
+              this.updateUI();
+          },
+
+          updateUI() {
+              if (this.elements.counter) {
+                  if(this.images.length > 1){
+                      this.elements.counter.textContent = `${this.currentIndex + 1}/${this.images.length}`;
+                      this.elements.counter.style.display = 'block';
+                  } else {
+                      this.elements.counter.style.display = 'none';
+                  }
+              }
+              
+              const prevBtn = document.getElementById('prevBtn');
+              const nextBtn = document.getElementById('nextBtn');
+              
+              if (prevBtn && nextBtn) {
+                  if (this.images.length > 1) {
+                      prevBtn.style.display = 'flex';
+                      nextBtn.style.display = 'flex';
+                  } else {
+                      prevBtn.style.display = 'none';
+                      nextBtn.style.display = 'none';
+                  }
+              }
+              
+              const thumbnails = this.elements.thumbnailContainer.querySelectorAll('.thumbnail-item');
+              thumbnails.forEach((thumb, index) => {
+                  thumb.classList.toggle('active', index === this.currentIndex);
+              });
+
+              const activeThumbnail = thumbnails[this.currentIndex];
+              if (activeThumbnail) {
+                  const container = this.elements.thumbnailContainer;
+                  const scrollLeft = activeThumbnail.offsetLeft - (container.offsetWidth / 2) + (activeThumbnail.offsetWidth / 2);
+                  container.scrollTo({
+                      left: scrollLeft,
+                      behavior: 'smooth'
+                  });
+              }
+          }
+      };
+      
       document.addEventListener('DOMContentLoaded', function() {
           // 外部ライブラリの読み込み完了を待機してから初期化
           waitForLibraries(function() {
@@ -701,14 +800,14 @@
             
               // 外部ライブラリを使用した基本機能初期化
             if (window.HolyLabelNavigationManager) {
-                    try {
-                        window.HolyLabelNavigationManager.init();
+                try {
+                    window.HolyLabelNavigationManager.init();
                       window.HolyLabelNavigationManager.close();
                         console.log('External navigation manager initialized');
                     } catch (error) {
                         console.error('External navigation manager error:', error);
-                    }
-              } else {
+                }
+            } else {
                     console.log('External navigation manager not available, using fallback');
                 }
               
@@ -727,9 +826,18 @@
                   // レスポンシブ制御の初期化
                   initResponsiveProductDetail();
                   
-                  // 商品ギャラリーの初期化
+                  // 商品ギャラリーの初期化（外部ライブラリまたはフォールバック）
             if (window.HolyLabelProductGallery) {
-                    window.HolyLabelProductGallery.init();
+                    try {
+                        window.HolyLabelProductGallery.init();
+                        console.log('External ProductGallery initialized');
+                    } catch (error) {
+                        console.error('External ProductGallery error, using fallback:', error);
+                        ProductImageGallery.init();
+                    }
+                  } else {
+                      console.log('External ProductGallery not available, using fallback');
+                      ProductImageGallery.init();
                   }
               }
           });
@@ -755,7 +863,7 @@
                           newHamburger.classList.remove('-active');
                           navArea.classList.remove('-active');
                           document.body.classList.remove('body-fixed');
-                      } else {
+            } else {
                           newHamburger.classList.add('-active');
                           navArea.classList.add('-active');
                           document.body.classList.add('body-fixed');
@@ -839,6 +947,35 @@
           // リサイズ時の再調整
                 window.addEventListener('resize', updateLayout);
             }
+
+      // 基本的なページ状態管理
+      function isHomePage() {
+          return document.body.id === 'shopTopPage' && 
+                 document.querySelector('.main-visual') !== null &&
+                 document.querySelector('.product-detail') === null;
+      }
+
+      // カテゴリ表示制御
+      function initCategoryDisplay() {
+          const itemExpandLink = document.querySelector('a.expand[href="#"]');
+          if (itemExpandLink?.textContent.trim() === 'ITEM') {
+              const exList = itemExpandLink.nextElementSibling;
+              if (exList) {
+                  const categoryItems = exList.querySelectorAll('li:not(.no-category-message)');
+                  const noMessage = exList.querySelector('.no-category-message');
+                  if (categoryItems.length === 0 && noMessage) {
+                      noMessage.style.display = 'block';
+                  }
+              }
+          }
+      }
+      
+      // Instagram固定ボタン制御
+      function controlInstagramButton() {
+          const instagramBtn = document.querySelector('.instagram-fixed-btn');
+          if (!instagramBtn) return;
+          document.body.classList.toggle('home-page', isHomePage());
+      }
     </script>
 </body>
 </html>
