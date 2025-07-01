@@ -996,159 +996,191 @@ ul.ex-list > li.sub-category > a:hover {
     transform: scale(1.02);
 }
 
-/* 画像カルーセル用ナビゲーション */
-.image-carousel-nav {
+
+
+/* === 元の仕様：複雑画像システム対応 === */
+
+/* メイン画像のラッパー */
+.main-image-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+/* メイン画像コンテナ */
+.main-image-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.main-image-container::-webkit-scrollbar {
+    display: none;
+}
+
+.main-image-container .main-image-item {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: start;
+}
+
+.main-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 画像カウンター */
+.image-counter {
+    position: absolute;
+    bottom: 15px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 1.2rem !important;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    z-index: 10;
+}
+
+/* カルーセル ナビゲーション */
+.carousel-nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(200, 200, 200, 0.8);
-    color: #333;
-    width: 48px;
-    height: 48px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all var(--transition-fast);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     z-index: 10;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    opacity: 0.8;
+    transition: background-color 0.3s ease;
 }
 
-.image-carousel-nav:hover {
-    background-color: rgba(255, 255, 255, 1);
-    border-color: rgba(150, 150, 150, 0.9);
-    opacity: 1;
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.carousel-nav:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
-.image-carousel-nav:active,
-.image-carousel-nav:focus {
-    border-color: var(--accent-color);
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(212, 56, 131, 0.2);
+.carousel-nav.prev {
+    left: 10px;
 }
 
-.image-carousel-nav.prev {
-    left: 16px;
+.carousel-nav.next {
+    right: 10px;
 }
 
-.image-carousel-nav.next {
-    right: 16px;
-}
-
-.image-carousel-nav svg {
+.carousel-nav svg {
     width: 20px;
     height: 20px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
 }
 
-/* 画像が1枚しかない場合はナビゲーションを非表示 */
-.main-image-container.single-image .image-carousel-nav {
-    display: none;
-}
-
-/* 画像インジケーター */
-.image-indicators {
+/* ズームアイコン */
+.zoom-icon {
     position: absolute;
-    bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-}
-
-.image-indicator {
-    width: 8px;
-    height: 8px;
+    bottom: 15px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    z-index: 10;
+    transition: background-color 0.3s ease;
 }
 
-.image-indicator.active {
-    background-color: var(--accent-color);
-    transform: scale(1.2);
+.zoom-icon:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
-.image-indicator:hover {
-    background-color: rgba(255, 255, 255, 0.6);
+.zoom-icon svg {
+    width: 20px;
+    height: 20px;
 }
 
-/* 画像が1枚しかない場合はインジケーターを非表示 */
-.main-image-container.single-image .image-indicators {
+/* サムネイル横スクロールコンテナ */
+.thumbnail-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 8px;
+    padding: 8px 0;
+    margin-top: 12px;
+}
+
+.thumbnail-scroll-container::-webkit-scrollbar {
     display: none;
 }
 
-/* サムネイル画像コンテナ - レスポンシブ対応 */
-.thumbnail-container {
-    display: none; /* デスクトップ版では非表示 */
+.thumbnail-scroll-container .thumbnail-item {
+    flex: 0 0 auto;
+    width: 80px;
+    height: 80px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
 }
 
-/* モバイル版ではサムネイル表示 */
-@media (max-width: 768px) {
-    .thumbnail-container {
-        display: block !important;
-        margin-top: 16px;
+.thumbnail-scroll-container .thumbnail-item.active {
+    border-color: var(--accent-color);
+}
+
+.thumbnail-scroll-container .thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* デスクトップ版では複雑画像システムを隠す */
+@media (min-width: 769px) {
+    .main-image-wrapper,
+    .carousel-nav,
+    .zoom-icon,
+    .thumbnail-scroll-container,
+    .image-counter {
+        display: none !important;
+    }
+    
+    /* デスクトップ版では元の仕様通りシンプル表示 */
+    .product-detail-image {
+        position: relative;
+    }
+    
+    /* デスクトップ版：画像データからの表示 */
+    .product-detail-image::before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 400px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23666'%3ENo Image%3C/text%3E%3C/svg%3E");
+        background-size: cover;
+        background-position: center;
+        border-radius: 4px;
     }
 }
 
 /* レスポンシブ対応（商品画像カルーセル） */
-@media (max-width: 768px) {
-    .image-carousel-nav {
-        width: 40px;
-        height: 40px;
-        opacity: 0.85;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-    }
-    .image-carousel-nav.prev {
-        left: 12px;
-    }
-    .image-carousel-nav.next {
-        right: 12px;
-    }
-    .image-carousel-nav svg {
-        width: 16px;
-        height: 16px;
-    }
-    .main-image-container {
-        margin-bottom: var(--space-sm);
-    }
-    .image-indicators {
-        bottom: 12px;
-    }
-    .image-indicator {
-        width: 6px;
-        height: 6px;
-    }
-}
 
-@media (max-width: 480px) {
-    .image-carousel-nav {
-        width: 36px;
-        height: 36px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    }
-    .image-carousel-nav.prev {
-        left: 8px;
-    }
-    .image-carousel-nav.next {
-        right: 8px;
-    }
-    .image-carousel-nav svg {
-        width: 14px;
-        height: 14px;
-    }
-}
 
 .product-detail-info {
     padding: 0;
