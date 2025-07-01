@@ -3907,7 +3907,167 @@ body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
 }
 
 /* === 商品詳細ページ 新UI用CSS START === */
-/* === 不要な複雑画像システムのCSS削除済み === */
+/* === モバイル版複雑画像システム（768px以下でのみ有効） === */
+
+@media (max-width: 768px) {
+    /* メイン画像のラッパー（モバイル版） */
+    .main-image-wrapper {
+        position: relative;
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    /* メイン画像コンテナ（モバイル版） */
+    .main-image-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; /* スムーズなスクロール */
+        scrollbar-width: none; /* Firefoxのスクロールバー非表示 */
+    }
+
+    .main-image-container::-webkit-scrollbar {
+        display: none; /* Chrome, Safariのスクロールバー非表示 */
+    }
+
+    .main-image-container .main-image-item {
+        flex: 0 0 100%;
+        width: 100%;
+        scroll-snap-align: start;
+    }
+
+    /* 画像カウンター（モバイル版） */
+    .image-counter {
+        position: absolute;
+        bottom: 15px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        right: auto !important;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-size: 1.0rem !important;
+        padding: 2px 8px !important;
+        border-radius: 12px !important;
+        font-weight: 400;
+        z-index: 10;
+    }
+
+    /* 左右ナビゲーション矢印（モバイル版） */
+    .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        border: none;
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel-nav:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-nav.prev {
+        left: 8px;
+    }
+
+    .carousel-nav.next {
+        right: 8px;
+    }
+
+    .carousel-nav svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* ズームアイコン（モバイル版） */
+    .zoom-icon {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background-color: rgba(0, 0, 0, 0.4);
+        border: none;
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .zoom-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* サムネイル横スクロールコンテナ（モバイル版） */
+    .thumbnail-scroll-container {
+        display: flex;
+        overflow-x: auto;
+        gap: 6px;
+        padding: 4px 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .thumbnail-scroll-container::-webkit-scrollbar {
+        height: 3px;
+    }
+
+    .thumbnail-scroll-container::-webkit-scrollbar-thumb {
+        background: #555;
+        border-radius: 2px;
+    }
+
+    /* サムネイルアイテム（モバイル版） */
+    .thumbnail-item {
+        flex: 0 0 60px; /* サムネイルの基本幅（モバイル用） */
+        width: 60px;
+        height: 75px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease;
+        opacity: 0.7;
+    }
+
+    .thumbnail-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .thumbnail-item.active {
+        border-color: var(--accent-color, #D43883);
+        opacity: 1;
+    }
+}
+
+/* デスクトップ版では複雑画像システムを無効化 */
+@media (min-width: 769px) {
+    .carousel-nav,
+    .zoom-icon,
+    .thumbnail-scroll-container,
+    .image-counter {
+        display: none !important;
+    }
+    
+    .main-image-wrapper {
+        position: static;
+        width: auto;
+        margin-bottom: 0;
+    }
+}
 
 /* 外貨表示対応 - 価格表示エリアの拡張 */
 .product-price,
