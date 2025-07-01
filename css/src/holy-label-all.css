@@ -1,0 +1,4214 @@
+/*! 
+ * HOLY LABEL CSS - All-in-One Source File
+ * BASE専用ECテーマの統合CSSライブラリ
+ * Version: 2.0.0
+ * Description: 13個のCSSソースファイルを統合し、開発効率を劇的向上
+ * Repository: https://github.com/irutomo/holy-label-js-divede
+ * License: MIT
+ * Build Date: 2024-07-01
+ * 
+ * Consolidated from:
+ * - foundation.css (CSS変数・リセット・基盤)
+ * - layout.css (レイアウト・ナビゲーション)  
+ * - base-menu.css (BASEメニュー統合)
+ * - product-components.css (商品コンポーネント)
+ * - animations.css (アニメーション定義)
+ * - product-detail.css (商品詳細ページ)
+ * - forms.css (フォーム要素)
+ * - responsive.css (レスポンシブ対応)
+ * - footer-pages.css (フッター・ページ)
+ * - special-pages.css (特殊ページ・LOOKBOOK等)
+ * - ui-components.css (UIコンポーネント)
+ * - base-integration.css (BASE統合機能)
+ * - remaining-styles.css (HTMLから分離した残存)
+ */
+
+/* ========== FOUNDATION LAYER ========== */
+/* CSS変数・リセット・基盤 */
+
+/* HOLY LABEL Foundation CSS Library */
+/* CSS変数定義 */
+:root {
+    --primary-bg: #0B101D; --primary-text: #fff; --secondary-text: #ccc; --muted-text: #666; --dark-text: #444; --accent-color: #D43883; --error-color: #ff4444; --border-color: #333; --overlay-bg: rgba(11, 16, 29, 0.95); --overlay-backdrop: rgba(11, 16, 29, 0.5); --soldout-overlay: rgba(11, 16, 29, 0.8);
+    --font-base: 1.2rem; --font-xs: 0.9rem; --font-sm: 1.0rem; --font-md: 1.2rem; --font-lg: 1.4rem; --font-xl: 1.6rem; --weight-light: 300; --weight-normal: 400; --weight-bold: 700;
+    --space-xs: 0.5rem; --space-sm: 1rem; --space-md: 2rem; --space-lg: 4rem; --space-xl: 8rem;
+    --form-field-margin: 40px; --form-field-margin-mobile: 50px; --form-padding: 16px; --form-padding-mobile: 12px 16px;
+    --transition-fast: 0.3s ease; --transition-slow: 1.5s ease-out;
+    --z-navigation: 999; --z-header: 1000; --z-hamburger: 1001; --z-menu-open: 1002; --z-modal: 2000; --z-banner: 2005;
+}
+
+/* リセット・ベーススタイル */
+html {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    overflow-y: scroll;
+    -webkit-text-size-adjust: 100%;
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    font-size: var(--font-base);
+    line-height: 1.6;
+    font-weight: var(--weight-light);
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-text) !important;
+    overflow-x: hidden;
+}
+
+a {
+    color: var(--primary-text);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+a:hover { 
+    opacity: 0.6; 
+}
+
+ 
+/* HOLY LABEL Layout CSS Library */
+
+/* ハンバーガーメニュー */
+button.humberger {
+    position: fixed;
+    top: calc(var(--information-banner-height, 0px) + 20px);
+    left: 20px;
+    width: 3rem;
+    height: 2rem;
+    z-index: var(--z-hamburger) !important;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    pointer-events: auto !important;
+}
+
+.humberger__line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: all var(--transition-fast);
+}
+
+.humberger__line:before, .humberger__line:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: all var(--transition-fast);
+}
+
+.humberger__line:before { top: -8px; }
+.humberger__line:after { top: 8px; }
+.humberger.-active .humberger__line { background-color: transparent; }
+.humberger.-active .humberger__line::before { transform: rotate(45deg); top: 0; }
+.humberger.-active .humberger__line::after { transform: rotate(-45deg); top: 0; }
+
+/* ロゴ・BASEメニュー */
+.logo {
+    position: fixed;
+    top: calc(var(--information-banner-height, 0px) + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    letter-spacing: 2px;
+    font-weight: normal;
+    z-index: 1000;
+    max-width: 150px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.logo a { color: #fff !important; display: block; }
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 30px;
+    object-fit: contain;
+}
+
+.logo a:not(:has(img)) {
+    font-size: 16px;
+    letter-spacing: 2px;
+    font-weight: normal;
+}
+
+/* ロゴ位置制御クラス */
+.logo.center-position {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 1001;
+    text-align: center;
+    transition: none !important;
+}
+
+/* デスクトップでの中央ロゴサイズ拡大 */
+@media (min-width: 769px) {
+    .logo.center-position {
+        max-width: 300px;
+        font-size: 32px;
+        letter-spacing: 4px;
+    }
+    .logo.center-position img {
+        max-height: 80px;
+    }
+    .logo.center-position a:not(:has(img)) {
+        font-size: 32px;
+        letter-spacing: 4px;
+    }
+}
+
+.logo.header-position {
+    position: absolute !important;
+    top: calc(var(--information-banner-height, 0px) + 20px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000;
+    text-align: center;
+}
+
+.logo.menu-open-position {
+    position: fixed !important;
+    top: calc(var(--information-banner-height, 0px) + 20px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1002;
+    text-align: center;
+    transition: none !important;
+}
+
+.base-menu-container {
+    position: fixed;
+    top: calc(var(--information-banner-height, 0px) + 20px);
+    right: 20px;
+    z-index: 1000;
+    transform: scale(0.6);
+}
+
+/* BASEメニューコンテナのレスポンシブ対応 */
+@media (max-width: 768px) {
+    .base-menu-container {
+        top: calc(var(--information-banner-height, 0px) + 15px);
+        right: 15px;
+        transform: scale(0.5);
+    }
+}
+
+/*
+   ナビゲーションエリア（元の仕様準拠）
+ */
+.header__nav-area {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--overlay-bg);
+    z-index: var(--z-menu-open);
+    transition: left var(--transition-fast);
+    padding: 120px 40px 40px;
+    overflow-y: auto;
+}
+
+.header__nav-area.-active {
+    left: 0;
+}
+
+/* body-fixed クラス（元の仕様準拠） */
+.body-fixed {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+/* グローバルナビゲーション */
+.global-navigation__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.global-navigation__list li {
+    margin-bottom: 30px;
+}
+
+.global-navigation__list a {
+    color: var(--primary-text);
+    text-decoration: none;
+    font-size: var(--font-md);
+    font-weight: var(--weight-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: block;
+    padding: 10px 0;
+    transition: color var(--transition-fast);
+}
+
+.global-navigation__list a:hover {
+    color: var(--accent-color);
+}
+
+/* 展開メニュー */
+.global-navigation__list a.expand {
+    position: relative;
+}
+
+.global-navigation__list a.expand::after {
+    content: '+';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform var(--transition-fast);
+}
+
+.global-navigation__list a.expand.open::after {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.ex-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    padding-top: 20px;
+}
+
+.ex-list li {
+    margin-bottom: 15px;
+}
+
+.ex-list a {
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+    letter-spacing: 1px;
+    color: var(--secondary-text);
+}
+
+.ex-list .sub-category a {
+    font-size: 0.9rem;
+    color: var(--muted-text);
+    padding-left: 20px;
+}
+
+/* 言語切り替え */
+.custom-language-switcher {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.custom-language-switcher a {
+    color: var(--secondary-text);
+    text-decoration: none;
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    letter-spacing: 1px;
+    margin: 0 10px;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: all var(--transition-fast);
+}
+
+.custom-language-switcher a.active,
+.custom-language-switcher a:hover {
+    color: var(--primary-text);
+    border-color: var(--accent-color);
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    button.humberger {
+        top: calc(var(--information-banner-height, 0px) + 15px);
+        left: 15px;
+        width: 2.5rem;
+        height: 1.5rem;
+    }
+    
+    .header__nav-area {
+        padding: 100px 20px 40px;
+    }
+    
+    .global-navigation__list a {
+        font-size: var(--font-sm);
+        letter-spacing: 1px;
+    }
+    
+    .global-navigation__list li {
+        margin-bottom: 25px;
+    }
+} 
+
+/* ========== COMPONENTS LAYER ========== */
+/* BASEメニュー・商品コンポーネント・アニメーション */
+
+/* HOLY LABEL Base Menu CSS Library */
+
+/* BASEメニュー内のカートアイコンスタイル調整 */
+.base-menu-container .bc-cart {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.base-menu-container .bc-cart svg,
+.base-menu-container .bc-cart path {
+    fill: #666666 !important;
+    stroke: #666666 !important;
+}
+
+.base-menu-container .bc-cart:hover svg,
+.base-menu-container .bc-cart:hover path {
+    fill: var(--primary-text) !important;
+    stroke: var(--primary-text) !important;
+}
+
+/* BASEロゴの非表示（カートのみ表示） */
+.base-menu-container .bc-logo {
+    display: none !important;
+}
+
+/* カート数量バッジのスタイル調整 */
+.base-menu-container .bc-cart-count {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+    font-size: 10px !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+    border-radius: 8px !important;
+    padding: 0 4px !important;
+}
+
+/* BASEメニュー全体のスタイル調整 */
+.base-menu-container > div {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* その他のBASE要素の非表示・調整 */
+.base-menu-container .bc-powered-by {
+    display: none !important;
+}
+
+.base-menu-container .bc-menu {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* カートアイコンのサイズ調整 */
+.base-menu-container .bc-cart svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+@media (max-width: 768px) {
+    .base-menu-container .bc-cart svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+.body-fixed:after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-backdrop);
+    z-index: var(--z-menu-open);
+}
+
+/* ナビゲーションメニューリスト */
+.global-navigation__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.global-navigation__list > li {
+    margin-bottom: var(--space-md);
+}
+
+.global-navigation__list > li > a {
+    display: block;
+    color: var(--primary-text);
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    position: relative;
+    padding: var(--space-sm) 0;
+}
+
+.global-navigation__list > li > a:hover {
+    color: var(--accent-color);
+}
+
+/* 展開ボタン */
+a.expand {
+    position: relative;
+    padding-right: var(--space-lg);
+}
+
+a.expand:after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-color);
+    font-size: var(--font-lg);
+    font-weight: var(--weight-light);
+    line-height: 1;
+    transition: all var(--transition-fast);
+}
+
+a.expand.open:after {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+ul.ex-list {
+    padding-left: 2rem;
+    margin-top: 1rem;
+    list-style: none;
+}
+
+ul.ex-list > li {
+    margin-bottom: 1rem;
+}
+
+ul.ex-list > li > a {
+    color: var(--secondary-text);
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+    letter-spacing: 0;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+ul.ex-list > li > a:hover {
+    opacity: 0.7;
+}
+
+/* 中カテゴリのスタイル */
+ul.ex-list > li.sub-category {
+    padding-left: var(--space-sm);
+}
+
+ul.ex-list > li.sub-category > a {
+    color: var(--muted-text);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+}
+
+ul.ex-list > li.sub-category > a:hover {
+    color: var(--secondary-text);
+}
+
+/* 検索フォーム */
+.search-form {
+    display: flex;
+    align-items: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #333;
+}
+
+.search-form input[type="search"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--primary-text);
+    padding: var(--space-sm) 0;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+}
+
+.search-form input[type="search"]:focus {
+    outline: none;
+    border-bottom-color: var(--primary-text);
+}
+
+.search-form input[type="submit"] {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    font-size: var(--font-sm);
+    cursor: pointer;
+    padding: var(--space-sm);
+    margin-left: var(--space-sm);
+    font-weight: var(--weight-light);
+} 
+/* HOLY LABEL Product Components CSS Library */
+
+/* 商品一覧・ヘッダー */
+.product-section {
+    padding: 80px 40px;
+    background-color: #0B101D;
+}
+
+.category-header, .search-header {
+    padding-top: 120px;
+    padding-bottom: 40px;
+    background-color: #0B101D;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.category-header .page-content, .search-header .page-content {
+    padding: 0 40px;
+}
+
+.category-header h2, .search-header h2 {
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 12px;
+}
+
+/* タブレット（768px以上）- 2カラム維持 */
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 0 20px;
+    }
+}
+
+/* デスクトップ（1024px以上）- 3カラム */
+@media (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 0 40px;
+    }
+    
+    .product-section {
+        padding: 100px 40px;
+    }
+}
+
+/* 大型ディスプレイ（1400px以上）- 4カラム */
+@media (min-width: 1400px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1400px;
+    }
+}
+
+.product-item {
+    position: relative;
+    background-color: #0B101D;
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: all 0.3s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: fadeInScale 0.6s ease-out forwards;
+}
+
+.product-item:nth-child(1) { animation-delay: 0.1s; }
+.product-item:nth-child(2) { animation-delay: 0.2s; }
+.product-item:nth-child(3) { animation-delay: 0.3s; }
+.product-item:nth-child(4) { animation-delay: 0.4s; }
+.product-item:nth-child(5) { animation-delay: 0.5s; }
+.product-item:nth-child(6) { animation-delay: 0.6s; }
+.product-item:nth-child(7) { animation-delay: 0.7s; }
+.product-item:nth-child(8) { animation-delay: 0.8s; }
+.product-item:nth-child(9) { animation-delay: 0.9s; }
+
+.product-item a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.product-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background-color: #1a1a1a;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.product-image img.loaded {
+    opacity: 1;
+}
+
+.product-info {
+    padding: 15px 0;
+    background-color: #0B101D;
+}
+
+.product-title {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.product-price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.current-price, .sale-price {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: #ccc;
+}
+
+.price-sale {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.original-price {
+    font-size: 10px;
+    color: #666;
+    text-decoration: line-through;
+}
+
+.discount-rate {
+    font-size: 9px;
+    color: var(--accent-color);
+    font-weight: 400;
+}
+
+/* SOLD OUT表示 */
+.soldout_cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--soldout-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.soldout_cover p {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.product-item.out-of-stock {
+    opacity: 0.6;
+}
+
+/* パンくずリスト */
+.breadcrumb-container {
+    margin-bottom: 2rem;
+}
+
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.0rem;
+    font-weight: 300;
+}
+
+.breadcrumb__child {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb__child:not(:last-child)::after {
+    content: '>';
+    margin: 0 1rem;
+    color: #666;
+}
+
+.breadcrumb__link {
+    color: #ccc;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.breadcrumb__link:hover {
+    opacity: 0.7;
+}
+
+.breadcrumb__notlink {
+    color: #fff;
+}
+
+/* 子カテゴリ表示 */
+.child-categories {
+    margin-top: 2rem;
+}
+
+.child-category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.child-category-list li a {
+    display: inline-block;
+    padding: 0.8rem 1.6rem;
+    border: 1px solid #333;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 1.0rem;
+    font-weight: 300;
+    transition: all 0.3s ease;
+}
+
+.child-category-list li a:hover {
+    border-color: #fff;
+    color: #fff;
+} 
+/* HOLY LABEL Animations CSS Library */
+
+/* キーフレームアニメーション */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* メインビジュアル・ヒーロー画像 */
+.main-visual {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-bg);
+}
+
+.visual-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* 写真 */
+.hero-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+}
+
+.hero-image.fade-in {
+    opacity: 1;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* レスポンシブ画像制御 */
+.hero-image-desktop {
+    display: block;
+}
+
+.hero-image-mobile {
+    display: none;
+}
+
+/* プレースホルダー */
+.placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-text);
+    font-size: var(--font-xs);
+    letter-spacing: 2px;
+}
+
+/* テキストオーバーレイ */
+.overlay-text {
+    position: absolute;
+    bottom: 60px;
+    left: 60px;
+    font-size: 56px;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    font-style: italic;
+    opacity: 0.8;
+    letter-spacing: 2px;
+    font-weight: 100;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Ajax読み込みボタン・その他UI要素 */
+.load-more-btn {
+    display: block;
+    margin: var(--space-lg) auto;
+    padding: 15px var(--space-lg);
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: var(--weight-light);
+}
+
+.load-more-btn:hover {
+    border-color: var(--primary-text);
+    background-color: var(--primary-text);
+    color: var(--primary-bg);
+}
+
+.category-nav {
+    display: none; /* サイドメニューに統合するため非表示 */
+}
+
+.appsItemLabelTag {
+    z-index: var(--z-banner);
+} 
+
+/* ========== PRODUCT LAYER ========== */
+/* 商品詳細・フォーム・レスポンシブ・フッター */
+
+/* HOLY LABEL Product Detail CSS Library */
+
+/* 商品詳細ページ - デスクトップ版フルハイト2カラムレイアウト */
+.product-detail {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+}
+
+/* デスクトップレイアウト - フルスクリーン横並び */
+@media (min-width: 1024px) {
+    .product-detail {
+        display: flex;
+        flex-direction: row;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+        gap: 0;
+    }
+    
+    .product-detail-image {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        background-color: #000;
+        height: 100vh;
+    }
+    
+    .product-detail-info {
+        flex: 1;
+        max-width: 550px;
+        padding: 50px 40px;
+        box-sizing: border-box;
+        height: 100vh;
+        overflow-y: auto;
+        border-left: 1px solid var(--border-color);
+        background-color: var(--primary-bg);
+    }
+}
+
+.product-detail-image {
+    position: relative;
+}
+
+/* メイン画像コンテナ */
+.main-image-container {
+    position: relative;
+    margin-bottom: var(--space-md);
+}
+
+.main-image-container img {
+    width: 100%;
+    height: auto;
+    transition: transform var(--transition-fast);
+}
+
+.main-image-container:hover img {
+    transform: scale(1.02);
+}
+
+    .product-detail-info {
+    padding: 0;
+}
+
+.product-detail-title {
+    font-size: var(--font-lg);
+    font-weight: var(--weight-light);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--primary-text);
+    line-height: 1.3;
+}
+
+.product-detail-price {
+    font-size: var(--font-md);
+    margin-bottom: 24px;
+    font-weight: var(--weight-light);
+    color: var(--primary-text);
+}
+
+.product-description {
+    font-size: var(--font-xs);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: var(--secondary-text);
+    font-weight: var(--weight-light);
+}
+
+/* 商品購入フォーム */
+.product-purchase {
+    margin-bottom: 40px;
+}
+
+/* BASE ItemSelectTag のスタイリング */
+.product-purchase select {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.product-purchase select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.product-purchase select option {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+/* 数量入力フィールド */
+.product-purchase input[type="number"] {
+    width: 80px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    text-align: center;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+.product-purchase input[type="number"]::-webkit-outer-spin-button,
+.product-purchase input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.product-purchase input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* ADD TO BAG ボタンスタイル */
+.product-purchase button,
+.product-purchase input[type="submit"] {
+    width: 100%;
+    background-color: #f8f8f8;
+    color: #000;
+    border: 1px solid #e0e0e0;
+    padding: 18px 24px;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-normal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    border-radius: 0;
+    margin-top: 8px;
+}
+
+.product-purchase button:hover,
+.product-purchase input[type="submit"]:hover {
+    background-color: #e8e8e8;
+    border-color: #d0d0d0;
+    transform: translateY(-1px);
+}
+
+.product-purchase button:active,
+.product-purchase input[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* 売り切れ時のボタンスタイル */
+.product-purchase button:disabled,
+.product-purchase input[type="submit"]:disabled {
+    background-color: var(--muted-text);
+    color: var(--primary-text);
+    border-color: var(--muted-text);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 一覧に戻るボタン（商品詳細ページ） */
+.back-to-list-container {
+    text-align: center;
+    margin: var(--space-xl) 0 var(--space-lg) 0;
+    padding: 0 var(--space-lg);
+}
+
+.back-to-list-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: #f8f8f8;
+    color: #000;
+    border: 1px solid #e0e0e0;
+    padding: 18px 32px;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-normal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    border-radius: 0;
+}
+
+.back-to-list-btn:hover {
+    background-color: #e8e8e8;
+    border-color: #d0d0d0;
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+.back-to-list-btn:active {
+    transform: translateY(0);
+}
+
+.back-to-list-btn .back-icon {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* 新UI用CSS - メイン画像のラッパー */
+body .product-detail.desktop-layout .main-image-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin-bottom: 0 !important;
+}
+
+@media (min-width: 1024px) {
+    .main-image-wrapper {
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/* メイン画像コンテナ */
+body .product-detail.desktop-layout .main-image-container {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    height: 100% !important;
+}
+
+@media (min-width: 1024px) {
+    .main-image-container {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        height: 100% !important;
+    }
+}
+
+.main-image-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* 画像スライドアイテム */
+.main-image-item {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    height: 100%;
+}
+
+body .product-detail.desktop-layout .main-image-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+}
+
+@media (min-width: 1024px) {
+    .main-image-item img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        display: block !important;
+    }
+}
+
+/* カルーセルナビゲーション - デスクトップのみ表示 */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    pointer-events: auto;
+}
+
+/* デスクトップ版でのみナビゲーションボタンを表示 */
+@media (min-width: 1024px) {
+    .carousel-nav {
+        display: flex;
+    }
+}
+
+.carousel-nav:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-nav.prev {
+    left: 20px;
+}
+
+.carousel-nav.next {
+    right: 20px;
+}
+
+.carousel-nav svg {
+    width: 28px;
+    height: 28px;
+    font-weight: 100;
+}
+
+/* 画像カウンター - モバイルのみ表示 */
+.image-counter {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    display: none;
+}
+
+/* モバイル版でのみカウンターを表示 */
+@media (max-width: 1023px) {
+    .image-counter {
+        display: block;
+    }
+}
+
+/* サムネイル横スクロールコンテナ */
+.thumbnail-scroll-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 12px;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.thumbnail-scroll-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.thumbnail-scroll-container::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 2px;
+}
+
+/* サムネイルアイテム */
+.thumbnail-item {
+    flex: 0 0 80px;
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    opacity: 0.7;
+}
+
+.thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.thumbnail-item.active {
+    border-color: var(--accent-color, #D43883);
+    opacity: 1;
+}
+
+/* 商品詳細ページ - モバイル対応 */
+@media (max-width: 1023px) {
+    .product-detail {
+        flex-direction: column !important;
+        gap: 20px !important;
+        max-width: 800px !important;
+        margin: 60px auto !important;
+        padding: 0 20px !important;
+        min-height: auto !important;
+        width: auto !important;
+    }
+    
+    .product-detail-image {
+        flex: none;
+        height: auto;
+        aspect-ratio: 1 / 1.1;
+        background-color: #000;
+        overflow: hidden;
+        cursor: grab;
+        position: relative;
+    }
+    
+    .main-image-wrapper {
+        height: auto;
+        margin-bottom: 12px;
+        position: relative;
+    }
+    
+    .main-image-container {
+        height: auto;
+    }
+    
+    .main-image-item {
+        height: auto;
+    }
+    
+    .main-image-item img {
+        height: auto;
+        object-fit: cover;
+    }
+    
+    .product-detail-info {
+        flex: none;
+        max-width: 100%;
+        height: auto;
+        overflow-y: visible;
+        padding: 20px 0;
+        border-left: none;
+    }
+    
+    .carousel-nav {
+        display: none; /* モバイルでは矢印を非表示 */
+    }
+    
+    .image-counter {
+        display: block;
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.8em;
+    }
+    
+    .thumbnail-scroll-container {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        padding: 4px 0;
+        background-color: transparent;
+        backdrop-filter: none;
+        border-radius: 0;
+    }
+    
+    .product-detail-info {
+        padding: 20px 0;
+    }
+    
+    .product-detail-title {
+        font-size: var(--font-md);
+        margin-bottom: 12px;
+    }
+    
+    .product-detail-price {
+        font-size: var(--font-sm);
+        margin-bottom: 20px;
+    }
+    
+    .product-description {
+        font-size: 0.8rem;
+        margin-bottom: 30px;
+    }
+    
+    .product-purchase button,
+    .product-purchase input[type="submit"] {
+        padding: 16px 20px;
+        font-size: 0.9rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .product-purchase select {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+        padding-right: 35px;
+        background-size: 14px;
+    }
+    
+    .product-purchase input[type="number"] {
+        width: 70px;
+        padding: 10px 12px;
+        font-size: 0.8rem;
+    }
+    
+    /* 一覧に戻るボタン - モバイル */
+    .back-to-list-container {
+        margin: var(--space-lg) 0 var(--space-md) 0;
+        padding: 0 var(--space-md);
+    }
+    
+    .back-to-list-btn {
+        padding: 16px 24px;
+        font-size: 0.9rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .back-to-list-btn .back-icon {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .thumbnail-item {
+        flex: 0 0 70px;
+        width: 70px;
+        height: 90px;
+    }
+} 
+/* HOLY LABEL Forms CSS Library */
+
+/* 共通フォーム要素 */
+.product-purchase input[type="text"],
+.product-purchase input[type="email"],
+.product-purchase input[type="tel"],
+.product-purchase input[type="password"],
+.product-purchase textarea,
+.product-purchase select,
+.search-form input[type="text"],
+.search-form input[type="email"],
+.newsletter-form input[type="email"] {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    transition: border-color var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.product-purchase input:focus,
+.product-purchase textarea:focus,
+.product-purchase select:focus,
+.search-form input:focus,
+.newsletter-form input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.product-purchase input::placeholder,
+.product-purchase textarea::placeholder,
+.search-form input::placeholder,
+.newsletter-form input::placeholder {
+    color: var(--muted-text);
+    font-weight: var(--weight-light);
+}
+
+.product-purchase textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* 商品購入以外のフォームボタン */
+.search-form button,
+.newsletter-form button,
+.login-form button {
+    background-color: #f8f8f8;
+    color: #000;
+    border: 1px solid #e0e0e0;
+    padding: 18px 24px;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-normal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    border-radius: 0;
+    margin-top: 8px;
+}
+
+.search-form button:hover,
+.newsletter-form button:hover,
+.login-form button:hover {
+    background-color: #e8e8e8;
+    border-color: #d0d0d0;
+    transform: translateY(-1px);
+}
+
+.search-form button:active,
+.newsletter-form button:active,
+.login-form button:active {
+    transform: translateY(0);
+}
+
+/* ラベル（日本語表示にも対応） */
+.product-purchase label,
+.search-form label,
+.newsletter-form label {
+    display: block;
+    font-size: var(--font-xs);
+    color: var(--secondary-text);
+    margin-bottom: 8px;
+    font-weight: var(--weight-light);
+    letter-spacing: 0.5px;
+}
+
+/* エラーメッセージ */
+.error-message,
+.form-error {
+    color: var(--error-color);
+    font-size: 0.8rem;
+    margin-top: -12px;
+    margin-bottom: 16px;
+    font-weight: var(--weight-light);
+}
+
+/* 成功メッセージ */
+.success-message,
+.form-success {
+    color: var(--accent-color);
+    font-size: var(--font-xs);
+    margin-bottom: 16px;
+    font-weight: var(--weight-light);
+}
+
+/* 価格表示形式調整 */
+.product-price,
+.product-detail-price,
+.related-product-price {
+    min-width: 120px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.price-sale {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: var(--muted-text);
+}
+
+.sale-price {
+    color: var(--primary-text);
+    font-weight: var(--weight-bold);
+}
+
+.discount-rate {
+    background-color: var(--error-color);
+    color: var(--primary-text);
+    padding: 2px 6px;
+    font-size: 1.2rem;
+    border-radius: 2px;
+}
+
+/* 商品情報・価格表示（一覧では非表示） */
+.product-info,
+.product-title,
+.product-price {
+    display: none;
+}
+
+.product-title {
+    font-size: 1.2rem;
+    font-weight: var(--weight-light);
+    letter-spacing: 1px;
+    margin-bottom: var(--space-xs);
+    color: var(--primary-text);
+}
+
+.product-price {
+    font-size: var(--font-xs);
+    color: var(--secondary-text);
+    font-weight: var(--weight-light);
+}
+
+/* 外貨表示対応 - 価格表示エリアの拡張 */
+.price-sale {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+/* 長い価格テキストへの対応 */
+.current-price,
+.sale-price,
+.original-price {
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-all;
+    line-height: 1.3;
+}
+
+/* モバイルでの外貨表示調整 */
+@media (max-width: 768px) {
+    .header__nav-area .x_i18nSelectBox select {
+        display: block;
+        margin-bottom: 8px;
+        margin-right: 0;
+    }
+    
+    .price-sale {
+        gap: 2px;
+    }
+    
+    .current-price,
+    .sale-price,
+    .original-price {
+        font-size: 0.9rem;
+        line-height: 1.2;
+    }
+} 
+/* HOLY LABEL Responsive CSS Library */
+
+/* レスポンシブ・メディアクエリ統合 */
+
+/* モバイル（768px以下） */
+@media (max-width: 768px) {
+    /* メイン画像レスポンシブ制御 */
+    .hero-image-desktop { 
+        display: none; 
+    }
+    
+    .hero-image-mobile { 
+        display: block; 
+    }
+    
+    .overlay-text {
+        font-size: 3.2rem;
+        left: var(--space-lg);
+        bottom: var(--space-lg);
+    }
+    
+    /* ナビゲーション要素 */
+    button.humberger {
+        top: calc(var(--information-banner-height, 0px) + 15px);
+        left: 15px;
+    }
+    
+    .logo {
+        top: calc(var(--information-banner-height, 0px) + 15px);
+        max-width: 150px;
+        font-size: var(--font-md);
+        letter-spacing: 2px;
+    }
+    
+    .logo img { 
+        max-height: 30px; 
+    }
+    
+    .logo a:not(:has(img)) {
+        font-size: var(--font-md);
+        letter-spacing: 2px;
+    }
+    
+    .header__nav-area {
+        width: 100%;
+        padding: var(--space-xl) var(--space-md);
+        left: -100%;
+        transform: translateX(-100%);
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .header__nav-area.-active {
+        left: 0;
+        transform: translateX(0);
+    }
+    
+    .global-navigation__list > li > a {
+        font-size: var(--font-lg);
+        font-weight: var(--weight-light);
+    }
+    
+    /* Instagram固定ボタン */
+    .instagram-fixed-btn {
+        bottom: var(--space-md);
+        right: var(--space-md);
+        width: 40px;
+        height: 40px;
+        border: none;
+        background-color: transparent;
+    }
+    
+    .instagram-fixed-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    /* 商品セクション・グリッド（モバイル） */
+    .product-section {
+        padding: 0 12px;
+    }
+    
+    .product-grid {
+        gap: 8px;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+    
+    /* 関連商品（モバイル） */
+    .related-products {
+        margin-top: 60px;
+        padding: 40px 15px;
+    }
+    
+    .related-products-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        max-width: 320px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+    }
+    
+    .related-products-title {
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
+    .related-product-item {
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+    
+    .related-product-image {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+    }
+    
+    .related-product-title,
+    .related-product-price {
+        text-align: center !important;
+        padding: 0 8px !important;
+        word-break: break-word;
+    }
+    
+    /* フッター（モバイル） */
+    .footer {
+        padding: 30px 15px;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .footer-links a {
+        font-size: 0.9rem;
+    }
+    
+    .copyright {
+        font-size: 0.7rem;
+    }
+}
+
+/* タブレット（768px以上） */
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* 関連商品 - タブレット2カラム */
+    .related-products {
+        margin-top: 70px;
+        padding: 50px 30px;
+    }
+    
+    .related-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .related-products-title {
+        font-size: 1.3rem;
+        margin-bottom: 45px;
+    }
+    
+    .related-product-item {
+        text-align: center;
+    }
+    
+    .related-product-image {
+        max-width: none;
+        margin: 0;
+    }
+    
+    .related-product-title {
+        font-size: 0.95rem;
+        letter-spacing: 0.8px;
+        padding: 0;
+    }
+    
+    .related-product-price {
+        font-size: 0.85rem;
+    }
+}
+
+/* デスクトップ（1024px以上） */
+@media (min-width: 1024px) {
+    /* ヒーローイメージ表示制御 */
+    .hero-image-desktop { 
+        display: block; 
+    }
+    
+    .hero-image-mobile { 
+        display: none; 
+    }
+    
+    /* オーバーレイテキスト（デスクトップ） */
+    .overlay-text {
+        font-size: 5.5rem;
+        left: var(--space-xl);
+        bottom: var(--space-xl);
+    }
+    
+    /* 商品グリッド - デスクトップ3カラム */
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 0 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    /* 商品セクション - デスクトップ */
+    .product-section {
+        padding: 0 40px;
+    }
+    
+    /* 関連商品 - デスクトップ3カラム */
+    .related-products {
+        margin-top: 80px;
+        padding: 60px 40px;
+    }
+    
+    .related-products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .related-products-title {
+        font-size: 1.4rem;
+        margin-bottom: 50px;
+    }
+    
+    .related-product-item {
+        text-align: center;
+    }
+    
+    .related-product-image {
+        max-width: none;
+        margin: 0;
+    }
+    
+    .related-product-title {
+        font-size: 1rem;
+        letter-spacing: 1px;
+        padding: 0;
+    }
+    
+    .related-product-price {
+        font-size: 0.9rem;
+    }
+    
+    /* ナビゲーション - デスクトップ調整 */
+    .header__nav-area {
+        width: 400px;
+        padding: var(--space-xl) var(--space-lg);
+    }
+    
+    /* ロゴ・ハンバーガー位置調整 */
+    button.humberger {
+        top: calc(var(--information-banner-height, 0px) + 20px);
+        left: 20px;
+    }
+    
+    .logo {
+        top: calc(var(--information-banner-height, 0px) + 15px);
+        max-width: 200px;
+        font-size: var(--font-lg);
+    }
+    
+    .logo img { 
+        max-height: 40px; 
+    }
+    
+    .logo a:not(:has(img)) {
+        font-size: var(--font-lg);
+    }
+    
+    /* Instagram固定ボタン - デスクトップ */
+    .instagram-fixed-btn {
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+        width: 50px;
+        height: 50px;
+    }
+    
+    .instagram-fixed-btn svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    /* フッター - デスクトップ */
+    .footer {
+        padding: 50px 40px;
+    }
+    
+    .footer-links {
+        flex-direction: row;
+        gap: 40px;
+        margin-bottom: 30px;
+    }
+    
+    .footer-links a {
+        font-size: var(--font-sm);
+    }
+    
+    .copyright {
+        font-size: 0.8rem;
+    }
+}
+
+/* タブレット対応（480px以下） */
+@media (max-width: 480px) {
+    .footer-links {
+        gap: 15px;
+    }
+    
+    .footer-links a {
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* 超小画面対応（320px以下） */
+@media (max-width: 320px) {
+    .overlay-text {
+        font-size: 2.8rem;
+        left: var(--space-sm);
+        bottom: var(--space-sm);
+    }
+    
+    .logo {
+        max-width: 120px;
+        font-size: 0.9rem;
+    }
+    
+    .product-grid {
+        gap: 6px;
+    }
+    
+    .instagram-fixed-btn {
+        width: 35px;
+        height: 35px;
+        bottom: var(--space-sm);
+        right: var(--space-sm);
+    }
+    
+    .instagram-fixed-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* 高解像度ディスプレイ対応 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo img,
+    .product-image img,
+    .hero-image img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* ダークモード対応（将来対応） */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-bg: #0B101D;
+        --secondary-bg: #1a1a1a;
+        --primary-text: #ffffff;
+        --secondary-text: #cccccc;
+        --muted-text: #888888;
+        --border-color: #333333;
+    }
+}
+
+/* 高コントラスト対応 */
+@media (prefers-contrast: high) {
+    .product-item:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+    
+    .base-modal-content {
+        border: 2px solid var(--accent-color);
+    }
+    
+    .product-purchase button,
+    .search-form button,
+    .newsletter-form button {
+        border: 2px solid #000;
+        font-weight: var(--weight-bold);
+    }
+}
+
+/* 動きの少ない設定を好む場合 */
+@media (prefers-reduced-motion: reduce) {
+    .product-item,
+    .related-product-item,
+    .main-image-container img,
+    .thumbnail-item {
+        animation: none;
+        transition: none;
+    }
+    
+    .hero-image {
+        animation: none;
+    }
+    
+    .base-modal-content {
+        transition: none;
+        transform: none;
+    }
+}
+
+/* プリント用スタイル */
+@media print {
+    .header__nav-area,
+    .instagram-fixed-btn,
+    .base-modal,
+    .carousel-nav,
+    .zoom-icon {
+        display: none !important;
+    }
+    
+    .product-detail {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .product-image img,
+    .main-image-container img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .footer {
+        page-break-inside: avoid;
+    }
+}
+
+/* 横向き（ランドスケープ）対応 */
+@media (orientation: landscape) and (max-height: 600px) {
+    .overlay-text {
+        font-size: 2.5rem;
+    }
+    
+    .header__nav-area {
+        padding: var(--space-lg) var(--space-md);
+    }
+    
+    .product-detail {
+        gap: 20px !important;
+    }
+}
+
+/* 大型ディスプレイ対応 */
+@media (min-width: 1400px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1400px;
+    }
+    
+    .product-detail {
+        max-width: 1000px !important;
+    }
+    
+    .footer-links {
+        gap: 60px;
+    }
+} 
+/* HOLY LABEL Footer & Pages CSS Library */
+
+/* フッター */
+.footer {
+    border-top: 1px solid var(--border-color);
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.footer-links a {
+    font-size: var(--font-xs);
+    letter-spacing: 1px;
+    color: var(--muted-text);
+    text-transform: uppercase;
+    font-weight: var(--weight-light);
+    transition: color var(--transition-fast);
+    white-space: nowrap;
+}
+
+.footer-links a:hover {
+    color: var(--primary-text);
+}
+
+/* LEGAL INFORMATIONを中央基準に */
+.footer-links a:nth-child(2) {
+    position: relative;
+    font-weight: var(--weight-normal);
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: var(--muted-text);
+    letter-spacing: 1px;
+    font-weight: var(--weight-light);
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* ページコンテンツ */
+.page-content {
+    padding: var(--space-xl) var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.page-content h1,
+.page-content h2,
+.page-content h3 {
+    color: var(--primary-text) !important;
+    margin-bottom: var(--space-md);
+}
+
+.page-content p {
+    color: var(--secondary-text) !important;
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+}
+
+/* BASE固有スタイル調整 */
+#privacy,
+#law {
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-text) !important;
+    padding: var(--space-lg) !important;
+}
+
+#privacy h2,
+#law h2 {
+    color: var(--primary-text) !important;
+}
+
+/* BASE英語・外貨対応App CSS */
+/* 全てのBASE言語切り替えUIを非表示 */
+.x_i18nSelectBox,
+div[id*="i18n"],
+div[class*="i18n"],
+select[name*="i18n"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    z-index: -1 !important;
+}
+
+/* ヘッダー内の言語切り替えは例外的に表示を許可 */
+.header__nav-area .x_i18nSelectBox {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    left: auto !important;
+    z-index: auto !important;
+    margin-bottom: var(--space-md);
+}
+
+.header__nav-area .x_i18nSelectBox select {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.header__nav-area .x_i18nSelectBox select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Instagram固定ボタン */
+.instagram-fixed-btn {
+    display: none;
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: var(--z-header);
+    transition: all var(--transition-fast);
+    align-items: center;
+    justify-content: center;
+}
+
+.instagram-fixed-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.7;
+}
+
+.instagram-fixed-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: #666666;
+}
+
+/* ホーム画面でのみ表示 */
+.home-page .instagram-fixed-btn {
+    display: flex;
+}
+
+/* BASEが自動生成するI18N要素への対処 */
+#i18 {
+    position: relative !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+#i18 .x_i18nSelectBox {
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* ハンバーガーボタンの優先度を確保 */
+button.humberger {
+    z-index: var(--z-hamburger) !important;
+    pointer-events: auto !important;
+}
+
+/* ローディング・状態管理 */
+.loading {
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.loaded {
+    opacity: 1;
+}
+
+/* 外貨価格表示の調整（グローバル対応） */
+.price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.currency-selector {
+    font-size: 0.8rem;
+    color: var(--muted-text);
+    margin-bottom: 8px;
+}
+
+/* 多言語対応のための基本設定 */
+[lang="ja"] {
+    font-family: 'Noto Sans', 'Hiragino Sans', 'Yu Gothic UI', Arial, sans-serif;
+}
+
+[lang="en"] {
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 0.5px;
+}
+
+[lang="ko"] {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif;
+}
+
+[lang="zh"] {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+}
+
+/* アクセシビリティ改善 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* フォーカス表示の改善 */
+.product-item:focus,
+.back-to-list-btn:focus,
+.footer-links a:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* スキップリンク */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--accent-color);
+    color: var(--primary-text);
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: var(--weight-bold);
+    z-index: 999999;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* BASE APIとの統合対応 */
+.base-apps-container {
+    margin: var(--space-lg) 0;
+}
+
+.base-apps-item {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+/* 検索結果ページ特殊対応 */
+.search-results {
+    margin-top: var(--space-xl);
+}
+
+.search-results-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-results-count {
+    font-size: var(--font-sm);
+    color: var(--secondary-text);
+    font-weight: var(--weight-light);
+}
+
+.no-results {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--muted-text);
+    font-size: var(--font-md);
+} 
+
+/* ========== SPECIAL FEATURES LAYER ========== */
+/* 特殊ページ・UIコンポーネント・BASE統合・残存スタイル */
+
+/* HOLY LABEL Special Pages CSS Library */
+
+/* LOOKBOOKページ（ブログ）専用スタイル */
+/* ブログページのタイトル */
+.page-content h1 {
+    font-size: 2.5rem;
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 4px;
+    margin-bottom: 60px;
+    color: var(--primary-text);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* LOOKBOOKページ全体のフォント統一 */
+.page-content,
+.page-content * {
+    font-family: 'Noto Sans', Arial, sans-serif !important;
+}
+
+/* ブログ記事一覧のスタイル */
+.page-content .blog-posts {
+    display: grid;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.page-content .blog-post {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+}
+
+.page-content .blog-post:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.page-content .blog-post-title {
+    font-size: var(--font-lg);
+    font-weight: var(--weight-normal);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--primary-text);
+}
+
+.page-content .blog-post-date {
+    font-size: var(--font-xs);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    color: var(--muted-text);
+    margin-bottom: 20px;
+    font-weight: var(--weight-light);
+}
+
+.page-content .blog-post-excerpt {
+    font-size: var(--font-xs);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    color: var(--secondary-text);
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.page-content .blog-post-image {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.page-content .blog-post-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform var(--transition-normal);
+}
+
+.page-content .blog-post-image:hover img {
+    transform: scale(1.02);
+}
+
+.page-content .blog-read-more {
+    display: inline-block;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.page-content .blog-read-more:hover {
+    border-bottom-color: var(--accent-color);
+}
+
+/* ソーシャルメディア共有ボタンを非表示 */
+.page-content .social-share,
+.page-content .share-buttons,
+.page-content .sns-share,
+.page-content .blog-share,
+.page-content .social-buttons,
+.page-content [class*="share"],
+.page-content [class*="social"],
+.page-content .tiktok-share-button,
+.page-content .facebook-share-button,
+.page-content .line-share-button,
+.page-content a[href*="tiktok.com"],
+.page-content a[href*="facebook.com/sharer"],
+.page-content a[href*="line.me/R/msg"],
+.page-content iframe[src*="tiktok.com"],
+.page-content iframe[src*="facebook.com"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* BASEデフォルトの共有ボタンクラスも対象 */
+.page-content .base-share-buttons,
+.page-content .base-social-share,
+.page-content .blog-post-share,
+.page-content .entry-share {
+    display: none !important;
+}
+
+/* LOOKBOOKページ（ブログ）モバイル対応 */
+@media (max-width: 768px) {
+    .page-content h1 {
+        font-size: 2rem;
+        font-weight: var(--weight-light);
+        letter-spacing: 2px;
+        margin-bottom: 40px;
+    }
+    
+    .page-content .blog-posts {
+        gap: 30px;
+        margin-top: 30px;
+    }
+    
+    .page-content .blog-post {
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .page-content .blog-post-title {
+        font-size: var(--font-md);
+        margin-bottom: 12px;
+    }
+    
+    .page-content .blog-post-date {
+        font-size: 0.7rem;
+        margin-bottom: 16px;
+    }
+    
+    .page-content .blog-post-excerpt {
+        font-size: 0.7rem;
+        margin-bottom: 16px;
+    }
+}
+
+/* Aboutページ - 画像とSNSリンクのみのシンプルデザイン（元の仕様準拠） */
+.about-page {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.about-image {
+    margin-bottom: 60px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform var(--transition-fast);
+}
+
+.about-image img:hover {
+    transform: scale(1.02);
+}
+
+.about-social {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.about-social .social-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--secondary-text);
+    text-decoration: none;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+    letter-spacing: 1px;
+    padding: 16px 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: all var(--transition-fast);
+}
+
+.about-social .social-link:hover {
+    color: var(--primary-text);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 56, 131, 0.2);
+}
+
+.about-social .social-link svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* Aboutページモバイル対応 */
+@media (max-width: 768px) {
+    .about-page {
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+    
+    .about-image {
+        margin-bottom: 40px;
+    }
+    
+    .about-image img {
+        border-radius: 4px;
+    }
+    
+    .about-social {
+        gap: 20px;
+    }
+    
+    .about-social .social-link {
+        font-size: var(--font-xs);
+        padding: 12px 20px;
+        gap: 8px;
+    }
+    
+    .about-social .social-link svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* CONTACTページ専用スタイル */
+.contact-form h1,
+.contact-form .page-title {
+    font-size: 2.5rem;
+    font-weight: var(--weight-light);
+    color: var(--primary-text);
+    text-align: center;
+    margin-bottom: 60px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.contact-form h1::after,
+.contact-form .page-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 1px;
+    background-color: var(--accent-color);
+    margin: 24px auto 0;
+}
+
+.contact-form .intro-text,
+.contact-form .description {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.contact-form p,
+.contact-form .description p {
+    font-size: var(--font-sm);
+    color: var(--secondary-text);
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+}
+
+/* CONTACTページ - モバイル対応 */
+@media (max-width: 768px) {
+    .contact-form,
+    .contact-form .page-content {
+        padding: 60px 20px;
+    }
+    
+    .contact-form h1,
+    .contact-form .page-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+        letter-spacing: 2px;
+    }
+    
+    .contact-form h1::after,
+    .contact-form .page-title::after {
+        width: 40px;
+        margin: 16px auto 0;
+    }
+    
+    .contact-form .intro-text,
+    .contact-form .description {
+        margin-bottom: 40px;
+    }
+    
+    .contact-form p,
+    .contact-form .description p {
+        font-size: 0.8rem;
+    }
+}
+
+/* 特定商取引法・プライバシーポリシーページ - モバイル対応 */
+@media (max-width: 768px) {
+    .page-content {
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+    
+    .page-content h1 {
+        font-size: var(--font-lg);
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+    }
+    
+    .page-content h2 {
+        font-size: var(--font-md);
+        margin: 30px 0 16px 0;
+    }
+    
+    .page-content h3 {
+        font-size: var(--font-sm);
+        margin: 24px 0 12px 0;
+    }
+    
+    .page-content p {
+        font-size: 0.7rem;
+        margin-bottom: 16px;
+        line-height: 1.7;
+    }
+    
+    .page-content ul,
+    .page-content ol {
+        font-size: 0.7rem;
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+    
+    .page-content li {
+        margin-bottom: 6px;
+        font-size: 0.7rem;
+    }
+    
+    .page-content table {
+        font-size: 0.65rem;
+        margin: 16px 0;
+    }
+    
+    .page-content table th,
+    .page-content table td {
+        padding: 8px 12px;
+        line-height: 1.5;
+    }
+    
+    .page-content .contact-info {
+        padding: 16px;
+        margin: 16px 0;
+    }
+    
+    /* テーブルの横スクロール対応 */
+    .page-content table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .page-content table thead,
+    .page-content table tbody,
+    .page-content table tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    
+    .page-content table th,
+    .page-content table td {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+}
+
+/* 法的文書の重要事項 */
+.page-content .important-notice {
+    background-color: rgba(212, 56, 131, 0.05);
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.page-content .important-notice p {
+    color: var(--primary-text);
+    margin-bottom: 8px;
+}
+
+.page-content .important-notice:last-child {
+    margin-bottom: 0;
+}
+
+/* 連絡先情報のスタイル */
+.page-content .contact-info {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    margin: 30px 0;
+    border-radius: 8px;
+}
+
+.page-content .contact-info p {
+    margin-bottom: 8px;
+}
+
+.page-content .contact-info strong {
+    color: var(--primary-text);
+}
+
+/* 日本語法的文書の特殊スタイル */
+.page-content .legal-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.page-content .legal-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.page-content .legal-section h2 {
+    color: var(--accent-color);
+    font-weight: var(--weight-normal);
+    margin-bottom: 20px;
+}
+
+.page-content .legal-section h3 {
+    color: var(--primary-text);
+    font-weight: var(--weight-light);
+    margin: 20px 0 12px 0;
+}
+
+/* 更新日時等の情報 */
+.page-content .update-info {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--muted-text);
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 重要事項のハイライト */
+.page-content .highlight {
+    background-color: rgba(212, 56, 131, 0.1);
+    padding: 16px;
+    border-radius: 4px;
+    margin: 16px 0;
+    border-left: 3px solid var(--accent-color);
+}
+
+.page-content .highlight p {
+    color: var(--primary-text);
+    font-weight: var(--weight-normal);
+} 
+/* HOLY LABEL UI Components CSS Library */
+
+/* キーフレームアニメーション */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* MODAL STYLES - モーダル表示機能 */
+.base-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: var(--z-modal);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.base-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.base-modal-content {
+    background-color: var(--primary-bg);
+    border-radius: 8px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(30px);
+    transition: transform 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.base-modal.show .base-modal-content {
+    transform: translateY(0);
+}
+
+.base-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.base-modal-title {
+    font-size: 1.4rem;
+    font-weight: var(--weight-normal);
+    color: var(--primary-text);
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.base-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--secondary-text);
+    padding: 8px;
+    line-height: 1;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.base-modal-close:hover {
+    color: var(--primary-text);
+}
+
+.base-modal-body {
+    color: var(--secondary-text);
+    line-height: 1.6;
+    font-weight: var(--weight-light);
+    margin-bottom: 24px;
+}
+
+.base-modal-form {
+    margin-top: 24px;
+}
+
+.base-modal-form input {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-weight: var(--weight-light);
+}
+
+.base-modal-form input::placeholder {
+    color: var(--muted-text);
+}
+
+.base-modal-form input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.base-modal-form button {
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+    border: none;
+    padding: 16px 24px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: var(--weight-normal);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    letter-spacing: 1px;
+}
+
+.base-modal-form button:hover {
+    background-color: rgba(212, 56, 131, 0.8);
+}
+
+.base-modal-form button:disabled {
+    background-color: var(--muted-text);
+    cursor: not-allowed;
+}
+
+/* PAY ID WIDGET STYLES - Pay IDあと払いウィジェット */
+.payid-widget {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.payid-widget * {
+    color: var(--primary-text) !important;
+    font-family: 'Noto Sans', Arial, sans-serif !important;
+    font-weight: var(--weight-light) !important;
+}
+
+.payid-widget .payid-title {
+    font-size: 1rem;
+    font-weight: var(--weight-normal) !important;
+    letter-spacing: 1px;
+    color: var(--secondary-text) !important;
+    margin-bottom: 8px;
+}
+
+.payid-widget .payid-description {
+    font-size: 0.9rem;
+    color: var(--muted-text) !important;
+    line-height: 1.4;
+}
+
+/* RELATED PRODUCTS STYLES - 関連商品表示 */
+.related-products {
+    margin-top: 80px;
+    padding: 60px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.related-products-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.related-products-title {
+    font-size: 1.4rem;
+    font-weight: var(--weight-light);
+    letter-spacing: 2px;
+    color: var(--primary-text);
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.related-product-item {
+    position: relative;
+    background-color: var(--primary-bg);
+    transition: transform var(--transition-fast);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.related-product-item:nth-child(1) { animation-delay: 0.1s; }
+.related-product-item:nth-child(2) { animation-delay: 0.2s; }
+.related-product-item:nth-child(3) { animation-delay: 0.3s; }
+
+.related-product-item:hover {
+    transform: translateY(-5px);
+}
+
+.related-product-image {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(
+        90deg,
+        var(--primary-bg) 0%,
+        #1a2a3a 50%,
+        var(--primary-bg) 100%
+    );
+    background-size: 200px 100%;
+    animation: loading 1.5s infinite;
+}
+
+.related-product-image.loaded {
+    background: none;
+    animation: none;
+}
+
+.related-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: scale(1);
+    opacity: 0;
+}
+
+.related-product-image img.loaded {
+    opacity: 1;
+}
+
+.related-product-item:hover .related-product-image img {
+    transform: scale(1.05);
+}
+
+.related-product-info {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.related-product-title {
+    font-size: 1rem;
+    font-weight: var(--weight-light);
+    color: var(--primary-text);
+    margin: 0 0 8px 0;
+    letter-spacing: 1px;
+    line-height: 1.4;
+}
+
+.related-product-price {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+    font-weight: var(--weight-light);
+    margin: 0;
+}
+
+/* Ajax読み込みボタン・その他UI要素 */
+.load-more-btn {
+    display: block;
+    margin: var(--space-lg) auto;
+    padding: 15px var(--space-lg);
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    font-size: var(--font-xs);
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: var(--weight-light);
+}
+
+.load-more-btn:hover {
+    border-color: var(--primary-text);
+    background-color: var(--primary-text);
+    color: var(--primary-bg);
+}
+
+.category-nav {
+    display: none; /* サイドメニューに統合するため非表示 */
+}
+
+.appsItemLabelTag {
+    z-index: var(--z-banner);
+}
+
+/* ローディング・状態管理 */
+.loading {
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.loaded {
+    opacity: 1;
+}
+
+/* 商品一覧・ヘッダー */
+.product-section {
+    padding: 80px 40px;
+    background-color: #0B101D;
+}
+
+.category-header, .search-header {
+    padding-top: 120px;
+    padding-bottom: 40px;
+    background-color: #0B101D;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.category-header .page-content, .search-header .page-content {
+    padding: 0 40px;
+}
+
+.category-header h2, .search-header h2 {
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-item {
+    position: relative;
+    background-color: #0B101D;
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: all 0.3s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: fadeInScale 0.6s ease-out forwards;
+}
+
+.product-item:nth-child(1) { animation-delay: 0.1s; }
+.product-item:nth-child(2) { animation-delay: 0.2s; }
+.product-item:nth-child(3) { animation-delay: 0.3s; }
+.product-item:nth-child(4) { animation-delay: 0.4s; }
+.product-item:nth-child(5) { animation-delay: 0.5s; }
+.product-item:nth-child(6) { animation-delay: 0.6s; }
+.product-item:nth-child(7) { animation-delay: 0.7s; }
+.product-item:nth-child(8) { animation-delay: 0.8s; }
+.product-item:nth-child(9) { animation-delay: 0.9s; }
+
+.product-item:hover {
+    background-color: #0B101D;
+    transform: translateY(-5px) scale(1.02);
+}
+
+.product-image {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(
+        90deg,
+        #0B101D 0%,
+        #1a2a3a 50%,
+        #0B101D 100%
+    );
+    background-size: 200px 100%;
+    animation: loading 1.5s infinite;
+}
+
+.product-image.loaded {
+    background: none;
+    animation: none;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: scale(1);
+    opacity: 0;
+}
+
+.product-image img.loaded {
+    opacity: 1;
+}
+
+.product-item:hover .product-image img {
+    transform: scale(1.05);
+} 
+/* HOLY LABEL BASE Integration CSS Library */
+
+/* BASE英語・外貨対応App CSS */
+/* 全てのBASE言語切り替えUIを非表示 */
+.x_i18nSelectBox,
+div[id*="i18n"],
+div[class*="i18n"],
+div[id*="I18n"],
+div[class*="I18n"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* カスタム言語切り替えUIのみ表示 */
+.header__nav-area .custom-language-switcher {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.custom-language-switcher a {
+    display: inline-block !important;
+    padding: 0.1rem 1rem !important;
+    border: 1px solid #fff !important;
+    color: var(--primary-text) !important;
+    text-decoration: none !important;
+    font-size: var(--font-sm) !important;
+    font-weight: var(--weight-light) !important;
+    font-family: 'Noto Sans', Arial, sans-serif !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    background-color: transparent !important;
+    margin: 0 !important;
+}
+
+.custom-language-switcher a:first-child {
+    margin-right: 1rem !important;
+}
+
+.custom-language-switcher a:hover {
+    opacity: 0.7 !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.custom-language-switcher a.active {
+    font-weight: var(--weight-normal) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* BASEが生成するすべてのセレクトボックスを強制的にカスタマイズ - より強力なセレクタ */
+.header__nav-area .x_i18nSelectBox select,
+.header__nav-area select[name*="currency"],
+.header__nav-area select[name*="language"],
+.header__nav-area select[name*="i18n"],
+.header__nav-area .gtranslate_wrapper select,
+.header__nav-area div[id*="gt-wrapper"] select,
+.js-nav-area .x_i18nSelectBox select,
+.js-nav-area select[name*="currency"],
+.js-nav-area select[name*="language"],
+.js-nav-area select[name*="i18n"],
+.js-nav-area .gtranslate_wrapper select,
+#sp-gmenu-area .x_i18nSelectBox select,
+#sp-gmenu-area select[name*="currency"],
+#sp-gmenu-area select[name*="language"],
+#sp-gmenu-area select[name*="i18n"],
+#sp-gmenu-area .gtranslate_wrapper select {
+    all: unset !important;
+    display: inline-block !important;
+    background: transparent !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 1.0rem !important;
+    font-weight: 300 !important;
+    font-family: 'Noto Sans', Arial, sans-serif !important;
+    margin-right: 16px !important;
+    margin-bottom: 0 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    text-decoration: underline !important;
+    transition: opacity 0.3s ease !important;
+    width: auto !important;
+    min-width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    line-height: normal !important;
+    vertical-align: baseline !important;
+    box-sizing: border-box !important;
+}
+
+/* ホバー状態 */
+.header__nav-area .x_i18nSelectBox select:hover,
+.header__nav-area select[name*="currency"]:hover,
+.header__nav-area select[name*="language"]:hover,
+.header__nav-area select[name*="i18n"]:hover,
+.header__nav-area .gtranslate_wrapper select:hover,
+.js-nav-area .x_i18nSelectBox select:hover,
+.js-nav-area select[name*="currency"]:hover,
+.js-nav-area select[name*="language"]:hover,
+.js-nav-area select[name*="i18n"]:hover,
+.js-nav-area .gtranslate_wrapper select:hover {
+    opacity: 0.7 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* フォーカス状態 */
+.header__nav-area .x_i18nSelectBox select:focus,
+.header__nav-area select[name*="currency"]:focus,
+.header__nav-area select[name*="language"]:focus,
+.header__nav-area select[name*="i18n"]:focus,
+.header__nav-area .gtranslate_wrapper select:focus,
+.js-nav-area .x_i18nSelectBox select:focus,
+.js-nav-area select[name*="currency"]:focus,
+.js-nav-area select[name*="language"]:focus,
+.js-nav-area select[name*="i18n"]:focus,
+.js-nav-area .gtranslate_wrapper select:focus {
+    outline: none !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* セレクトボックスのドロップダウン矢印を完全に削除 */
+.header__nav-area select::-ms-expand,
+.js-nav-area select::-ms-expand {
+    display: none !important;
+}
+
+/* webkit系ブラウザの矢印を削除 */
+.header__nav-area select,
+.js-nav-area select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: none !important;
+}
+
+/* セレクトボックスのoption要素 */
+.header__nav-area select option,
+.js-nav-area select option {
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-text) !important;
+}
+
+/* BASEのI18N要素がメニュー外に表示されるのを防止 */
+body > .x_i18nSelectBox,
+body > div[id*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+body > div[class*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+body > div[id*="I18n"]:not(.header__nav-area *):not(.js-nav-area *),
+body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* 情報バナー対応 */
+#i18 {
+    position: relative !important;
+    z-index: 1 !important;
+    left: auto !important;
+    top: auto !important;
+    pointer-events: none !important;
+}
+
+#i18 .x_i18nSelectBox {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Instagram固定ボタン（ホーム画面のみ右下表示） */
+.instagram-fixed-btn {
+    display: none;
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: var(--z-header);
+    transition: all var(--transition-fast);
+    align-items: center;
+    justify-content: center;
+}
+
+.instagram-fixed-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.7;
+}
+
+.instagram-fixed-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: #666666;
+}
+
+/* ホーム画面でのみ表示 */
+.home-page .instagram-fixed-btn {
+    display: flex;
+}
+
+/* Instagram固定ボタンのレスポンシブ対応 */
+@media (max-width: 768px) {
+    .instagram-fixed-btn {
+        bottom: var(--space-lg);
+        right: 15px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* === 商品詳細ページ 新UI用CSS START === */
+/* メイン画像のラッパー */
+.main-image-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+/* メイン画像コンテナ */
+.main-image-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* スムーズなスクロール */
+    scrollbar-width: none; /* Firefoxのスクロールバー非表示 */
+}
+
+.main-image-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safariのスクロールバー非表示 */
+}
+
+.main-image-container .main-image-item {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: start;
+}
+
+.main-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 画像カウンター */
+.image-counter {
+    position: absolute;
+    bottom: 15px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 1.2rem !important;
+    padding: 3px 12px !important;
+    border-radius: 15px !important;
+    font-weight: 400;
+    z-index: 10;
+}
+
+/* 左右ナビゲーション矢印 */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-nav:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-nav.prev {
+    left: 10px;
+}
+
+.carousel-nav.next {
+    right: 10px;
+}
+
+.carousel-nav svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ズームアイコン */
+.zoom-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoom-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* サムネイル横スクロールコンテナ */
+.thumbnail-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.thumbnail-scroll-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.thumbnail-scroll-container::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 2px;
+}
+
+/* サムネイルアイテム */
+.thumbnail-item {
+    flex: 0 0 80px; /* サムネイルの基本幅 */
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    opacity: 0.7;
+}
+
+.thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.thumbnail-item.active {
+    border-color: var(--accent-color, #D43883);
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .thumbnail-item {
+        flex: 0 0 70px;
+        width: 70px;
+        height: 90px;
+    }
+}
+/* === 商品詳細ページ 新UI用CSS END === */
+
+/* 外貨表示対応 - 価格表示エリアの拡張 */
+.product-price,
+.product-detail-price,
+.related-product-price {
+    min-width: 120px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.price-sale {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+/* 長い価格テキストへの対応 */
+.current-price,
+.sale-price,
+.original-price {
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-all;
+    line-height: 1.3;
+}
+
+/* モバイルでの外貨表示調整 */
+@media (max-width: 768px) {
+    .header__nav-area .x_i18nSelectBox select {
+        font-size: 0.9rem !important;
+        margin-right: 12px !important;
+    }
+    
+    .product-price,
+    .product-detail-price,
+    .related-product-price {
+        min-width: 100px;
+    }
+    
+    .current-price,
+    .sale-price,
+    .original-price {
+        font-size: 0.8rem;
+    }
+}
+
+/* BASEが自動生成するI18N要素への対処 */
+[id*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+[class*="i18n"]:not(.header__nav-area *):not(.js-nav-area *),
+[id*="I18n"]:not(.header__nav-area *):not(.js-nav-area *),
+[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* ハンバーガーボタンの優先度を確保 */
+.header__hamburger {
+    z-index: calc(var(--z-navigation) + 1) !important;
+} 
+/* 
+ * HOLY LABEL 残存スタイル - HTMLから分離
+ * HTMLファイル内に残っていたインラインCSSを外部化
+ */
+
+/* z-index変数定義 */
+:root {
+    --z-navigation: 999;
+    --z-header: 1000;
+    --z-hamburger: 1001;
+    --z-menu-open: 1002;
+    --z-modal: 2000;
+    --z-banner: 2005;
+}
+
+/* ナビゲーションエリア */
+.header__nav-area {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 30rem;
+    height: 100vh;
+    background-color: var(--overlay-bg);
+    transition: all var(--transition-fast);
+    z-index: var(--z-navigation);
+    padding: var(--space-xl) var(--space-lg);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.header__nav-area.-active,
+.js-nav-area.-active {
+    left: 0 !important;
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.body-fixed { 
+    overflow: hidden; 
+}
+
+.body-fixed:after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-backdrop);
+    z-index: calc(var(--z-navigation) - 1);
+}
+
+/* 商品ステータス表示（Out of stock / SOLD OUT） */
+.product-item.out-of-stock .product-image img {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.product-item.out-of-stock:hover .product-image img {
+    filter: grayscale(100%);
+    opacity: 0.5;
+    transform: scale(1);
+}
+
+.product-item.out-of-stock {
+    pointer-events: none;
+}
+
+.product-item.out-of-stock .product-info {
+    opacity: 0.7;
+}
+
+.soldout_cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--soldout-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.soldout_cover p {
+    color: var(--primary-text);
+    font-size: var(--font-sm);
+    letter-spacing: 2px;
+    font-weight: var(--weight-light);
+}
+
+/* 商品グリッド - レスポンシブ対応 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* タブレット（768px以上） */
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* デスクトップ（1024px以上） */
+@media (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 商品情報・価格表示（一覧では非表示） */
+.product-info,
+.product-title,
+.product-price {
+    display: none;
+}
+
+.product-title {
+    font-size: 1.2rem;
+    font-weight: var(--weight-light);
+    letter-spacing: 1px;
+    margin-bottom: var(--space-xs);
+    color: var(--primary-text);
+}
+
+.product-price {
+    font-size: var(--font-xs);
+    color: var(--secondary-text);
+    font-weight: var(--weight-light);
+}
+
+.price-sale {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: var(--muted-text);
+}
+
+.sale-price {
+    color: var(--primary-text);
+    font-weight: var(--weight-bold);
+}
+
+.discount-rate {
+    background-color: var(--error-color);
+    color: var(--primary-text);
+    padding: 2px 6px;
+    font-size: 1.2rem;
+    border-radius: 2px;
+}
+
+/* ソーシャル・その他機能 - 商品詳細ページ */
+.social-share {
+    margin-bottom: 40px;
+}
+
+.social-share button,
+.social-share a {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--secondary-text);
+    padding: 8px 16px;
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    border-radius: 0;
+}
+
+.social-share button:hover,
+.social-share a:hover {
+    border-color: var(--accent-color);
+    color: var(--primary-text);
+}
+
+/* 商品注意書き・違法報告 */
+.item-attention,
+.illegal-report {
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+    color: var(--muted-text);
+    line-height: 1.4;
+}
+
+.item-attention p,
+.illegal-report p {
+    margin: 0;
+    font-weight: var(--weight-light);
+}
+
+.illegal-report a {
+    color: var(--secondary-text);
+    text-decoration: underline;
+}
+
+.illegal-report a:hover {
+    color: var(--primary-text);
+}
+
+/* ページコンテンツ */
+.page-content {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 0 40px;
+    line-height: 1.8;
+}
+
+.page-content h1 {
+    font-size: var(--font-xl);
+    font-weight: var(--weight-normal);
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    color: var(--primary-text);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.page-content h2 {
+    font-size: var(--font-lg);
+    font-weight: var(--weight-normal);
+    letter-spacing: 1px;
+    margin: 40px 0 20px 0;
+    color: var(--primary-text);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.page-content h3 {
+    font-size: var(--font-md);
+    font-weight: var(--weight-normal);
+    letter-spacing: 0.5px;
+    margin: 30px 0 15px 0;
+    color: var(--primary-text);
+}
+
+.page-content p {
+    font-size: var(--font-xs);
+    color: var(--secondary-text);
+    margin-bottom: 20px;
+    line-height: 1.8;
+    font-weight: var(--weight-light);
+}
+
+/* BASE固有スタイル調整 */
+#privacy,
+#law {
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-text) !important;
+    padding: var(--space-lg) !important;
+}
+
+#privacy h2,
+#law h2 {
+    color: var(--primary-text) !important;
+}
+
+/* ローディング・状態管理 */
+.loading {
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.loaded {
+    opacity: 1;
+}
+
+/* ハンバーガーボタン完全定義 */
+button.humberger {
+    position: fixed !important;
+    top: calc(var(--information-banner-height, 0px) + 20px) !important;
+    left: 20px !important;
+    width: 3rem !important;
+    height: 2rem !important;
+    z-index: var(--z-hamburger) !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+.humberger__line {
+    position: absolute !important;
+    top: 50% !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    background-color: var(--accent-color) !important;
+    transition: all var(--transition-fast) !important;
+}
+
+.humberger__line:before, 
+.humberger__line:after {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    background-color: var(--accent-color) !important;
+    transition: all var(--transition-fast) !important;
+}
+
+.humberger__line:before { 
+    top: -8px !important; 
+}
+
+.humberger__line:after { 
+    top: 8px !important; 
+}
+
+.humberger.-active .humberger__line { 
+    background-color: transparent !important; 
+}
+
+.humberger.-active .humberger__line::before { 
+    transform: rotate(45deg) !important; 
+    top: 0 !important; 
+}
+
+.humberger.-active .humberger__line::after { 
+    transform: rotate(-45deg) !important; 
+    top: 0 !important; 
+} 
