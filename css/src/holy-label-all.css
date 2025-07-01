@@ -1091,33 +1091,7 @@ ul.ex-list > li.sub-category > a:hover {
     height: 20px;
 }
 
-/* ズームアイコン */
-.zoom-icon {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: background-color 0.3s ease;
-}
-
-.zoom-icon:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.zoom-icon svg {
-    width: 20px;
-    height: 20px;
-}
+/* ズームアイコンは削除済み */
 
 /* サムネイル横スクロールコンテナ */
 .thumbnail-scroll-container {
@@ -1181,7 +1155,6 @@ ul.ex-list > li.sub-category > a:hover {
 @media (min-width: 769px) {
     .main-image-wrapper,
     .carousel-nav,
-    .zoom-icon,
     .thumbnail-scroll-container,
     .image-counter {
         display: none !important;
@@ -4155,28 +4128,7 @@ body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
         height: 20px;
     }
 
-    /* ズームアイコン（モバイル版） */
-    .zoom-icon {
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
-        background-color: rgba(0, 0, 0, 0.4);
-        border: none;
-        color: white;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .zoom-icon svg {
-        width: 18px;
-        height: 18px;
-    }
+    /* ズームアイコンは削除済み */
 
     /* サムネイル横スクロールコンテナ（モバイル版） */
     .thumbnail-scroll-container {
@@ -4223,7 +4175,6 @@ body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
 /* デスクトップ版では複雑画像システムを無効化 */
 @media (min-width: 769px) {
     .carousel-nav,
-    .zoom-icon,
     .thumbnail-scroll-container,
     .image-counter {
         display: none !important;
