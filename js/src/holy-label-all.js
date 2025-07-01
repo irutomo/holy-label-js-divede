@@ -886,6 +886,33 @@
                 this.addEventListeners();
                 this.updateUI();
                 console.log('Mobile gallery system initialized');
+                
+                // 🚨 追加チェック：サムネイル表示状態を確認
+                setTimeout(() => {
+                    console.log('🔍 5秒後のサムネイル状態チェック:');
+                    const container = document.getElementById('thumbnailContainer');
+                    if (container) {
+                        console.log('サムネイルコンテナ状態:', {
+                            display: window.getComputedStyle(container).display,
+                            visibility: window.getComputedStyle(container).visibility,
+                            opacity: window.getComputedStyle(container).opacity,
+                            height: window.getComputedStyle(container).height,
+                            childCount: container.children.length,
+                            innerHTML: container.innerHTML.length > 0 ? '内容あり' : '内容なし'
+                        });
+                        
+                        // モバイルでサムネイルが表示されていない場合の緊急対応
+                        if (window.innerWidth <= 768 && window.getComputedStyle(container).display === 'none') {
+                            console.log('🚨 緊急修正: サムネイルが非表示状態です！強制表示します');
+                            container.style.setProperty('display', 'flex', 'important');
+                            container.style.setProperty('visibility', 'visible', 'important');
+                            container.style.setProperty('opacity', '1', 'important');
+                            container.style.setProperty('height', 'auto', 'important');
+                        }
+                    } else {
+                        console.error('❌ サムネイルコンテナが見つかりません！');
+                    }
+                }, 5000);
             }
             
             console.log('ProductGallery initialization completed');
@@ -926,6 +953,10 @@
 
         // 画像とサムネイルの描画
         renderImages() {
+            console.log('🎯 renderImages() 開始');
+            console.log('画像データ:', this.images);
+            console.log('サムネイルコンテナ:', this.elements.thumbnailContainer);
+            
             let mainHTML = '';
             let thumbHTML = '';
             const itemTitle = document.querySelector('.product-detail-title')?.textContent || '商品画像';
@@ -937,6 +968,32 @@
             
             this.elements.mainContainer.innerHTML = mainHTML;
             this.elements.thumbnailContainer.innerHTML = thumbHTML;
+            
+            // 🚨 モバイル版でサムネイル表示を強制
+            if (window.innerWidth <= 768) {
+                console.log('📱 モバイル版検出: サムネイル表示を強制します');
+                this.elements.thumbnailContainer.style.display = 'flex !important';
+                this.elements.thumbnailContainer.style.visibility = 'visible !important';
+                this.elements.thumbnailContainer.style.opacity = '1';
+                this.elements.thumbnailContainer.style.height = 'auto';
+                this.elements.thumbnailContainer.style.overflow = 'visible';
+                
+                // 親要素も確認
+                const parent = this.elements.thumbnailContainer.parentElement;
+                if (parent) {
+                    parent.style.display = 'block';
+                    parent.style.visibility = 'visible';
+                    console.log('親要素も表示設定:', parent.className);
+                }
+                
+                console.log('📱 サムネイル強制表示完了:', {
+                    display: this.elements.thumbnailContainer.style.display,
+                    childCount: this.elements.thumbnailContainer.children.length,
+                    visibility: this.elements.thumbnailContainer.style.visibility
+                });
+            }
+            
+            console.log('✅ renderImages() 完了 - サムネイル数:', this.elements.thumbnailContainer.children.length);
         },
 
         // イベントリスナーの設定
