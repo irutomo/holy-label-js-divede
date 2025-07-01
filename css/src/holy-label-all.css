@@ -2928,7 +2928,7 @@ button.humberger {
     }
 }
 
-/* CONTACTページ専用スタイル */
+/* CONTACTページ専用スタイル（元の仕様準拠） */
 .contact-form h1,
 .contact-form .page-title {
     font-size: 2.5rem;
@@ -2940,14 +2940,188 @@ button.humberger {
     text-transform: uppercase;
 }
 
+/* BASEページブロック機能を活用したコンタクト専用スタイル（元の仕様準拠） */
 .contact-form h1::after,
-.contact-form .page-title::after {
-    content: '';
+.contact-form .page-title::after,
+.page-content h1::after {
+    content: "horylabelをご利用頂きありがとうございます。\A\A各種お問い合わせは下記のフォームよりご連絡ください。\A\A内容によっては回答をさしあげるのにお時間をいただくこともございます。\A\Aまた、休業日は翌営業日以降の対応となりますのでご了承ください。\A\Aメールアドレスに誤りがある場合はご回答が出来かねますので、誤入力にはお気を付けくださいますようお願い致します。";
     display: block;
-    width: 60px;
-    height: 1px;
-    background-color: var(--accent-color);
-    margin: 24px auto 0;
+    white-space: pre-line;
+    font-size: var(--font-xs);
+    font-weight: var(--weight-light);
+    color: var(--secondary-text);
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.8;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.contact-form .intro-text,
+.page-content .intro-text {
+    display: none;
+}
+
+.contact-form p,
+.page-content p {
+    font-size: var(--font-xs);
+    color: var(--secondary-text);
+    margin-bottom: 20px;
+    line-height: 1.8;
+    font-weight: var(--weight-light);
+}
+
+/* フォームフィールド統合スタイル */
+.contact-form .form-field,
+.page-content .form-field {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+/* 入力フィールド共通スタイル */
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form select,
+.contact-form textarea,
+.page-content input[type="text"],
+.page-content input[type="email"],
+.page-content input[type="tel"],
+.page-content select,
+.page-content textarea {
+    width: 100%;
+    padding: 18px 20px;
+    border: 1px solid var(--muted-text);
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--primary-text);
+    font-size: var(--font-sm);
+    font-weight: var(--weight-light);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    transition: border-color var(--transition-fast);
+    box-sizing: border-box;
+}
+
+/* フォーカス時共通スタイル */
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus,
+.page-content input:focus,
+.page-content select:focus,
+.page-content textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 1px var(--accent-color);
+}
+
+/* プレースホルダー */
+.contact-form input::placeholder,
+.contact-form textarea::placeholder,
+.page-content input::placeholder,
+.page-content textarea::placeholder {
+    color: var(--muted-text);
+    font-weight: var(--weight-light);
+}
+
+/* セレクトボックス専用スタイル */
+.contact-form select,
+.page-content select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3e%3cpath d='m72 36 60 60-60 60' stroke='%23999' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0 center;
+    background-size: 20px;
+    padding-right: 30px;
+}
+
+.contact-form select:invalid,
+.page-content select:invalid {
+    color: var(--muted-text);
+}
+
+.contact-form select:valid,
+.page-content select:valid {
+    color: var(--primary-text);
+}
+
+/* テキストエリア専用設定 */
+.contact-form textarea,
+.page-content textarea {
+    min-height: 200px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* フォームコンテナ基本設定 */
+.contact-form,
+.page-content form {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 0 40px;
+}
+
+/* デスクトップ時のラベルは非表示 */
+.contact-form label,
+.page-content label {
+    display: none;
+}
+
+.contact-form .required::after,
+.page-content .required::after {
+    content: " *";
+    color: var(--accent-color);
+}
+
+/* 送信ボタン統合スタイル */
+.contact-form button[type="submit"],
+.contact-form input[type="submit"],
+.page-content button[type="submit"],
+.page-content input[type="submit"] {
+    width: auto;
+    min-width: 160px;
+    background-color: #f8f8f8;
+    color: #000000;
+    border: 1px solid #e0e0e0;
+    padding: 18px 40px;
+    font-size: 0;
+    font-weight: var(--weight-bold);
+    letter-spacing: 2px;
+    text-transform: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: 'Noto Sans', Arial, sans-serif;
+    border-radius: 0;
+    margin-top: 40px;
+}
+
+.contact-form button[type="submit"]::before,
+.contact-form input[type="submit"]::before,
+.page-content button[type="submit"]::before,
+.page-content input[type="submit"]::before {
+    content: "確認する";
+    font-size: var(--font-sm);
+}
+
+.contact-form button[type="submit"]:hover,
+.contact-form input[type="submit"]:hover,
+.page-content button[type="submit"]:hover,
+.page-content input[type="submit"]:hover {
+    background-color: #e8e8e8;
+    border-color: #d0d0d0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form button[type="submit"]:active,
+.contact-form input[type="submit"]:active,
+.page-content button[type="submit"]:active,
+.page-content input[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .contact-form .intro-text,
@@ -2964,34 +3138,256 @@ button.humberger {
     margin-bottom: var(--space-sm);
 }
 
-/* CONTACTページ - モバイル対応 */
+/* CONTACTページ - モバイル対応（元の仕様準拠） */
 @media (max-width: 768px) {
     .contact-form,
-    .contact-form .page-content {
-        padding: 60px 20px;
+    .page-content form {
+        margin: 60px auto;
+        padding: 0 20px;
     }
     
     .contact-form h1,
     .contact-form .page-title {
         font-size: 2rem;
-        margin-bottom: 40px;
+        font-weight: var(--weight-light);
         letter-spacing: 2px;
+        margin-bottom: 40px;
     }
     
     .contact-form h1::after,
-    .contact-form .page-title::after {
-        width: 40px;
-        margin: 16px auto 0;
-    }
-    
-    .contact-form .intro-text,
-    .contact-form .description {
+    .contact-form .page-title::after,
+    .page-content h1::after {
+        margin-top: 30px;
         margin-bottom: 40px;
+        font-size: 0.8rem;
     }
     
-    .contact-form p,
-    .contact-form .description p {
-        font-size: 0.8rem;
+    /* フォームコンテナの完全リセット */
+    .contact-form,
+    .page-content form,
+    .page-content {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        position: relative !important;
+        overflow: visible !important;
+        text-align: center;
+    }
+    
+    /* フォーム内の不要なスタイルをリセット */
+    .contact-form *,
+    .page-content form * {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        float: none !important;
+        position: static !important;
+    }
+    
+    /* フォーム要素全体の間隔調整 */
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea,
+    .page-content input,
+    .page-content select,
+    .page-content textarea {
+        margin-bottom: 50px;
+        position: relative;
+    }
+    
+    /* ラベルが存在する場合のスタイル - 強制中央配置 */
+    .contact-form label,
+    .page-content label {
+        display: block !important;
+        text-align: center !important;
+        font-size: 0.9rem !important;
+        color: var(--primary-text) !important;
+        font-weight: var(--weight-normal) !important;
+        margin: 0 auto 16px auto !important;
+        letter-spacing: 0.5px !important;
+        width: 100% !important;
+        position: relative !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+    
+    /* 1番目のinput（名前）のタイトル */
+    .contact-form input:nth-of-type(1)::before,
+    .page-content input:nth-of-type(1)::before {
+        content: "お名前(必須)";
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--primary-text);
+        font-weight: var(--weight-normal);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        width: 100%;
+        z-index: 1;
+    }
+    
+    /* 2番目のinput（電話番号）のタイトル */
+    .contact-form input:nth-of-type(2)::before,
+    .page-content input:nth-of-type(2)::before {
+        content: "電話番号";
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--primary-text);
+        font-weight: var(--weight-normal);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        width: 100%;
+        z-index: 1;
+    }
+    
+    /* 3番目のinput（メール）のタイトル */
+    .contact-form input:nth-of-type(3)::before,
+    .page-content input:nth-of-type(3)::before {
+        content: "メールアドレス(必須)";
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--primary-text);
+        font-weight: var(--weight-normal);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        width: 100%;
+        z-index: 1;
+    }
+    
+    /* 4番目のinput（件名）のタイトル */
+    .contact-form input:nth-of-type(4)::before,
+    .page-content input:nth-of-type(4)::before {
+        content: "件名(必須)";
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--primary-text);
+        font-weight: var(--weight-normal);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        width: 100%;
+        z-index: 1;
+    }
+    
+    /* 5番目のinput（注文ID）のタイトル */
+    .contact-form input:nth-of-type(5)::before,
+    .page-content input:nth-of-type(5)::before {
+        content: "注文ID";
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--primary-text);
+        font-weight: var(--weight-normal);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        width: 100%;
+        z-index: 1;
+    }
+    
+    /* テキストエリアのタイトル */
+    .contact-form textarea::before,
+    .page-content textarea::before {
+        content: "お問い合わせ内容(必須)";
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--primary-text);
+        font-weight: var(--weight-normal);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        width: 100%;
+        z-index: 1;
+    }
+    
+    /* 最初のフォーム要素にトップマージンを追加 */
+    .contact-form input:first-of-type,
+    .page-content input:first-of-type {
+        margin-top: 40px;
+    }
+    
+    /* すべてのフォーム要素を強制的に中央配置 */
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea,
+    .contact-form button,
+    .page-content input,
+    .page-content select,
+    .page-content textarea,
+    .page-content button {
+        display: block !important;
+        margin: 0 auto 50px auto !important;
+        width: calc(100% - 0px) !important;
+        max-width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        position: relative !important;
+        transform: none !important;
+    }
+    
+    /* モバイル時のフィールドを強制中央配置 */
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form input[type="tel"],
+    .contact-form select,
+    .page-content input[type="text"],
+    .page-content input[type="email"],
+    .page-content input[type="tel"],
+    .page-content select {
+        background-color: transparent;
+        border: 1px solid var(--muted-text);
+        color: var(--primary-text);
+        text-align: center;
+    }
+    
+    /* モバイル時のプレースホルダー */
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder,
+    .contact-form select,
+    .page-content input::placeholder,
+    .page-content textarea::placeholder,
+    .page-content select {
+        color: var(--primary-text) !important;
+        font-size: 0.9rem !important;
+        font-weight: var(--weight-normal) !important;
+        text-align: center !important;
+    }
+    
+    /* フォームのすべてのテキストを中央配置 */
+    .page-content form label,
+    .contact-form label,
+    .page-content form p,
+    .contact-form p {
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 }
 
