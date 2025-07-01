@@ -1,0 +1,323 @@
+# HOLY LABEL 外部ライブラリプロジェクト - Cursor開発ルール
+
+## 🎯 プロジェクト概要
+HOLY LABEL BASE専用ECテーマの外部ライブラリ開発プロジェクト
+- メインHTML: 35.1KB（BASEの150,000文字制限内）
+- 外部JS: 35.1KB（統合・圧縮済み、55.7%削減達成）
+- 外部CSS: 56.8KB（統合・圧縮済み、35.2%削減達成）
+- CDN配信: jsDelivr経由でGitHub自動連携
+- **統合リファクタリング完了**: ソースファイル25個→2個（92%削減）
+
+## 📁 プロジェクト構造理解（統合版）
+```
+holy-label-js-divede/
+├── 📄 holy-label-js-divede.html           # BASEテーマHTMLファイル（35.1KB/150KB制限）
+├── 📁 js/                                # JavaScript外部ライブラリディレクトリ
+│   ├── 📁 src/                           # 統合ソースファイル（編集対象）
+│   │   ├── 📄 holy-label-all.js          # 【統合ファイル】全JavaScript機能（79KB・2,209行）
+│   │   └── 📁 legacy/                    # 【バックアップ】旧ソースファイル（12ファイル・参考用）
+│   │       ├── 📄 dom-utils.js           # DOM操作基盤（バックアップ）
+│   │       ├── 📄 page-state.js          # ページ状態管理（バックアップ）
+│   │       ├── 📄 animation-config.js    # アニメーション設定（バックアップ）
+│   │       ├── 📄 animation-manager.js   # アニメーション管理（バックアップ）
+│   │       ├── 📄 navigation-manager.js  # ナビゲーション管理（バックアップ）
+│   │       ├── 📄 modal-utils.js         # モーダル機能（バックアップ）
+│   │       ├── 📄 product-gallery.js     # 商品ギャラリー（バックアップ）
+│   │       ├── 📄 loadmore-manager.js    # Ajax読み込み（バックアップ）
+│   │       ├── 📄 logo-manager.js        # ロゴ管理（バックアップ）
+│   │       ├── 📄 initialization-manager.js # 初期化管理（バックアップ）
+│   │       ├── 📄 language-manager.js    # 多言語管理（バックアップ）
+│   │       └── 📄 scroll-manager.js      # スクロール管理（バックアップ）
+│   ├── 📁 dist/                          # 圧縮済みライブラリ（自動生成）
+│   │   └── 📄 holy-label-all.min.js     # 【統合圧縮版】（35.1KB・55.7%削減）
+│   ├── 📄 build.js                       # 統合ビルドスクリプト（144行・74%削減）
+│   ├── 📄 package.json                   # Node.js依存関係定義
+│   └── 📄 package-lock.json              # 依存関係ロックファイル
+├── 📁 css/                               # CSS外部ライブラリディレクトリ  
+│   ├── 📁 src/                           # 統合ソースファイル（編集対象）
+│   │   ├── 📄 holy-label-all.css         # 【統合ファイル】全CSS機能（92KB・4,213行）
+│   │   └── 📁 legacy/                    # 【バックアップ】旧ソースファイル（13ファイル・参考用）
+│   │       ├── 📄 foundation.css         # CSS変数・リセット（バックアップ）
+│   │       ├── 📄 layout.css             # レイアウト・ナビ（バックアップ）
+│   │       ├── 📄 base-menu.css          # BASEメニュー統合（バックアップ）
+│   │       ├── 📄 product-components.css # 商品コンポーネント（バックアップ）
+│   │       ├── 📄 animations.css         # アニメーション定義（バックアップ）
+│   │       ├── 📄 product-detail.css     # 商品詳細ページ（バックアップ）
+│   │       ├── 📄 forms.css              # フォーム要素（バックアップ）
+│   │       ├── 📄 responsive.css         # レスポンシブ対応（バックアップ）
+│   │       ├── 📄 footer-pages.css       # フッター・ページ（バックアップ）
+│   │       ├── 📄 special-pages.css      # 特殊ページ（バックアップ）
+│   │       ├── 📄 ui-components.css      # UIコンポーネント（バックアップ）
+│   │       ├── 📄 base-integration.css   # BASE統合（バックアップ）
+│   │       └── 📄 remaining-styles.css   # HTMLから分離（バックアップ）
+│   ├── 📁 dist/                          # 圧縮済みライブラリ（自動生成）
+│   │   └── 📄 holy-label-all.min.css    # 【統合圧縮版】（56.8KB・35.2%削減）
+│   ├── 📄 build.js                       # 統合ビルドスクリプト（119行・74%削減）
+│   ├── 📄 package.json                   # PostCSS・cssnano依存関係
+│   └── 📄 package-lock.json              # 依存関係ロックファイル
+├── 📁 docs/                              # プロジェクトドキュメントディレクトリ
+│   ├── 📄 CDN-REFERENCE.md               # jsDelivr CDNリファレンス 2.0
+│   ├── 📄 CHANGELOG.md                   # バージョン管理・変更履歴 2.0
+│   ├── 📄 CUSTOMER-GUIDE.md              # 顧客向け編集ガイド 2.0
+│   ├── 📄 IMPLEMENTATION.md              # BASE実装ガイド 2.0
+│   ├── 📄 MAINTENANCE.md                 # BASE準拠メンテナンスガイド
+│   ├── 📄 TROUBLESHOOTING.md             # BASE特有問題の解決法 2.0
+│   ├── 📄 USAGE.md                       # BASE開発者向け使用法 2.0
+│   └── 📄 HOLY_LABEL_外部ライブラリ_メンテナンスガイド.pdf # 包括的PDF版
+├── 📁 BASEノウハウ/                      # BASE開発ノウハウ集ディレクトリ
+│   ├── 📄 BASE_テーマ開発ノウハウ.md      # 包括的開発マニュアル
+│   ├── 📄 BASE開発_自動化手順書.md        # 効率化・自動化手順
+│   ├── 📄 BASE開発学習ドキュメント.md     # 実践的学習資料
+│   └── 📄 HOLY_LABEL_メンテナンスマニュアル.md # プロジェクト固有マニュアル
+├── 📁 BK/                                # バックアップ・参考資料ディレクトリ
+│   ├── 📄 MAINTENANCE.md                 # 旧メンテナンスドキュメント
+│   ├── 📄 元の仕様.html                  # 外部化前のオリジナルHTML
+│   └── 📄 最新.html                      # 作業中のHTML（参考用）
+├── 📁 改修案/                            # 改修計画・設計書ディレクトリ
+│   ├── 📄 javascript-externalization-plan.yaml # JavaScript外部化計画
+│   ├── 📄 product-detail-redesign-plan.yaml    # 商品詳細ページ改修計画
+│   ├── 📄 product-detail-redesign-plan-v2.yaml # 商品詳細ページ改修計画v2
+│   └── 📄 商品詳細ページdesktop版.html          # デスクトップ版デザイン案
+├── 📄 base-single-file-consolidation-plan.yaml # 統合リファクタリング計画書
+├── 📄 README.md                          # プロジェクト概要・BASE仕様説明
+├── 📄 package.json                       # プロジェクト全体のnpm設定
+└── 📄 package-lock.json                  # プロジェクト全体の依存関係ロック
+```
+
+## 🏗️ 統合ライブラリアーキテクチャ（Version 2.0）
+
+### 統合JavaScript ライブラリ（holy-label-all.js）
+**統合ファイル構造**: 4つのレイヤーを依存関係順で統合
+1. **Core Layer（基盤機能）**
+   - DOM操作基盤、ページ状態管理、アニメーション設定
+2. **Extended Layer（拡張機能）**
+   - アニメーション管理、ナビゲーション管理、モーダル機能
+3. **Advanced Layer（高度機能）**
+   - 商品画像ギャラリー、Ajax読み込み、ロゴ管理
+4. **Final Layer（最終機能）**
+   - 初期化管理、多言語管理、スクロール管理
+
+### 統合CSS ライブラリ（holy-label-all.css）
+**統合ファイル構造**: 4つのレイヤーを依存関係順で統合
+1. **Foundation Layer（基盤）**
+   - CSS変数・リセット、レイアウト・ナビゲーション
+2. **Components Layer（コンポーネント）**
+   - BASEメニュー統合、商品コンポーネント、アニメーション定義
+3. **Product Layer（商品関連）**
+   - 商品詳細ページ、フォーム要素、レスポンシブ対応、フッター・ページ要素
+4. **Special Layer（特殊機能）**
+   - 特殊ページ、高度UIコンポーネント、BASE固有機能統合、HTMLから分離CSS
+
+## 💻 開発ルール（統合版）
+
+### 1. ファイル編集規則（更新版）
+
+#### JavaScript開発
+- **編集対象**: `js/src/holy-label-all.js` の統合ファイルのみ
+- **参考資料**: `js/src/legacy/` 内の旧ソースファイル（編集禁止）
+- **禁止**: `js/dist/` 内の圧縮済みファイルの直接編集
+- **ビルド必須**: 編集後は必ず `cd js && npm run build` 実行
+- **命名規則**: グローバル変数は `window.HolyLabel*` 形式維持
+
+#### CSS開発
+- **編集対象**: `css/src/holy-label-all.css` の統合ファイルのみ
+- **参考資料**: `css/src/legacy/` 内の旧ソースファイル（編集禁止）
+- **禁止**: `css/dist/` 内の圧縮済みファイルの直接編集
+- **ビルド必須**: 編集後は必ず `cd css && npm run build` 実行
+- **CSS変数**: Foundation Layer内の`:root`変数を活用
+
+### 2. 後方互換性維持（重要）
+
+#### 絶対に変更禁止
+```javascript
+// ❌ 関数名・クラス名の変更禁止
+window.HolyLabelDOMUtils
+window.HolyLabelPageState
+window.HolyLabelNavigationManager
+window.HolyLabelAnimationManager
+// 以下、全HolyLabel*系のグローバル変数
+
+// ❌ 既存メソッドの削除禁止
+HolyLabelNavigationManager.toggleMenu()
+HolyLabelModalUtils.open()
+HolyLabelProductImageGallery.init()
+```
+
+#### 安全な変更方法
+```javascript
+// ✅ メソッドの追加は安全
+HolyLabelNavigationManager.newFeature = function() {
+  // 新機能追加
+};
+
+// ✅ 内部実装の改善は安全（インターフェース維持）
+HolyLabelNavigationManager.toggleMenu = function() {
+  // 内部実装を改善
+};
+```
+
+### 3. BASE仕様準拠
+
+#### BASEテンプレート構文の完全除去
+```javascript
+// ❌ BASEテンプレート構文を残さない
+{block:IfShowAnimation}
+// アニメーション処理
+{/block:IfShowAnimation}
+
+// ✅ プレーンJavaScriptに変換
+if (document.body.classList.contains('animation-enabled')) {
+  // アニメーション処理
+}
+```
+
+#### CSS クラス名の保持
+```css
+/* ✅ BASE標準のクラス名は必ず保持 */
+.product-item { ... }
+.cart-button { ... }
+.shop-nav { ... }
+```
+
+### 4. パフォーマンス制限（更新）
+
+#### ファイルサイズ制限
+- **JavaScript統合ファイル**: 80KB以下（圧縮後35KB以下）
+- **CSS統合ファイル**: 100KB以下（圧縮後60KB以下）
+- **全体合計**: 200KB以下維持
+
+#### 外部ライブラリ制限
+```javascript
+// ❌ 重いライブラリの追加禁止
+// jQuery、lodash、moment.js 等の大きなライブラリ
+
+// ✅ 軽量・必要最小限の機能のみ
+// ネイティブJavaScript実装を優先
+```
+
+## 🔧 開発ワークフロー（統合版）
+
+### 1. セットアップ
+```bash
+# JavaScript依存関係インストール
+cd js && npm install
+
+# CSS依存関係インストール
+cd ../css && npm install
+```
+
+### 2. 開発サイクル（統合版）
+```bash
+# 1. 統合ソースファイル編集
+vim js/src/holy-label-all.js
+vim css/src/holy-label-all.css
+
+# 2. ビルド実行（超高速化）
+cd js && npm run build   # 94.9%高速化
+cd ../css && npm run build
+
+# 3. ローカル確認
+# holy-label-js-divede.html をブラウザで開く
+
+# 4. 機能テスト（ブラウザコンソール）
+HolyLabelNavigationManager.toggleMenu();
+```
+
+### 3. デプロイ
+```bash
+# 1. 変更をステージング
+git add .
+
+# 2. 詳細なコミット
+git commit -m "機能名: 修正内容の詳細
+
+- 具体的な変更点1
+- 具体的な変更点2
+- テスト結果
+- 影響範囲"
+
+# 3. GitHubにプッシュ
+git push origin main
+
+# 4. jsDelivr CDNに自動反映（5-10分後）
+```
+
+## 🧪 テスト・検証
+
+### 必須チェック項目
+```javascript
+// 1. 統合ライブラリ読み込み確認
+console.log('CSS:', !!document.querySelector('link[href*="holy-label-all.min.css"]'));
+console.log('JS:', !!window.HolyLabelDOMUtils);
+
+// 2. 全グローバル変数確認
+console.log('Core:', !!window.HolyLabelDOMUtils);
+console.log('Extended:', !!window.HolyLabelAnimationManager);
+console.log('Advanced:', !!window.HolyLabelProductImageGallery);
+console.log('Final:', !!window.HolyLabelInitializationManager);
+
+// 3. 個別機能テスト
+HolyLabelNavigationManager.toggleMenu();  // ハンバーガーメニュー
+HolyLabelModalUtils.open('test-modal');   // モーダル機能
+HolyLabelProductImageGallery.init();      // ギャラリー機能
+```
+
+### ブラウザ確認
+- **Console**: JavaScriptエラーがないか確認
+- **Network**: 統合ファイル読み込み状況確認（2ファイルのみ）
+- **Elements**: CSS適用状況確認
+
+## 🚫 注意事項・禁止事項
+
+### 絶対にやってはいけないこと
+1. **`dist/`フォルダの直接編集**: 圧縮済みファイルの手動変更
+2. **`legacy/`フォルダの編集**: バックアップファイルの変更
+3. **グローバル変数名の変更**: `window.HolyLabel*`の変更
+4. **既存メソッドの削除**: 後方互換性破壊
+5. **BASEテンプレート構文の残存**: プレーンJSに変換必須
+6. **重いライブラリの追加**: ファイルサイズ制限違反
+
+### 推奨事項
+1. **統合ファイル編集**: 単一ファイルでの効率的開発
+2. **セクション単位の編集**: レイヤー構造を意識した修正
+3. **十分なテスト**: 各段階で動作確認
+4. **詳細なコミットメッセージ**: 変更内容の明確化
+5. **ドキュメント更新**: 重要な変更時はドキュメント更新
+
+## 🎯 開発目標（達成済み）
+- **高性能**: 軽量で高速なライブラリ（✅ 55.7%・35.2%削減達成）
+- **統合設計**: 単一ファイル管理体系（✅ 92%ファイル削減達成）
+- **BASE準拠**: BASE仕様完全対応（✅ 後方互換性完全保証）
+- **保守性**: 将来の拡張・修正が容易（✅ 94.9%ビルド高速化達成）
+
+## 📚 参考ドキュメント（Version 2.0）
+- `docs/CUSTOMER-GUIDE.md`: 顧客向け編集ガイド 2.0
+- `docs/CDN-REFERENCE.md`: CDNリファレンス 2.0
+- `docs/IMPLEMENTATION.md`: 実装ガイド 2.0
+- `docs/TROUBLESHOOTING.md`: トラブルシューティング 2.0
+- `docs/USAGE.md`: 使用ガイド 2.0
+
+## 🔍 Cursor AI 編集支援ルール（統合版）
+
+### 1. ファイル構造の理解
+- **統合ファイル**: CSS 1ファイル + JS 1ファイル（編集対象）
+- **レガシーファイル**: CSS 13ファイル + JS 12ファイル（参考のみ）
+- **劇的簡素化**: 25ファイル → 2ファイル（92%削減）
+
+### 2. 編集時の自動確認
+- 統合ソースファイル編集後、必ずビルドコマンド提案
+- グローバル変数名変更を検出時、警告表示
+- BASEテンプレート構文残存を検出時、除去提案
+- レイヤー構造を維持した編集推奨
+
+### 3. 統合開発支援
+- セクション別編集アプローチを提案
+- レガシーファイル参照による実装ガイド
+- 統合テストコード例を自動提示
+- 高速デプロイ前チェックリスト提示
+
+### 4. 保守性向上（統合版）
+- レイヤー別コメント追加提案
+- 統合依存関係の明確化
+- パフォーマンス影響の事前評価
+- 後方互換性チェック自動化 
