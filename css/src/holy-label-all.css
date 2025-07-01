@@ -294,9 +294,11 @@ a.expand.open:after {
 }
 
 ul.ex-list {
-    padding-left: 2rem;
+    padding-left: 0;
     margin-top: 1rem;
     list-style: none;
+    display: none;
+    text-align: center;
 }
 
 ul.ex-list > li {
@@ -310,6 +312,8 @@ ul.ex-list > li > a {
     letter-spacing: 0;
     text-decoration: none;
     transition: opacity var(--transition-fast);
+    display: block;
+    text-align: center;
 }
 
 ul.ex-list > li > a:hover {
@@ -318,13 +322,14 @@ ul.ex-list > li > a:hover {
 
 /* 中カテゴリのスタイル */
 ul.ex-list > li.sub-category {
-    padding-left: var(--space-sm);
+    padding-left: 0;
 }
 
 ul.ex-list > li.sub-category > a {
     color: var(--muted-text);
     font-size: var(--font-xs);
     font-weight: var(--weight-light);
+    text-align: center;
 }
 
 ul.ex-list > li.sub-category > a:hover {
@@ -560,9 +565,11 @@ a.expand.open:after {
 }
 
 ul.ex-list {
-    padding-left: 2rem;
+    padding-left: 0;
     margin-top: 1rem;
     list-style: none;
+    display: none;
+    text-align: center;
 }
 
 ul.ex-list > li {
@@ -576,6 +583,8 @@ ul.ex-list > li > a {
     letter-spacing: 0;
     text-decoration: none;
     transition: opacity var(--transition-fast);
+    display: block;
+    text-align: center;
 }
 
 ul.ex-list > li > a:hover {
@@ -584,13 +593,14 @@ ul.ex-list > li > a:hover {
 
 /* 中カテゴリのスタイル */
 ul.ex-list > li.sub-category {
-    padding-left: var(--space-sm);
+    padding-left: 0;
 }
 
 ul.ex-list > li.sub-category > a {
     color: var(--muted-text);
     font-size: var(--font-xs);
     font-weight: var(--weight-light);
+    text-align: center;
 }
 
 ul.ex-list > li.sub-category > a:hover {
@@ -1175,18 +1185,15 @@ ul.ex-list > li.sub-category > a:hover {
         margin-bottom: 30px;
     }
     
-    /* 通常のHTML画像を非表示（モバイル版ではカルーセルシステムを使用） */
-    .product-detail-image > img,
-    .product-detail-image > .product-image img,
-    .product-detail > img,
-    .product-detail img,
-    .product-detail-image img {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-        top: -9999px !important;
+    /* 商品画像の表示を確保 */
+    .product-image img,
+    .product-detail-image img,
+    .main-image-container .main-image-item img,
+    .thumbnail-item img,
+    .related-product-image img {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     /* メイン画像ラッパー */
