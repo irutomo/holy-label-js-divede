@@ -1090,12 +1090,25 @@ ul.ex-list > li.sub-category > a:hover {
 
 /* === デスクトップ版（768px以上）：シンプル表示 === */
 @media (min-width: 769px) {
-    /* モバイル専用要素を非表示 */
+    /* モバイル専用要素を完全非表示 */
     .main-image-wrapper,
     .carousel-nav,
     .thumbnail-scroll-container,
     .image-counter {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* サムネイル要素も完全非表示 */
+    .thumbnail-item,
+    .thumbnail-scroll-container.thumbnail-visible {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
     }
     
     /* デスクトップ版：商品詳細画像エリア */
@@ -1361,6 +1374,39 @@ ul.ex-list > li.sub-category > a:hover {
     .thumbnail-item.active {
         border-color: var(--accent-color);
         opacity: 1;
+        transform: scale(1.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* サムネイル表示を確実にするための強制スタイル */
+    .thumbnail-scroll-container.thumbnail-visible {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+
+    /* サムネイルの改良されたアクセシビリティスタイル */
+    .thumbnail-item {
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    .thumbnail-item:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(255, 20, 147, 0.3);
+        opacity: 1;
+    }
+
+    .thumbnail-item:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .thumbnail-item.active:hover {
+        transform: scale(1.05) translateY(-2px);
     }
     
     /* 商品詳細情報エリア（BK/最新.html準拠） */

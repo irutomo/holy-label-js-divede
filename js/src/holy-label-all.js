@@ -877,45 +877,101 @@
                 return;
             }
 
-            // デスクトップ版用の画像を先に作成
-            this.createDesktopImage();
-            
-            // モバイル版用の複雑画像システム
-            if (this.elements.mainContainer && this.elements.thumbnailContainer) {
-                this.renderImages();
-                this.addEventListeners();
-                this.updateUI();
-                console.log('Mobile gallery system initialized');
+            // デスクトップ版とモバイル版で処理を分岐
+            if (window.innerWidth >= 769) {
+                console.log('🖥️ デスクトップ版：シンプル画像表示のみ初期化');
+                this.createDesktopImage();
+                this.hideDesktopThumbnails();
+                console.log('Desktop gallery system initialized (thumbnails disabled)');
+            } else {
+                console.log('📱 モバイル版：フル機能ギャラリー初期化');
+                // デスクトップ版用の画像を先に作成
+                this.createDesktopImage();
                 
-                // 🚨 追加チェック：サムネイル表示状態を確認
-                setTimeout(() => {
-                    console.log('🔍 5秒後のサムネイル状態チェック:');
-                    const container = document.getElementById('thumbnailContainer');
-                    if (container) {
-                        console.log('サムネイルコンテナ状態:', {
-                            display: window.getComputedStyle(container).display,
-                            visibility: window.getComputedStyle(container).visibility,
-                            opacity: window.getComputedStyle(container).opacity,
-                            height: window.getComputedStyle(container).height,
-                            childCount: container.children.length,
-                            innerHTML: container.innerHTML.length > 0 ? '内容あり' : '内容なし'
-                        });
-                        
-                        // モバイルでサムネイルが表示されていない場合の緊急対応
-                        if (window.innerWidth <= 768 && window.getComputedStyle(container).display === 'none') {
-                            console.log('🚨 緊急修正: サムネイルが非表示状態です！強制表示します');
-                            container.style.setProperty('display', 'flex', 'important');
-                            container.style.setProperty('visibility', 'visible', 'important');
-                            container.style.setProperty('opacity', '1', 'important');
-                            container.style.setProperty('height', 'auto', 'important');
-                        }
-                    } else {
-                        console.error('❌ サムネイルコンテナが見つかりません！');
-                    }
-                }, 5000);
+                // モバイル版のみでギャラリーシステムの初期化
+                if (this.elements.mainContainer && this.elements.thumbnailContainer) {
+                    this.renderImages();
+                    this.addEventListeners();
+                    console.log('Mobile gallery system initialized');
+                    
+                    // 初期化後の検証とフォールバック（モバイルのみ）
+                    this.performInitializationCheck();
+                }
             }
             
             console.log('ProductGallery initialization completed');
+        },
+
+        // 初期化後の検証とフォールバック処理（新機能）
+        performInitializationCheck() {
+            // 即座にチェック
+            this.checkAndFixThumbnails();
+            
+            // 1秒後と3秒後にも追加チェック（CSS読み込み完了対応）
+            setTimeout(() => this.checkAndFixThumbnails(), 1000);
+            setTimeout(() => this.checkAndFixThumbnails(), 3000);
+        },
+
+        // サムネイル状態をチェックして修正（新機能）
+        checkAndFixThumbnails() {
+            console.log('🔍 サムネイル状態チェック開始');
+            
+            // デスクトップ版では実行しない
+            if (window.innerWidth >= 769) {
+                console.log('🖥️ デスクトップ版のため、サムネイルチェックをスキップ');
+                return;
+            }
+            
+            if (!this.elements.thumbnailContainer) {
+                console.error('❌ サムネイルコンテナが見つかりません');
+                return;
+            }
+
+            const computedStyle = window.getComputedStyle(this.elements.thumbnailContainer);
+            const isHidden = computedStyle.display === 'none' || 
+                           computedStyle.visibility === 'hidden' || 
+                           computedStyle.opacity === '0';
+
+            console.log('サムネイルコンテナ状態:', {
+                display: computedStyle.display,
+                visibility: computedStyle.visibility,
+                opacity: computedStyle.opacity,
+                height: computedStyle.height,
+                childCount: this.elements.thumbnailContainer.children.length,
+                isHidden: isHidden
+            });
+
+            // 非表示の場合は強制修正
+            if (isHidden || this.elements.thumbnailContainer.children.length === 0) {
+                console.log('🚨 サムネイル問題検出 - 修正を実行');
+                
+                // 強制表示設定を再実行
+                this.forceThumbnailDisplay();
+                
+                // コンテンツが空の場合は再描画
+                if (this.elements.thumbnailContainer.children.length === 0 && this.images.length > 0) {
+                    console.log('🔄 サムネイルを再描画');
+                    this.renderImages();
+                }
+                
+                // アクティブ状態を確実に設定
+                this.updateThumbnailActiveState();
+            }
+
+            // サムネイルクリック機能のテスト
+            this.testThumbnailInteraction();
+        },
+
+        // サムネイル相互作用のテスト（新機能）
+        testThumbnailInteraction() {
+            const thumbnails = this.elements.thumbnailContainer.querySelectorAll('.thumbnail-item');
+            if (thumbnails.length > 0) {
+                console.log('🧪 サムネイル相互作用テスト:', {
+                    thumbnailCount: thumbnails.length,
+                    hasClickListeners: thumbnails[0].onclick !== null,
+                    hasEventListeners: this.elements.thumbnailContainer.onclick !== null
+                });
+            }
         },
 
         // デスクトップ版用の画像表示
@@ -997,6 +1053,42 @@
             });
         },
 
+        // デスクトップ版でサムネイルを確実に非表示（新機能）
+        hideDesktopThumbnails() {
+            console.log('🚫 デスクトップ版：サムネイル非表示処理開始');
+            
+            // サムネイルコンテナを完全に非表示
+            if (this.elements.thumbnailContainer) {
+                this.elements.thumbnailContainer.style.display = 'none';
+                this.elements.thumbnailContainer.style.visibility = 'hidden';
+                this.elements.thumbnailContainer.style.opacity = '0';
+                this.elements.thumbnailContainer.style.height = '0';
+                this.elements.thumbnailContainer.style.overflow = 'hidden';
+                
+                // コンテンツもクリア
+                this.elements.thumbnailContainer.innerHTML = '';
+                
+                console.log('✅ サムネイルコンテナを完全非表示');
+            }
+            
+            // モバイル専用要素も非表示
+            if (this.elements.mainContainer) {
+                this.elements.mainContainer.style.display = 'none';
+            }
+            
+            if (this.elements.counter) {
+                this.elements.counter.style.display = 'none';
+            }
+            
+            // カルーセルナビゲーションも非表示
+            const carouselNavs = document.querySelectorAll('.carousel-nav');
+            carouselNavs.forEach(nav => {
+                nav.style.display = 'none';
+            });
+            
+            console.log('🖥️ デスクトップ版：モバイル専用要素を全て非表示完了');
+        },
+
         // 画像データの収集
         collectImages() {
             const imageDataElement = document.getElementById('imageData');
@@ -1009,49 +1101,73 @@
             })).filter(img => img.main && img.thumb); // 有効な画像のみ
         },
 
-        // 画像とサムネイルの描画
+        // 画像とサムネイルの描画（改良版）
         renderImages() {
             console.log('🎯 renderImages() 開始');
             console.log('画像データ:', this.images);
             console.log('サムネイルコンテナ:', this.elements.thumbnailContainer);
+            
+            if (!this.elements.mainContainer || !this.elements.thumbnailContainer) {
+                console.error('❌ 必要なコンテナが見つかりません');
+                return;
+            }
             
             let mainHTML = '';
             let thumbHTML = '';
             const itemTitle = document.querySelector('.product-detail-title')?.textContent || '商品画像';
 
             this.images.forEach((img, index) => {
-                mainHTML += `<div class="main-image-item"><img src="${img.main}" alt="${itemTitle} ${index + 1}"></div>`;
-                thumbHTML += `<div class="thumbnail-item" data-index="${index}"><img src="${img.thumb}" alt="${itemTitle} サムネイル ${index + 1}"></div>`;
+                const activeClass = index === 0 ? ' active' : '';
+                mainHTML += `<div class="main-image-item"><img src="${img.main}" alt="${itemTitle} ${index + 1}" loading="lazy"></div>`;
+                thumbHTML += `<div class="thumbnail-item${activeClass}" data-index="${index}" tabindex="0" role="button" aria-label="${itemTitle} サムネイル ${index + 1}"><img src="${img.thumb}" alt="${itemTitle} サムネイル ${index + 1}" loading="lazy"></div>`;
             });
             
             this.elements.mainContainer.innerHTML = mainHTML;
             this.elements.thumbnailContainer.innerHTML = thumbHTML;
             
-            // 🚨 モバイル版でサムネイル表示を強制
-            if (window.innerWidth <= 768) {
-                console.log('📱 モバイル版検出: サムネイル表示を強制します');
-                this.elements.thumbnailContainer.style.display = 'flex !important';
-                this.elements.thumbnailContainer.style.visibility = 'visible !important';
-                this.elements.thumbnailContainer.style.opacity = '1';
-                this.elements.thumbnailContainer.style.height = 'auto';
-                this.elements.thumbnailContainer.style.overflow = 'visible';
-                
-                // 親要素も確認
-                const parent = this.elements.thumbnailContainer.parentElement;
-                if (parent) {
-                    parent.style.display = 'block';
-                    parent.style.visibility = 'visible';
-                    console.log('親要素も表示設定:', parent.className);
-                }
-                
-                console.log('📱 サムネイル強制表示完了:', {
-                    display: this.elements.thumbnailContainer.style.display,
-                    childCount: this.elements.thumbnailContainer.children.length,
-                    visibility: this.elements.thumbnailContainer.style.visibility
-                });
-            }
+            // サムネイル表示の強制設定（全デバイス対応）
+            this.forceThumbnailDisplay();
+            
+            // 初期状態の設定
+            this.updateUI();
             
             console.log('✅ renderImages() 完了 - サムネイル数:', this.elements.thumbnailContainer.children.length);
+        },
+
+        // サムネイル表示を強制する（改良版）
+        forceThumbnailDisplay() {
+            if (!this.elements.thumbnailContainer) return;
+            
+            // デスクトップ版では実行しない
+            if (window.innerWidth >= 769) {
+                console.log('🖥️ デスクトップ版のため、サムネイル強制表示をスキップ');
+                return;
+            }
+            
+            // CSS プロパティを直接設定（!important を使用）
+            this.elements.thumbnailContainer.style.setProperty('display', 'flex', 'important');
+            this.elements.thumbnailContainer.style.setProperty('visibility', 'visible', 'important');
+            this.elements.thumbnailContainer.style.setProperty('opacity', '1', 'important');
+            this.elements.thumbnailContainer.style.setProperty('height', 'auto', 'important');
+            this.elements.thumbnailContainer.style.setProperty('overflow-x', 'auto', 'important');
+            this.elements.thumbnailContainer.style.setProperty('overflow-y', 'hidden', 'important');
+            
+            // 親要素の確認と設定
+            const parent = this.elements.thumbnailContainer.parentElement;
+            if (parent) {
+                parent.style.setProperty('display', 'block', 'important');
+                parent.style.setProperty('visibility', 'visible', 'important');
+            }
+            
+            // クラス追加で CSS での制御も確保
+            this.elements.thumbnailContainer.classList.add('thumbnail-visible');
+            
+            console.log('📱 サムネイル強制表示設定完了:', {
+                display: this.elements.thumbnailContainer.style.display,
+                visibility: this.elements.thumbnailContainer.style.visibility,
+                opacity: this.elements.thumbnailContainer.style.opacity,
+                childCount: this.elements.thumbnailContainer.children.length
+            });
         },
 
         // イベントリスナーの設定
@@ -1082,11 +1198,26 @@
                 }, 100); // デバウンス時間を100msに調整
             });
 
-            // サムネイルのクリックを検知
+            // サムネイルのクリック・キーボード操作を検知（改良版）
             this.elements.thumbnailContainer.addEventListener('click', (e) => {
                 const thumbnail = e.target.closest('.thumbnail-item');
                 if (thumbnail) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const index = parseInt(thumbnail.dataset.index, 10);
+                    console.log('🖱️ サムネイルクリック:', index);
+                    this.scrollToImage(index);
+                }
+            });
+
+            // キーボードアクセシビリティ対応
+            this.elements.thumbnailContainer.addEventListener('keydown', (e) => {
+                const thumbnail = e.target.closest('.thumbnail-item');
+                if (thumbnail && (e.key === 'Enter' || e.key === ' ')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const index = parseInt(thumbnail.dataset.index, 10);
+                    console.log('⌨️ サムネイルキーボード操作:', index);
                     this.scrollToImage(index);
                 }
             });
@@ -1233,8 +1364,10 @@
             });
         },
 
-        // UIの更新
+        // UIの更新（改良版）
         updateUI() {
+            console.log('🔄 updateUI() 開始 - currentIndex:', this.currentIndex);
+            
             // カウンターの更新
             if (this.elements.counter) {
                 if (this.images.length > 1) {
@@ -1259,20 +1392,69 @@
                 }
             }
             
-            // サムネイルのアクティブ状態を更新
-            const thumbnails = this.elements.thumbnailContainer.querySelectorAll('.thumbnail-item');
-            thumbnails.forEach((thumb, index) => {
-                thumb.classList.toggle('active', index === this.currentIndex);
-            });
+            // サムネイルのアクティブ状態を更新（改良版）
+            this.updateThumbnailActiveState();
+            
+            // アクティブなサムネイルを中央に表示
+            this.scrollThumbnailToActive();
+            
+            console.log('✅ updateUI() 完了');
+        },
 
-            // アクティブなサムネイルが中央に来るようにスクロール
+        // サムネイルのアクティブ状態を更新（新機能）
+        updateThumbnailActiveState() {
+            if (!this.elements.thumbnailContainer) return;
+            
+            const thumbnails = this.elements.thumbnailContainer.querySelectorAll('.thumbnail-item');
+            console.log('🎯 サムネイル状態更新:', {
+                thumbnailCount: thumbnails.length,
+                currentIndex: this.currentIndex
+            });
+            
+            thumbnails.forEach((thumb, index) => {
+                const isActive = index === this.currentIndex;
+                
+                // アクティブクラスの管理
+                if (isActive) {
+                    thumb.classList.add('active');
+                    thumb.setAttribute('aria-selected', 'true');
+                } else {
+                    thumb.classList.remove('active');
+                    thumb.setAttribute('aria-selected', 'false');
+                }
+                
+                // 視覚的なフィードバック
+                thumb.style.opacity = isActive ? '1' : '0.6';
+                thumb.style.transform = isActive ? 'scale(1.05)' : 'scale(1)';
+            });
+            
+            console.log('✅ サムネイル状態更新完了');
+        },
+
+        // アクティブなサムネイルを中央に表示（新機能）
+        scrollThumbnailToActive() {
+            if (!this.elements.thumbnailContainer) return;
+            
+            const thumbnails = this.elements.thumbnailContainer.querySelectorAll('.thumbnail-item');
             const activeThumbnail = thumbnails[this.currentIndex];
+            
             if (activeThumbnail) {
                 const container = this.elements.thumbnailContainer;
+                const containerRect = container.getBoundingClientRect();
+                const thumbnailRect = activeThumbnail.getBoundingClientRect();
+                
+                // 中央配置のための計算
                 const scrollLeft = activeThumbnail.offsetLeft - (container.offsetWidth / 2) + (activeThumbnail.offsetWidth / 2);
+                
+                // スムーズスクロール
                 container.scrollTo({
-                    left: scrollLeft,
+                    left: Math.max(0, scrollLeft),
                     behavior: 'smooth'
+                });
+                
+                console.log('📍 アクティブサムネイルを中央配置:', {
+                    index: this.currentIndex,
+                    scrollPosition: scrollLeft
                 });
             }
         },
