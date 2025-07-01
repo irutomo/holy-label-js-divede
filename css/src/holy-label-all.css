@@ -1956,41 +1956,66 @@ body .product-detail.desktop-layout .main-image-item img {
     
     /* 関連商品（モバイル） */
     .related-products {
-        margin-top: 60px;
-        padding: 40px 15px;
+        margin-top: 40px;
+        padding: 40px 20px;
     }
     
     .related-products-grid {
         display: grid !important;
         grid-template-columns: 1fr !important;
-        gap: 24px !important;
-        max-width: 320px !important;
+        gap: 30px !important;
+        max-width: 400px !important;
         margin: 0 auto !important;
         width: 100% !important;
     }
     
     .related-products-title {
-        font-size: 1.2rem;
-        margin-bottom: 40px;
+        font-size: 1.1rem;
+        font-weight: var(--weight-light);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 30px;
         text-align: center;
+        color: var(--primary-text);
     }
     
     .related-product-item {
         margin: 0 auto !important;
-        text-align: center !important;
+        text-align: left !important;
+        background-color: transparent !important;
     }
     
     .related-product-image {
-        max-width: 100% !important;
         width: 100% !important;
-        margin: 0 auto !important;
+        aspect-ratio: 1 / 1 !important;
+        margin-bottom: 15px !important;
+        overflow: hidden !important;
     }
     
-    .related-product-title,
-    .related-product-price {
-        text-align: center !important;
-        padding: 0 8px !important;
+    .related-product-image img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    
+    .related-product-title {
+        font-size: 0.85rem !important;
+        font-weight: var(--weight-light) !important;
+        line-height: 1.4 !important;
+        margin-bottom: 8px !important;
+        text-align: left !important;
+        color: var(--primary-text) !important;
+        padding: 0 !important;
         word-break: break-word;
+    }
+    
+    .related-product-price {
+        font-size: 0.8rem !important;
+        font-weight: var(--weight-light) !important;
+        text-align: left !important;
+        color: var(--primary-text) !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     
     /* フッター（モバイル） */
@@ -3388,7 +3413,7 @@ button.humberger {
 
 .related-product-image {
     width: 100%;
-    aspect-ratio: 3/4;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     position: relative;
     background: linear-gradient(
