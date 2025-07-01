@@ -4082,9 +4082,9 @@ body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
 
     /* サムネイルアイテム（モバイル版） */
     .thumbnail-item {
-        flex: 0 0 60px; /* サムネイルの基本幅（モバイル用） */
-        width: 60px;
-        height: 75px;
+        flex: 0 0 70px; /* サムネイルの基本幅（モバイル用） */
+        width: 70px;
+        height: 90px;
         cursor: pointer;
         border: 2px solid transparent;
         transition: border-color 0.3s ease;
