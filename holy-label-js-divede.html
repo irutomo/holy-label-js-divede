@@ -521,15 +521,43 @@
             const interval = 100;
             
             const checkLibraries = () => {
-                if (window.HolyLabelDOMUtils && 
-                    window.HolyLabelNavigationManager && 
-                    window.HolyLabelPageState && 
-                    window.HolyLabelAnimationManager &&
-                    window.HolyLabelProductGallery) {
+                // 必須ライブラリの確認（Core Bundle）
+                const coreLoaded = window.HolyLabelDOMUtils && 
+                                  window.HolyLabelPageState && 
+                                  window.HolyLabelAnimationConfig;
+                
+                // 拡張ライブラリの確認（Extended Bundle）                  
+                const extendedLoaded = window.HolyLabelNavigationManager && 
+                                      window.HolyLabelAnimationManager &&
+                                      window.HolyLabelModalUtils;
+                
+                // 高度機能ライブラリの確認（Advanced Bundle）
+                const advancedLoaded = window.HolyLabelProductGallery &&
+                                      window.HolyLabelLoadMoreManager &&
+                                      window.HolyLabelLogoManager;
+                                      
+                // 最終ライブラリの確認（Final Bundle）
+                const finalLoaded = window.HolyLabelInitializationManager &&
+                                   window.HolyLabelLanguageManager &&
+                                   window.HolyLabelScrollManager;
+                
+                if (coreLoaded && extendedLoaded && advancedLoaded && finalLoaded) {
                     console.log('All HOLY LABEL libraries loaded successfully');
+                    console.log('Loaded libraries:', {
+                        core: !!coreLoaded,
+                        extended: !!extendedLoaded,
+                        advanced: !!advancedLoaded,
+                        final: !!finalLoaded
+                    });
                     callback();
                 } else if (elapsed >= timeout) {
                     console.warn('External libraries timeout, some features may not work');
+                    console.warn('Library status:', {
+                        core: !!coreLoaded,
+                        extended: !!extendedLoaded,
+                        advanced: !!advancedLoaded,
+                        final: !!finalLoaded
+                    });
                     callback();
                 } else {
                     elapsed += interval;
@@ -542,24 +570,57 @@
         // 外部ライブラリの初期化
         waitForLibraries(function() {
             try {
+                console.log('Starting HOLY LABEL initialization...');
+                
                 // 初期化マネージャーが利用可能な場合は使用
                 if (window.HolyLabelInitializationManager && typeof window.HolyLabelInitializationManager.init === 'function') {
+                    console.log('Using InitializationManager for setup');
                     window.HolyLabelInitializationManager.init();
                 } else {
+                    console.log('Using individual initialization');
                     // 個別の初期化処理
+                    
+                    // ナビゲーション初期化
                     if (window.HolyLabelNavigationManager && typeof window.HolyLabelNavigationManager.init === 'function') {
+                        console.log('Initializing NavigationManager');
                         window.HolyLabelNavigationManager.init();
                     }
+                    
+                    // ロゴマネージャー初期化
+                    if (window.HolyLabelLogoManager && typeof window.HolyLabelLogoManager.init === 'function') {
+                        console.log('Initializing LogoManager');
+                        window.HolyLabelLogoManager.init();
+                    }
+                    
+                    // プロダクトギャラリー初期化
                     if (window.HolyLabelProductGallery && typeof window.HolyLabelProductGallery.init === 'function') {
+                        console.log('Initializing ProductGallery');
                         window.HolyLabelProductGallery.init();
                     }
-                    if (window.HolyLabelAnimationManager && typeof window.HolyLabelAnimationManager.initHomepageAnimation === 'function') {
-                        window.HolyLabelAnimationManager.initHomepageAnimation();
+                    
+                    // アニメーション初期化
+                    if (window.HolyLabelAnimationManager) {
+                        if (typeof window.HolyLabelAnimationManager.initHomepageAnimation === 'function') {
+                            console.log('Initializing homepage animations');
+                            window.HolyLabelAnimationManager.initHomepageAnimation();
+                        }
+                        if (typeof window.HolyLabelAnimationManager.init === 'function') {
+                            console.log('Initializing AnimationManager');
+                            window.HolyLabelAnimationManager.init();
+                        }
+                    }
+                    
+                    // LoadMoreマネージャー初期化
+                    if (window.HolyLabelLoadMoreManager && typeof window.HolyLabelLoadMoreManager.init === 'function') {
+                        console.log('Initializing LoadMoreManager');
+                        window.HolyLabelLoadMoreManager.init();
                     }
                 }
-                console.log('HOLY LABEL initialization completed');
+                
+                console.log('HOLY LABEL initialization completed successfully');
             } catch (error) {
                 console.error('HOLY LABEL initialization error:', error);
+                console.error('Error details:', error.stack);
             }
         });
         
