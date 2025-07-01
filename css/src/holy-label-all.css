@@ -1003,7 +1003,7 @@ ul.ex-list > li.sub-category > a:hover {
     /* デスクトップ版：商品詳細画像エリア */
     .product-detail-image {
         position: relative;
-        max-width: 500px;
+        max-width: 600px;
         margin: 0 auto;
         border-radius: 8px;
         overflow: hidden;
@@ -1017,8 +1017,8 @@ ul.ex-list > li.sub-category > a:hover {
         object-fit: contain;
         border-radius: 8px;
         transition: transform 0.3s ease;
-        max-height: 700px;
-        max-width: 650px;
+        max-height: 800px;
+        max-width: 750px;
     }
     
     /* デスクトップ版：画像ホバー効果 */
@@ -1115,11 +1115,15 @@ ul.ex-list > li.sub-category > a:hover {
     /* 通常のHTML画像を非表示（モバイル版ではカルーセルシステムを使用） */
     .product-detail-image > img,
     .product-detail-image > .product-image img,
-    .product-detail > img {
+    .product-detail > img,
+    .product-detail img,
+    .product-detail-image img {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
         overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
     }
     
     /* メイン画像ラッパー */
@@ -2930,11 +2934,11 @@ button.humberger {
 .page-content input[type="submit"] {
     width: auto;
     min-width: 160px;
-    background-color: #f8f8f8;
-    color: #000000;
-    border: 1px solid #e0e0e0;
+    background-color: #f8f8f8 !important;
+    color: #000000 !important;
+    border: 1px solid #e0e0e0 !important;
     padding: 18px 40px;
-    font-size: var(--font-sm);
+    font-size: var(--font-sm) !important;
     font-weight: var(--weight-bold);
     letter-spacing: 2px;
     text-transform: none;
@@ -2955,16 +2959,37 @@ button.humberger {
 
 /* CONTACTボタンのテキスト確保（BASEテンプレート対応） */
 .contact-form input[type="submit"]:not([value]),
-.contact-form button[type="submit"]:empty {
+.contact-form button[type="submit"]:empty,
+.contact-form input[type="submit"],
+.contact-form button[type="submit"] {
     font-size: var(--font-sm) !important;
+    position: relative !important;
 }
 
-.contact-form input[type="submit"]:not([value])::after,
-.contact-form button[type="submit"]:empty::after {
-    content: "確認する";
-    font-size: var(--font-sm);
-    color: #000000;
+/* 全てのCONTACTボタンに「確認する」テキストを適用 */
+.contact-form input[type="submit"],
+.contact-form button[type="submit"] {
+    text-indent: -9999px !important;
+    color: transparent !important;
 }
+
+.contact-form input[type="submit"]::after,
+.contact-form button[type="submit"]::after {
+    content: "確認する" !important;
+    font-size: var(--font-sm) !important;
+    color: #000000 !important;
+    font-weight: var(--weight-bold) !important;
+    letter-spacing: 2px !important;
+    display: inline-block !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-indent: 0 !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
 
 .contact-form button[type="submit"]:hover,
 .contact-form input[type="submit"]:hover,
@@ -4199,12 +4224,12 @@ body > div[class*="I18n"]:not(.header__nav-area *):not(.js-nav-area *) {
     position: fixed;
     top: 0;
     left: -100%;
-    width: 30rem;
+    width: 25rem;
     height: 100vh;
     background-color: var(--overlay-bg);
     transition: all var(--transition-fast);
     z-index: var(--z-navigation);
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-xl) var(--space-md);
     overflow-y: auto;
     transform: translateX(-100%);
     opacity: 0;
